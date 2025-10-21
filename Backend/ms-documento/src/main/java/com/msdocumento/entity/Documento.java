@@ -1,0 +1,25 @@
+package com.msdocumento.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "documentos")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Documento {
+
+    @Id
+    private String id;
+
+    private String tipo;
+    private String asunto;
+    private String contenido;
+    private String remitente;
+    private String destinatario;
+}
