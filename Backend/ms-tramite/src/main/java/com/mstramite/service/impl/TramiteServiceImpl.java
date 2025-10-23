@@ -93,15 +93,12 @@ public class TramiteServiceImpl implements TramiteService {
         Tramite tramite = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trámite no encontrado"));
 
-        // DTOs internos
         com.mstramite.model.PersonaDTO personaModel = null;
         com.mstramite.model.DocumentoDTO documentoModel = null;
         com.mstramite.model.OficinaDTO oficinaModel = null;
 
-        // Llamadas Feign
         try {
             com.mstramite.dto.PersonaDTO personaFeign = personaClient.getById(tramite.getPersonaId());
-            // Mapeo manual
             personaModel = com.mstramite.model.PersonaDTO.builder()
                     .id(personaFeign.id())
                     .nombres(personaFeign.nombres())
