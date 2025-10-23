@@ -4,8 +4,12 @@ import com.mstramite.client.DocumentoClient;
 import com.mstramite.client.NotificacionClient;
 import com.mstramite.client.OficinaClient;
 import com.mstramite.client.PersonaClient;
+import com.mstramite.dto.DocumentoDTO;
 import com.mstramite.dto.NotificacionDTO;
+import com.mstramite.dto.OficinaDTO;
+import com.mstramite.dto.PersonaDTO;
 import com.mstramite.entity.Tramite;
+import com.mstramite.model.TramiteCompletoDTO;
 import com.mstramite.repository.TramiteRepository;
 import com.mstramite.service.TramiteService;
 import lombok.RequiredArgsConstructor;
@@ -83,4 +87,68 @@ public class TramiteServiceImpl implements TramiteService {
     public void eliminar(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public TramiteCompletoDTO obtenerTramiteCompleto(Long id) {
+        Tramite tramite = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trámite no encontrado"));
+
+        // DTOs internos
+        com.mstramite.model.PersonaDTO personaModel = null;
+        com.mstramite.model.DocumentoDTO documentoModel = null;
+        com.mstramite.model.OficinaDTO oficinaModel = null;
+
+        // Llamadas Feign
+        try {
+            com.mstramite.dto.PersonaDTO personaFeign = personaClient.getById(tramite.getPersonaId());
+            // Mapeo manual
+            personaModel = com.mstramite.model.PersonaDTO.builder()
+                    .id(personaFeign.id())
+                    .nombres(personaFeign.nombres())
+                    .apellidos(personaFeign.apellidos())
+                    .dni(personaFeign.dni())
+                    .direccion(personaFeign.direccion())
+                    .telefono(personaFeign.telefono())
+                    .build();
+        } catch (Exception ignored) { }
+
+        if (tramite.getDocumentoId() != null) {
+            try {
+                com.mstramite.dto.DocumentoDTO documentoFeign = documentoClient.getById(tramite.getDocumentoId());
+                documentoModel = com.mstramite.model.DocumentoDTO.builder()
+                        .id(documentoFeign.id())
+                        .tipo(documentoFeign.tipo())
+                        .asunto(documentoFeign.asunto())
+                        .contenido(documentoFeign.contenido())
+                        .remitente(documentoFeign.remitente())
+                        .destinatario(documentoFeign.destinatario())
+                        .build();
+            } catch (Exception ignored) { }
+        }
+
+        try {
+            com.mstramite.dto.OficinaDTO oficinaFeign = oficinaClient.getById(tramite.getOficinaId());
+            oficinaModel = com.mstramite.model.OficinaDTO.builder()
+                    .id(oficinaFeign.id())
+                    .codigo(oficinaFeign.codigo())
+                    .nombre(oficinaFeign.nombre())
+                    .ubicacion(oficinaFeign.ubicacion())
+                    .telefono(oficinaFeign.telefono())
+                    .responsable(oficinaFeign.responsable())
+                    .build();
+        } catch (Exception ignored) { }
+
+        return TramiteCompletoDTO.builder()
+                .id(tramite.getId())
+                .numeroExpediente(tramite.getNumeroExpediente())
+                .asunto(tramite.getAsunto())
+                .estado(tramite.getEstado())
+                .fechaInicio(tramite.getFechaInicio())
+                .fechaFin(tramite.getFechaFin())
+                .persona(personaModel)
+                .documento(documentoModel)
+                .oficina(oficinaModel)
+                .build();
+    }
+
 }

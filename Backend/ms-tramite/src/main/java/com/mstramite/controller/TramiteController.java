@@ -1,6 +1,7 @@
 package com.mstramite.controller;
 
 import com.mstramite.entity.Tramite;
+import com.mstramite.model.TramiteCompletoDTO;
 import com.mstramite.service.TramiteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +36,10 @@ public class TramiteController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/completo/{id}")
+    public ResponseEntity<TramiteCompletoDTO> obtenerTramiteCompleto(@PathVariable Long id) {
+        return ResponseEntity.ok(service.obtenerTramiteCompleto(id));
     }
 }
