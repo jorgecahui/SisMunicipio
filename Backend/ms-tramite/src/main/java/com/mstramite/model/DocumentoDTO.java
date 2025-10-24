@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DocumentoDTO {
     private String id;
-    private String tipo;
+    private TipoDocumento tipo;
     private String asunto;
     private String contenido;
     private String remitente;
