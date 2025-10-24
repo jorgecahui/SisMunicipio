@@ -1,5 +1,6 @@
 package com.mstramite.client;
 
+import com.mstramite.dto.DocumentoDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -7,13 +8,17 @@ import java.util.List;
 @Service
 public class DocumentoClientService {
 
-    private final DocumentoFeign documentoFeign;
+    private final DocumentoClient documentoClient;
 
-    public DocumentoClientService(DocumentoFeign documentoFeign) {
-        this.documentoFeign = documentoFeign;
+    public DocumentoClientService(DocumentoClient documentoClient) {
+        this.documentoClient = documentoClient;
+    }
+
+    public DocumentoDTO obtenerDocumentoPorId(String id) {
+        return documentoClient.getById(id);
     }
 
     public List<String> obtenerTiposDocumento() {
-        return documentoFeign.tipos();
+        return documentoClient.tipos();
     }
 }

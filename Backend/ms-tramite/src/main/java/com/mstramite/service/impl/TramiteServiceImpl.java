@@ -1,9 +1,6 @@
 package com.mstramite.service.impl;
 
-import com.mstramite.client.DocumentoClient;
-import com.mstramite.client.NotificacionClient;
-import com.mstramite.client.OficinaClient;
-import com.mstramite.client.PersonaClient;
+import com.mstramite.client.*;
 import com.mstramite.dto.DocumentoDTO;
 import com.mstramite.dto.NotificacionDTO;
 import com.mstramite.dto.OficinaDTO;
@@ -30,6 +27,7 @@ public class TramiteServiceImpl implements TramiteService {
     private final OficinaClient oficinaClient;
     private final DocumentoClient documentoClient;
     private final NotificacionClient notificacionClient;
+    private final DocumentoClientService documentoClientService;
 
     @Override
     public List<Tramite> listar() {
@@ -112,14 +110,15 @@ public class TramiteServiceImpl implements TramiteService {
 
         if (tramite.getDocumentoId() != null) {
             try {
-                com.mstramite.dto.DocumentoDTO documentoFeign = documentoClient.getById(tramite.getDocumentoId());
+                com.mstramite.dto.DocumentoDTO documentoDto = documentoClientService.obtenerDocumentoPorId(tramite.getDocumentoId());
+
                 documentoModel = com.mstramite.model.DocumentoDTO.builder()
-                        .id(documentoFeign.id())
-                        .tipo(TipoDocumento.valueOf(documentoFeign.tipo()))
-                        .asunto(documentoFeign.asunto())
-                        .contenido(documentoFeign.contenido())
-                        .remitente(documentoFeign.remitente())
-                        .destinatario(documentoFeign.destinatario())
+                        .id(documentoDto.id())
+                        .tipo(com.mstramite.model.TipoDocumento.valueOf(documentoDto.tipo()))
+                        .asunto(documentoDto.asunto())
+                        .contenido(documentoDto.contenido())
+                        .remitente(documentoDto.remitente())
+                        .destinatario(documentoDto.destinatario())
                         .build();
             } catch (Exception ignored) { }
         }
