@@ -1,10 +1,12 @@
 package com.mstramite.controller;
 
+import com.mstramite.client.DocumentoClientService;
 import com.mstramite.entity.Tramite;
 import com.mstramite.model.TramiteCompletoDTO;
 import com.mstramite.service.TramiteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class TramiteController {
 
     private final TramiteService service;
+    private final DocumentoClientService documentoClientService;
 
     @GetMapping
     public ResponseEntity<List<Tramite>> listar() {
@@ -41,5 +44,12 @@ public class TramiteController {
     @GetMapping("/completo/{id}")
     public ResponseEntity<TramiteCompletoDTO> obtenerTramiteCompleto(@PathVariable Long id) {
         return ResponseEntity.ok(service.obtenerTramiteCompleto(id));
+    }
+
+    @GetMapping("/crear")
+    public String formularioCrearTramite(Model model) {
+        List<String> tiposDocumento = documentoClientService.obtenerTiposDocumento();
+        model.addAttribute("tiposDocumento", tiposDocumento);
+        return "formularioTramite";
     }
 }
