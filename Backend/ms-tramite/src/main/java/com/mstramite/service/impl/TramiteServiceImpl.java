@@ -9,6 +9,7 @@ import com.mstramite.dto.NotificacionDTO;
 import com.mstramite.dto.OficinaDTO;
 import com.mstramite.dto.PersonaDTO;
 import com.mstramite.entity.Tramite;
+import com.mstramite.model.TipoDocumento;
 import com.mstramite.model.TramiteCompletoDTO;
 import com.mstramite.repository.TramiteRepository;
 import com.mstramite.service.TramiteService;
@@ -114,7 +115,7 @@ public class TramiteServiceImpl implements TramiteService {
                 com.mstramite.dto.DocumentoDTO documentoFeign = documentoClient.getById(tramite.getDocumentoId());
                 documentoModel = com.mstramite.model.DocumentoDTO.builder()
                         .id(documentoFeign.id())
-                        .tipo(documentoFeign.tipo())
+                        .tipo(TipoDocumento.valueOf(documentoFeign.tipo()))
                         .asunto(documentoFeign.asunto())
                         .contenido(documentoFeign.contenido())
                         .remitente(documentoFeign.remitente())
