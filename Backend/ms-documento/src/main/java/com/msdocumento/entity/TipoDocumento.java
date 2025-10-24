@@ -1,5 +1,7 @@
 package com.msdocumento.entity;
 
 public enum TipoDocumento {
-    OFICIO, MEMORANDUM, RESOLUCION, INFORME
+    Solicitud,  // mayúscula inicial
+    Factura,
+    Otro
 }
