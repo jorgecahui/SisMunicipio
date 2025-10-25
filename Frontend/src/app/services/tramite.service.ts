@@ -27,12 +27,12 @@ export interface Oficina {
 }
 
 export interface Tramite {
-  id: number;
+  id?: number;
   numeroExpediente?: string;
   asunto: string;
   estado?: string;
   personaId: number;
-  documentoId?: string;
+  documentoId: string;
   oficinaId: number;
 }
 
@@ -42,34 +42,34 @@ export interface Tramite {
 export class TramiteService {
   private baseUrl = 'http://localhost:9090/api/tramites';
   private personasUrl = 'http://localhost:9090/api/personas';
+  private documentosUrl = 'http://localhost:9090/api/documentos';
 
   constructor(private http: HttpClient) { }
 
-  // Crear trámite
   crearTramite(tramite: Tramite): Observable<Tramite> {
     return this.http.post<Tramite>(this.baseUrl, tramite);
   }
 
-  // Crear persona
   crearPersona(persona: Persona): Observable<Persona> {
     return this.http.post<Persona>(this.personasUrl, persona);
   }
 
-  listarTramites(): Observable<Tramite[]> {
-  return this.http.get<Tramite[]>(this.baseUrl);
+  crearDocumento(documento: Documento): Observable<Documento> {
+    return this.http.post<Documento>(this.documentosUrl, documento);
   }
 
-  // Obtener trámite completo
+  listarTramites(): Observable<Tramite[]> {
+    return this.http.get<Tramite[]>(this.baseUrl);
+  }
+
   obtenerTramiteCompleto(id: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/completo/${id}`);
   }
 
-  // Listar tipos de documento
   listarTiposDocumento(): Observable<string[]> {
-    return this.http.get<string[]>('http://localhost:9090/api/documentos/tipos');
+    return this.http.get<string[]>(`${this.documentosUrl}/tipos`);
   }
 
-  // Listar oficinas
   listarOficinas(): Observable<Oficina[]> {
     return this.http.get<Oficina[]>('http://localhost:9090/api/oficinas');
   }

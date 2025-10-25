@@ -1,1 +1,57 @@
-<p>form-tramite works!</p>
+<div class="form-tramite-container">
+  <h2>Registrar Trámite</h2>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+
+  <form (ngSubmit)="crearTramite()" #tramiteForm="ngForm">
+
+    <fieldset>
+      <legend>Datos de la Persona</legend>
+      <label for="nombres">Nombres:</label>
+      <input type="text" id="nombres" [(ngModel)]="persona.nombres" name="nombres" required [ngModelOptions]="{standalone: true}">
+
+      <label for="apellidos">Apellidos:</label>
+      <input type="text" id="apellidos" [(ngModel)]="persona.apellidos" name="apellidos" required [ngModelOptions]="{standalone: true}">
+
+      <label for="dni">DNI:</label>
+      <input type="text" id="dni" [(ngModel)]="persona.dni" name="dni" required [ngModelOptions]="{standalone: true}">
+
+      <label for="direccion">Dirección:</label>
+      <input type="text" id="direccion" [(ngModel)]="persona.direccion" name="direccion" [ngModelOptions]="{standalone: true}">
+
+      <label for="telefono">Teléfono:</label>
+      <input type="text" id="telefono" [(ngModel)]="persona.telefono" name="telefono" [ngModelOptions]="{standalone: true}">
+    </fieldset>
+
+    <fieldset>
+      <legend>Documento</legend>
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" [(ngModel)]="documento.tipo" name="tipo" required [ngModelOptions]="{standalone: true}">
+        <option *ngFor="let tipo of tiposDocumento" [value]="tipo">{{ tipo }}</option>
+      </select>
+
+      <label for="asunto">Asunto:</label>
+      <input type="text" id="asunto" [(ngModel)]="documento.asunto" name="asunto" required [ngModelOptions]="{standalone: true}">
+
+      <label for="contenido">Contenido:</label>
+      <textarea id="contenido" [(ngModel)]="documento.contenido" name="contenido" required [ngModelOptions]="{standalone: true}"></textarea>
+
+      <label for="remitente">Remitente:</label>
+      <input type="text" id="remitente" [(ngModel)]="documento.remitente" name="remitente" required [ngModelOptions]="{standalone: true}">
+
+      <label for="destinatario">Destinatario:</label>
+      <input type="text" id="destinatario" [(ngModel)]="documento.destinatario" name="destinatario" required [ngModelOptions]="{standalone: true}">
+    </fieldset>
+
+    <fieldset>
+      <legend>Oficina</legend>
+      <label for="oficina">Seleccione Oficina:</label>
+      <select id="oficina" [(ngModel)]="oficinaId" name="oficinaId" required [ngModelOptions]="{standalone: true}">
+        <option *ngFor="let oficina of oficinas" [value]="oficina.id">{{ oficina.nombre }} ({{ oficina.codigo }})</option>
+      </select>
+    </fieldset>
+
+    <button type="submit" [disabled]="tramiteForm.invalid">Registrar Trámite</button>
+  </form>
+</div>
