@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TramitesList } from './tramites-list';
+import { FormTramite } from './form-tramite';
 
-describe('TramitesList', () => {
-  let component: TramitesList;
-  let fixture: ComponentFixture<TramitesList>;
+describe('FormTramite', () => {
+  let component: FormTramite;
+  let fixture: ComponentFixture<FormTramite>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TramitesList]
+      imports: [FormTramite]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TramitesList);
+    fixture = TestBed.createComponent(FormTramite);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

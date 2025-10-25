@@ -1,0 +1,16 @@
+<div class="login-container">
+  <h2>Login Administrador</h2>
+  <form (ngSubmit)="login()">
+    <input type="text" [(ngModel)]="userName" name="userName" placeholder="Usuario" required />
+    <input type="password" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <div class="external-actions">
+    <p>Registrar Trámite (externo):</p>
+    <button (click)="goToRegisterTramite()">Registrar Trámite</button>
+
+    <p>Rastrear Trámite (opcional):</p>
+    <button (click)="goToRastrearTramite()">Rastrear Trámite</button>
+  </div>
+</div>

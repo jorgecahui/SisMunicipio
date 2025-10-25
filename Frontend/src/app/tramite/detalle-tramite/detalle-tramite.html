@@ -1,0 +1,37 @@
+<div class="detalle-container" *ngIf="!loading">
+  <h2>Detalle del Trámite</h2>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="tramite">
+    <p><strong>Número Expediente:</strong> {{ tramite.numeroExpediente }}</p>
+    <p><strong>Asunto:</strong> {{ tramite.asunto }}</p>
+    <p><strong>Estado:</strong> {{ tramite.estado }}</p>
+    <p><strong>Fecha Inicio:</strong> {{ tramite.fechaInicio | date:'short' }}</p>
+    <p><strong>Fecha Fin:</strong> {{ tramite.fechaFin ? (tramite.fechaFin | date:'short') : '-' }}</p>
+
+    <h3>Persona</h3>
+    <p>{{ tramite.persona?.nombres }} {{ tramite.persona?.apellidos }}</p>
+    <p>DNI: {{ tramite.persona?.dni }}</p>
+    <p>Dirección: {{ tramite.persona?.direccion }}</p>
+    <p>Teléfono: {{ tramite.persona?.telefono }}</p>
+
+    <h3>Documento</h3>
+    <p>Tipo: {{ tramite.documento?.tipo }}</p>
+    <p>Asunto: {{ tramite.documento?.asunto }}</p>
+    <p>Contenido: {{ tramite.documento?.contenido }}</p>
+    <p>Remitente: {{ tramite.documento?.remitente }}</p>
+    <p>Destinatario: {{ tramite.documento?.destinatario }}</p>
+
+    <h3>Oficina</h3>
+    <p>Código: {{ tramite.oficina?.codigo }}</p>
+    <p>Nombre: {{ tramite.oficina?.nombre }}</p>
+    <p>Ubicación: {{ tramite.oficina?.ubicacion }}</p>
+    <p>Teléfono: {{ tramite.oficina?.telefono }}</p>
+    <p>Responsable: {{ tramite.oficina?.responsable }}</p>
+
+    <button (click)="volver()">Volver</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando...</div>
+</div>

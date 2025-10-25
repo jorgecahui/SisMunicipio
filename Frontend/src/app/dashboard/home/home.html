@@ -1,0 +1,37 @@
+<div class="home-container">
+  <h1>Dashboard - Trámites</h1>
+
+  <div *ngIf="loading">Cargando trámites...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="!loading && tramites.length > 0" class="tramites-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Número Expediente</th>
+        <th>Asunto</th>
+        <th>Estado</th>
+        <th>Persona</th>
+        <th>Oficina</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tramite of tramites; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ tramite.numeroExpediente }}</td>
+        <td>{{ tramite.asunto }}</td>
+        <td>{{ tramite.estado }}</td>
+        <td>{{ tramite.personaId }}</td> 
+        <td>{{ tramite.oficinaId }}</td> 
+        <td>
+          <button (click)="verDetalle(tramite.id!)">Ver detalle</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && tramites.length === 0">
+    No hay trámites registrados.
+  </div>
+</div>

@@ -1,14 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TramitesList } from './components/tramites-list/tramites-list';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, TramitesList], 
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrls: ['./app.css']   
 })
-export class App {
+export class AppComponent {
   protected readonly title = signal('Frontend');
 }

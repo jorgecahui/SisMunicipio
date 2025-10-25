@@ -1,0 +1,27 @@
+.detalle-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2, h3 {
+  margin-top: 15px;
+}
+
+p {
+  margin: 5px 0;
+}
+
+button {
+  margin-top: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #d9534f;
+  font-weight: bold;
+}
