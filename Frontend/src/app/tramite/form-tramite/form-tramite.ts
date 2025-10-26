@@ -68,8 +68,8 @@ export class FormTramiteComponent implements OnInit {
             const tramiteData: Tramite = {
               asunto: this.documento.asunto,
               personaId: personaRes.id!,
-              documentoId: documentoRes.id!,
-              oficinaId: this.oficinaId!
+              oficinaId: this.oficinaId!,
+              documentoId: Number(documentoRes.id!),
             };
 
             this.tramiteService.crearTramite(tramiteData).subscribe({
