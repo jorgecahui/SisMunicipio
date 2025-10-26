@@ -1,11 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { TramiteService, Tramite } from '../../services/tramite.service';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.css',
+  styleUrls: ['./home.css']
 })
-export class Home {
+export class HomeComponent implements OnInit {
+  tramites: Tramite[] = [];
+  loading = false;
+  errorMessage = '';
 
+  constructor(private tramiteService: TramiteService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.cargarTramites();
+  }
+
+  cargarTramites() {
+    this.loading = true;
+    this.tramiteService.listarTramites().subscribe({
+      next: res => {
+        this.tramites = res;
+        this.loading = false;
+      },
+      error: err => {
+        this.errorMessage = 'Error al cargar los trámites';
+        console.error(err);
+        this.loading = false;
+      }
+    });
+  }
+
+  verDetalle(tramiteId: number) {
+    this.router.navigate(['/tramite', tramiteId]);
+  }
 }

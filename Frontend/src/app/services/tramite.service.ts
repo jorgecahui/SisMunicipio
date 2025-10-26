@@ -32,7 +32,7 @@ export interface Tramite {
   asunto: string;
   estado?: string;
   personaId: number;
-  documentoId: string;
+  documentoId: number;
   oficinaId: number;
 }
 

@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home';
-import { dashboardRoutes } from './dashboard-routing-module'; // importar rutas
+import { dashboardRoutes } from './dashboard-routing';
 
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(dashboardRoutes),
-    HomeComponent 
+    RouterModule.forChild(dashboardRoutes)
+  ],
+  declarations: [
+    // Aquí pon HomeComponent **solo si no es standalone**
   ]
 })
 export class DashboardModule {}

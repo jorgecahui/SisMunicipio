@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
   standalone: true,
-  imports: [FormsModule]
+  imports: [FormsModule, RouterModule]
 })
 export class LoginComponent {
 
@@ -22,7 +22,6 @@ export class LoginComponent {
       .subscribe({
         next: (res) => {
           this.authService.setToken(res.token);
-
           this.router.navigate(['/dashboard']); 
         },
         error: (err) => {
