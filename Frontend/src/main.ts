@@ -1,13 +1,12 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app';
-import { appRoutes } from './app/app.routes';  // ✅ Asegúrate de tener este archivo
 import { provideRouter } from '@angular/router';
-import { appConfig } from './app/app.config';
+import { appRoutes } from './app/app.routes';
+import { provideHttpClient } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
-  ...appConfig,
   providers: [
-    ...(appConfig.providers || []),
-    provideRouter(appRoutes) // ✅ Esto hace disponible Router en toda la app
+    provideRouter(appRoutes),
+    provideHttpClient()
   ]
-}).catch((err) => console.error(err));
+}).catch(err => console.error(err));

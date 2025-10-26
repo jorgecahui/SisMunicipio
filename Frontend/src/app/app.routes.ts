@@ -4,15 +4,15 @@ export const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { 
     path: 'login', 
-    loadChildren: () => import('./auth/auth-module').then(m => m.AuthModule) 
+    loadComponent: () => import('./auth/login/login').then(c => c.LoginComponent)
   },
   { 
-    path: 'tramite', 
-    loadChildren: () => import('./tramite/tramite-module').then(m => m.TramiteModule) 
+    path: 'login/registrar-tramite', 
+    loadComponent: () => import('./auth/register-tramite/register-tramite').then(c => c.RegisterTramiteComponent)
   },
   { 
     path: 'dashboard', 
-    loadChildren: () => import('./dashboard/dashboard-module').then(m => m.DashboardModule) 
+    loadComponent: () => import('./dashboard/home/home').then(c => c.HomeComponent)
   },
-  { path: '**', redirectTo: 'login' } 
+  { path: '**', redirectTo: 'login' }
 ];

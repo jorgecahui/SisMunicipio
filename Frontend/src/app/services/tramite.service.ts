@@ -40,9 +40,9 @@ export interface Tramite {
   providedIn: 'root'
 })
 export class TramiteService {
-  private baseUrl = 'http://localhost:9090/api/tramites';
-  private personasUrl = 'http://localhost:9090/api/personas';
-  private documentosUrl = 'http://localhost:9090/api/documentos';
+  private baseUrl = '/api/tramites';
+  private personasUrl = '/api/personas';
+  private documentosUrl = '/api/documentos';
 
   constructor(private http: HttpClient) { }
 
@@ -71,6 +71,6 @@ export class TramiteService {
   }
 
   listarOficinas(): Observable<Oficina[]> {
-    return this.http.get<Oficina[]>('http://localhost:9090/api/oficinas');
+    return this.http.get<Oficina[]>('/api/oficinas');
   }
 }

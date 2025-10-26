@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-interface AuthUserDto {
+export interface AuthUserDto {
   userName: string;
   password: string;
 }
 
-interface TokenDto {
+export interface TokenDto {
   token: string;
 }
 
@@ -15,19 +15,36 @@ interface TokenDto {
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:9090/auth';
+
+  private baseUrl = '/auth';
 
   constructor(private http: HttpClient) { }
 
-  login(authUser: AuthUserDto): Observable<TokenDto> {
-    return this.http.post<TokenDto>(`${this.baseUrl}/login`, authUser);
+  login(user: AuthUserDto): Observable<TokenDto> {
+    return this.http.post<TokenDto>(`${this.baseUrl}/login`, user);
   }
 
-  validate(token: string): Observable<TokenDto> {
-    return this.http.post<TokenDto>(`${this.baseUrl}/validate?token=${token}`, {});
+  validateToken(token: string): Observable<TokenDto> {
+    return this.http.post<TokenDto>(`${this.baseUrl}/validate`, null, { params: { token } });
   }
 
-  save(authUser: AuthUserDto): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/create`, authUser);
+  createUser(user: AuthUserDto): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create`, user);
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  clearToken() {
+    localStorage.removeItem('token');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 }

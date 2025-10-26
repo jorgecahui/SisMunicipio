@@ -7,9 +7,6 @@ import { dashboardRoutes } from './dashboard-routing-module';
   imports: [
     CommonModule,
     RouterModule.forChild(dashboardRoutes)
-  ],
-  declarations: [
-    // Aquí pon HomeComponent **solo si no es standalone**
   ]
 })
 export class DashboardModule {}

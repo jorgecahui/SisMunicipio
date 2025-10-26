@@ -15,7 +15,7 @@ export interface Persona {
   providedIn: 'root'
 })
 export class PersonaService {
-  private baseUrl = 'http://localhost:9090/api/personas';
+  private baseUrl = '/api/personas';
 
   constructor(private http: HttpClient) {}
 
