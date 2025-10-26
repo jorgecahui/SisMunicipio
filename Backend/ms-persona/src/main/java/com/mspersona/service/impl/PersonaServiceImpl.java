@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,18 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public Persona guardar(Persona persona) {
-        return repository.save(persona);
+        Optional<Persona> existente = repository.findByDni(persona.getDni());
+
+        if (existente.isPresent()) {
+            Persona p = existente.get();
+            p.setNombres(persona.getNombres());
+            p.setApellidos(persona.getApellidos());
+            p.setDireccion(persona.getDireccion());
+            p.setTelefono(persona.getTelefono());
+            return repository.save(p);
+        } else {
+            return repository.save(persona);
+        }
     }
 
     @Override

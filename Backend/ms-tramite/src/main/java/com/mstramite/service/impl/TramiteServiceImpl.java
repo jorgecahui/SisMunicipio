@@ -1,12 +1,8 @@
 package com.mstramite.service.impl;
 
 import com.mstramite.client.*;
-import com.mstramite.dto.DocumentoDTO;
 import com.mstramite.dto.NotificacionDTO;
-import com.mstramite.dto.OficinaDTO;
-import com.mstramite.dto.PersonaDTO;
 import com.mstramite.entity.Tramite;
-import com.mstramite.model.TipoDocumento;
 import com.mstramite.model.TramiteCompletoDTO;
 import com.mstramite.repository.TramiteRepository;
 import com.mstramite.service.TramiteService;
@@ -59,6 +55,12 @@ public class TramiteServiceImpl implements TramiteService {
 
         tramite.setFechaInicio(LocalDateTime.now());
         tramite.setEstado("EN PROCESO");
+
+        if (tramite.getNumeroExpediente() == null || tramite.getNumeroExpediente().isEmpty()) {
+            String numeroExpediente = generarNumeroExpediente();
+            tramite.setNumeroExpediente(numeroExpediente);
+        }
+
         Tramite guardado = repository.save(tramite);
 
         try {
@@ -74,7 +76,13 @@ public class TramiteServiceImpl implements TramiteService {
         } catch (Exception ex) {
             System.out.println("Error al enviar notificación (se continúa igual): " + ex.getMessage());
         }
+
         return guardado;
+    }
+
+    private String generarNumeroExpediente() {
+        long count = repository.count() + 1;
+        return "EXP-" + LocalDateTime.now().getYear() + "-" + count;
     }
 
     @Override

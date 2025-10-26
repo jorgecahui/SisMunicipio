@@ -29,13 +29,11 @@ export class FormTramiteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Traer tipos de documento
     this.tramiteService.listarTiposDocumento().subscribe({
       next: res => this.tiposDocumento = res,
       error: err => console.error('Error al cargar tipos de documento', err)
     });
 
-    // Traer oficinas
     this.tramiteService.listarOficinas().subscribe({
       next: res => this.oficinas = res,
       error: err => console.error('Error al cargar oficinas', err)
@@ -48,7 +46,6 @@ export class FormTramiteComponent implements OnInit {
       return;
     }
 
-    // 1. Crear persona
     this.tramiteService.crearPersona(this.persona).subscribe({
       next: personaRes => {
         if (!personaRes.id) {
@@ -56,7 +53,6 @@ export class FormTramiteComponent implements OnInit {
           return;
         }
 
-        // 2. Crear documento
         this.tramiteService.crearDocumento(this.documento).subscribe({
           next: documentoRes => {
             if (!documentoRes.id) {
@@ -64,12 +60,11 @@ export class FormTramiteComponent implements OnInit {
               return;
             }
 
-            // 3. Crear trámite
             const tramiteData: Tramite = {
               asunto: this.documento.asunto,
               personaId: personaRes.id!,
               oficinaId: this.oficinaId!,
-              documentoId: Number(documentoRes.id!),
+              documentoId: documentoRes.id!
             };
 
             this.tramiteService.crearTramite(tramiteData).subscribe({

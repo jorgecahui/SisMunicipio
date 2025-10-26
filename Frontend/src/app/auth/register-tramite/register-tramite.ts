@@ -61,7 +61,7 @@ export class RegisterTramiteComponent implements OnInit {
               asunto: this.documento.asunto,
               personaId: personaRes.id!,
               oficinaId: this.oficinaId!,
-              documentoId: Number(documentoRes.id!)
+              documentoId: documentoRes.id!
             };
 
             this.tramiteService.crearTramite(tramiteData).subscribe({
