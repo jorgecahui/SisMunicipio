@@ -16,7 +16,7 @@ export interface TokenDto {
 })
 export class AuthService {
 
-  private baseUrl = '/auth';
+  private baseUrl = 'http://localhost:9090/auth';
 
   constructor(private http: HttpClient) { }
 
