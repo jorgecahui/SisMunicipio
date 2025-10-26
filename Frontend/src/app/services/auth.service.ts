@@ -16,20 +16,12 @@ export interface TokenDto {
 })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:9090/auth';
+  private baseUrl = '/auth';
 
   constructor(private http: HttpClient) { }
 
   login(user: AuthUserDto): Observable<TokenDto> {
     return this.http.post<TokenDto>(`${this.baseUrl}/login`, user);
-  }
-
-  validateToken(token: string): Observable<TokenDto> {
-    return this.http.post<TokenDto>(`${this.baseUrl}/validate`, null, { params: { token } });
-  }
-
-  createUser(user: AuthUserDto): Observable<any> {
-    return this.http.post(`${this.baseUrl}/create`, user);
   }
 
   setToken(token: string) {
