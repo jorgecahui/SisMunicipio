@@ -14,5 +14,9 @@ export const appRoutes: Routes = [
     path: 'dashboard', 
     loadComponent: () => import('./dashboard/home/home').then(c => c.HomeComponent)
   },
+  { 
+    path: 'tramite', 
+    loadChildren: () => import('./tramite/tramite-module').then(m => m.TramiteModule)
+  },
   { path: '**', redirectTo: 'login' }
 ];
