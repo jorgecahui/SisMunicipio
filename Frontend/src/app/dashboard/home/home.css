@@ -1,43 +1,78 @@
 .dashboard-container {
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.status-message {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.status-message.error {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.table-container {
+  overflow-x: auto;
 }
 
 .tramites-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .tramites-table th,
 .tramites-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 0.75rem 1rem;
   text-align: left;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .tramites-table th {
-  background-color: #f4f4f4;
-}
-
-.tramites-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 600;
 }
 
 .tramites-table tr:hover {
-  background-color: #eaeaea;
+  background-color: #f1f8ff;
 }
 
-button {
-  padding: 5px 10px;
+.estado {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.loading {
-  color: #007bff;
+.btn-primary:hover {
+  background-color: #2980b9;
 }
 
-.error {
-  color: #d9534f;
-  font-weight: bold;
+.no-data {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 2rem;
 }

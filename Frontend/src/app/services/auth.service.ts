@@ -15,10 +15,9 @@ export interface TokenDto {
   providedIn: 'root'
 })
 export class AuthService {
-
   private baseUrl = '/auth';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(user: AuthUserDto): Observable<TokenDto> {
     return this.http.post<TokenDto>(`${this.baseUrl}/login`, user);

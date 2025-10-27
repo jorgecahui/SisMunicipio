@@ -1,37 +1,43 @@
-<div class="home-container">
-  <h1>Dashboard - Trámites</h1>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Dashboard - Trámites</h1>
+  </header>
 
-  <div *ngIf="loading">Cargando trámites...</div>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <section class="dashboard-status">
+    <div *ngIf="loading" class="status-message">Cargando trámites...</div>
+    <div *ngIf="errorMessage" class="status-message error">{{ errorMessage }}</div>
+  </section>
 
-  <table *ngIf="!loading && tramites.length > 0" class="tramites-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Número Expediente</th>
-        <th>Asunto</th>
-        <th>Estado</th>
-        <th>ID Persona</th>
-        <th>ID Oficina</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let tramite of tramites; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ tramite.numeroExpediente }}</td>
-        <td>{{ tramite.asunto }}</td>
-        <td>{{ tramite.estado }}</td>
-        <td>{{ tramite.personaId }}</td> 
-        <td>{{ tramite.oficinaId }}</td> 
-        <td>
-          <button (click)="verDetalle(tramite.id!)">Ver detalle</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <section *ngIf="!loading && tramites.length > 0" class="table-container">
+    <table class="tramites-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Número Expediente</th>
+          <th>Asunto</th>
+          <th>Estado</th>
+          <th>ID Persona</th>
+          <th>ID Oficina</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of tramites; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ tramite.numeroExpediente }}</td>
+          <td>{{ tramite.asunto }}</td>
+          <td class="estado">{{ tramite.estado }}</td>
+          <td>{{ tramite.personaId }}</td>
+          <td>{{ tramite.oficinaId }}</td>
+          <td>
+            <button class="btn-primary" (click)="verDetalle(tramite.id!)">Ver detalle</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-  <div *ngIf="!loading && tramites.length === 0">
+  <section *ngIf="!loading && tramites.length === 0" class="no-data">
     No hay trámites registrados.
-  </div>
+  </section>
 </div>

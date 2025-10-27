@@ -1,16 +1,25 @@
-<div class="login-container">
-  <h2>Login Administrador</h2>
-  <form (ngSubmit)="login()">
-    <input type="text" [(ngModel)]="userName" name="userName" placeholder="Usuario" required />
-    <input type="password" [(ngModel)]="password" name="password" placeholder="Contraseña" required />
-    <button type="submit">Ingresar</button>
-  </form>
+<div class="login-background">
+  <div class="login-card">
+    <h1>Iniciar Sesión</h1>
+    <p>Ingrese sus credenciales para continuar</p>
 
-  <div class="external-actions">
-    <p>Registrar Trámite (externo):</p>
-    <button (click)="goToRegisterTramite()">Registrar Trámite</button>
+    <form (ngSubmit)="login()">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="userName" name="userName" required />
+        <label>Usuario</label>
+      </div>
 
-    <p>Rastrear Trámite (opcional):</p>
-    <button (click)="goToRastrearTramite()">Rastrear Trámite</button>
+      <div class="input-group">
+        <input type="password" [(ngModel)]="password" name="password" required />
+        <label>Contraseña</label>
+      </div>
+
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <div class="login-actions">
+      <button (click)="goToRegisterTramite()" class="secondary">Registrar Trámite</button>
+      <button (click)="goToRastrearTramite()" class="secondary">Rastrear Trámite</button>
+    </div>
   </div>
 </div>

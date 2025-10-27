@@ -22,11 +22,9 @@ export class FormTramiteComponent implements OnInit {
 
   errorMessage: string = '';
   successMessage: string = '';
+  loading: boolean = false; 
 
-  constructor(
-    private tramiteService: TramiteService,
-    private router: Router
-  ) { }
+  constructor(private tramiteService: TramiteService, private router: Router) { }
 
   ngOnInit(): void {
     this.tramiteService.listarTiposDocumento().subscribe({
@@ -46,18 +44,24 @@ export class FormTramiteComponent implements OnInit {
       return;
     }
 
+    this.loading = true;     
+    this.errorMessage = '';
+    this.successMessage = '';
+
     this.tramiteService.crearPersona(this.persona).subscribe({
       next: personaRes => {
-        if (!personaRes.id) {
-          this.errorMessage = 'Error al crear la persona';
-          return;
+        if (!personaRes.id) { 
+          this.errorMessage = 'Error al crear la persona'; 
+          this.loading = false;
+          return; 
         }
 
         this.tramiteService.crearDocumento(this.documento).subscribe({
           next: documentoRes => {
-            if (!documentoRes.id) {
-              this.errorMessage = 'Error al crear el documento';
-              return;
+            if (!documentoRes.id) { 
+              this.errorMessage = 'Error al crear el documento'; 
+              this.loading = false;
+              return; 
             }
 
             const tramiteData: Tramite = {
@@ -71,24 +75,30 @@ export class FormTramiteComponent implements OnInit {
               next: res => {
                 this.successMessage = 'Trámite registrado correctamente';
                 this.errorMessage = '';
-                this.router.navigate(['/']);
+                this.loading = false;
+
+                this.persona = { nombres: '', apellidos: '', dni: '', direccion: '', telefono: '' };
+                this.documento = { tipo: '', asunto: '', contenido: '', remitente: '', destinatario: '' };
+                this.oficinaId = null;
               },
-              error: err => {
-                this.errorMessage = 'Error al registrar trámite';
-                console.error(err);
+              error: err => { 
+                this.errorMessage = 'Error al registrar trámite'; 
+                console.error(err); 
+                this.loading = false;
               }
             });
-
           },
-          error: err => {
-            this.errorMessage = 'Error al crear el documento';
-            console.error(err);
+          error: err => { 
+            this.errorMessage = 'Error al crear el documento'; 
+            console.error(err); 
+            this.loading = false;
           }
         });
       },
-      error: err => {
-        this.errorMessage = 'Error al crear la persona';
-        console.error(err);
+      error: err => { 
+        this.errorMessage = 'Error al crear la persona'; 
+        console.error(err); 
+        this.loading = false;
       }
     });
   }

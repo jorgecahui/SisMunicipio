@@ -1,37 +1,47 @@
-<div class="detalle-container" *ngIf="!loading">
+<div class="detalle-container">
   <h2>Detalle del Trámite</h2>
 
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="status-message">Cargando trámite...</div>
+  <div *ngIf="errorMessage" class="status-message error">{{ errorMessage }}</div>
 
-  <div *ngIf="tramite">
-    <p><strong>Número Expediente:</strong> {{ tramite.numeroExpediente }}</p>
-    <p><strong>Asunto:</strong> {{ tramite.asunto }}</p>
-    <p><strong>Estado:</strong> {{ tramite.estado }}</p>
-    <p><strong>Fecha Inicio:</strong> {{ tramite.fechaInicio | date:'short' }}</p>
-    <p><strong>Fecha Fin:</strong> {{ tramite.fechaFin ? (tramite.fechaFin | date:'short') : '-' }}</p>
+  <div *ngIf="tramite" class="detalle-card">
 
-    <h3>Persona</h3>
-    <p>{{ tramite.persona?.nombres }} {{ tramite.persona?.apellidos }}</p>
-    <p>DNI: {{ tramite.persona?.dni }}</p>
-    <p>Dirección: {{ tramite.persona?.direccion }}</p>
-    <p>Teléfono: {{ tramite.persona?.telefono }}</p>
+    <div class="detalle-section">
+      <h3>Información General</h3>
+      <p><strong>Número Expediente:</strong> {{ tramite.numeroExpediente }}</p>
+      <p><strong>Asunto:</strong> {{ tramite.asunto }}</p>
+      <p><strong>Estado:</strong> <span class="estado">{{ tramite.estado }}</span></p>
+      <p><strong>Fecha Inicio:</strong> {{ tramite.fechaInicio | date:'short' }}</p>
+      <p><strong>Fecha Fin:</strong> {{ tramite.fechaFin ? (tramite.fechaFin | date:'short') : '-' }}</p>
+    </div>
 
-    <h3>Documento</h3>
-    <p>Tipo: {{ tramite.documento?.tipo }}</p>
-    <p>Asunto: {{ tramite.documento?.asunto }}</p>
-    <p>Contenido: {{ tramite.documento?.contenido }}</p>
-    <p>Remitente: {{ tramite.documento?.remitente }}</p>
-    <p>Destinatario: {{ tramite.documento?.destinatario }}</p>
+    <div class="detalle-section">
+      <h3>Persona</h3>
+      <p><strong>Nombre:</strong> {{ tramite.persona?.nombres }} {{ tramite.persona?.apellidos }}</p>
+      <p><strong>DNI:</strong> {{ tramite.persona?.dni }}</p>
+      <p><strong>Dirección:</strong> {{ tramite.persona?.direccion }}</p>
+      <p><strong>Teléfono:</strong> {{ tramite.persona?.telefono }}</p>
+    </div>
 
-    <h3>Oficina</h3>
-    <p>Código: {{ tramite.oficina?.codigo }}</p>
-    <p>Nombre: {{ tramite.oficina?.nombre }}</p>
-    <p>Ubicación: {{ tramite.oficina?.ubicacion }}</p>
-    <p>Teléfono: {{ tramite.oficina?.telefono }}</p>
-    <p>Responsable: {{ tramite.oficina?.responsable }}</p>
+    <div class="detalle-section">
+      <h3>Documento</h3>
+      <p><strong>Tipo:</strong> {{ tramite.documento?.tipo }}</p>
+      <p><strong>Asunto:</strong> {{ tramite.documento?.asunto }}</p>
+      <p><strong>Contenido:</strong> {{ tramite.documento?.contenido }}</p>
+      <p><strong>Remitente:</strong> {{ tramite.documento?.remitente }}</p>
+      <p><strong>Destinatario:</strong> {{ tramite.documento?.destinatario }}</p>
+    </div>
 
-    <button (click)="volver()">Volver</button>
+    <div class="detalle-section">
+      <h3>Oficina</h3>
+      <p><strong>Código:</strong> {{ tramite.oficina?.codigo }}</p>
+      <p><strong>Nombre:</strong> {{ tramite.oficina?.nombre }}</p>
+      <p><strong>Ubicación:</strong> {{ tramite.oficina?.ubicacion }}</p>
+      <p><strong>Teléfono:</strong> {{ tramite.oficina?.telefono }}</p>
+      <p><strong>Responsable:</strong> {{ tramite.oficina?.responsable }}</p>
+    </div>
+
+    <button class="btn-primary" (click)="volver()">Volver</button>
   </div>
-
-  <div *ngIf="loading" class="loading">Cargando...</div>
 </div>
+

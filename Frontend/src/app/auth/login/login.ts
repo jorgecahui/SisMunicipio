@@ -32,10 +32,10 @@ export class LoginComponent {
   }
 
   goToRegisterTramite() {
-    this.router.navigate(['/login/registrar-tramite']);
+  this.router.navigate(['/tramite/nuevo']);
   }
 
   goToRastrearTramite() {
-    this.router.navigate(['/tramite']);
+  this.router.navigate(['/tramite']); 
   }
 }
