@@ -16,12 +16,12 @@ export interface TokenDto {
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = environment.authUrl;
+  private authUrl = `${environment.apiUrl}/auth`;
 
   constructor(private http: HttpClient) {}
 
   login(user: AuthUserDto): Observable<TokenDto> {
-    return this.http.post<TokenDto>(`${this.baseUrl}/login`, user);
+    return this.http.post<TokenDto>(`${this.authUrl}/login`, user);
   }
 
   setToken(token: string) {

@@ -41,14 +41,15 @@ export interface Tramite {
   providedIn: 'root'
 })
 export class TramiteService {
-  private baseUrl = `${environment.apiUrl}/tramites`;
+  private tramiteUrl = `${environment.apiUrl}/tramites`;
   private personasUrl = `${environment.apiUrl}/personas`;
   private documentosUrl = `${environment.apiUrl}/documentos`;
+  private oficinasUrl = `${environment.apiUrl}/oficinas`;
 
   constructor(private http: HttpClient) { }
 
   crearTramite(tramite: Tramite): Observable<Tramite> {
-    return this.http.post<Tramite>(this.baseUrl, tramite);
+    return this.http.post<Tramite>(this.tramiteUrl, tramite);
   }
 
   crearPersona(persona: Persona): Observable<Persona> {
@@ -60,11 +61,11 @@ export class TramiteService {
   }
 
   listarTramites(): Observable<Tramite[]> {
-    return this.http.get<Tramite[]>(this.baseUrl);
+    return this.http.get<Tramite[]>(this.tramiteUrl);
   }
 
   obtenerTramiteCompleto(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/completo/${id}`);
+    return this.http.get<any>(`${this.tramiteUrl}/completo/${id}`);
   }
 
   listarTiposDocumento(): Observable<string[]> {
@@ -72,6 +73,6 @@ export class TramiteService {
   }
 
   listarOficinas(): Observable<Oficina[]> {
-    return this.http.get<Oficina[]>(`${environment.apiUrl}/oficinas`);
+    return this.http.get<Oficina[]>(this.oficinasUrl);
   }
 }

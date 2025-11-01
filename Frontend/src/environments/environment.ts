@@ -1,10 +1,4 @@
 export const environment = {
   production: false,
-
-  backendIP: '192.168.1.100:9090',
-  apiUrl: '',
-  authUrl: ''
+  apiUrl: 'http://192.168.x.xxx:9090/api'
 };
-
-environment.apiUrl = `http://${environment.backendIP}/api`;
-environment.authUrl = `http://${environment.backendIP}/auth`;
