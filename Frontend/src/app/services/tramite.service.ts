@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Persona {
   id?: number;
@@ -40,9 +41,9 @@ export interface Tramite {
   providedIn: 'root'
 })
 export class TramiteService {
-  private baseUrl = '/api/tramites';
-  private personasUrl = '/api/personas';
-  private documentosUrl = '/api/documentos';
+  private baseUrl = `${environment.apiUrl}/tramites`;
+  private personasUrl = `${environment.apiUrl}/personas`;
+  private documentosUrl = `${environment.apiUrl}/documentos`;
 
   constructor(private http: HttpClient) { }
 
@@ -71,6 +72,6 @@ export class TramiteService {
   }
 
   listarOficinas(): Observable<Oficina[]> {
-    return this.http.get<Oficina[]>('/api/oficinas');
+    return this.http.get<Oficina[]>(`${environment.apiUrl}/oficinas`);
   }
 }
