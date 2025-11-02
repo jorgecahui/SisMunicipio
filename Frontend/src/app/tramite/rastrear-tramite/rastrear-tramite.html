@@ -1,0 +1,22 @@
+<div class="rastrear-container">
+  <h2>Rastrear Trámite</h2>
+
+  <div class="buscador">
+    <input type="text" [(ngModel)]="filtro" placeholder="Ingrese número de expediente">
+    <button (click)="buscarTramite()">Buscar</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Cargando...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="tramite" class="detalle">
+    <h3>{{ tramite.numeroExpediente }} - {{ tramite.asunto }}</h3>
+    <p><strong>Estado:</strong> {{ tramite.estado }}</p>
+
+    <h4>Persona</h4>
+    <p><strong>ID:</strong> {{ tramite.personaId }}</p>
+
+    <h4>Oficina</h4>
+    <p><strong>ID:</strong> {{ tramite.oficinaId }}</p>
+  </div>
+</div>

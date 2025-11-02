@@ -16,8 +16,7 @@ public class Documento {
 
     @Id
     private String id;
-
-    private String tipo;
+    private TipoDocumento tipo;
     private String asunto;
     private String contenido;
     private String remitente;

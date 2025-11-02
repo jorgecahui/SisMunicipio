@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Dashboard - Trámites</h1>
+  </header>
+
+  <section class="dashboard-status">
+    <div *ngIf="loading" class="status-message">Cargando trámites...</div>
+    <div *ngIf="errorMessage" class="status-message error">{{ errorMessage }}</div>
+  </section>
+
+  <section *ngIf="!loading && tramites.length > 0" class="table-container">
+    <table class="tramites-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Número Expediente</th>
+          <th>Asunto</th>
+          <th>Estado</th>
+          <th>ID Persona</th>
+          <th>ID Oficina</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tramite of tramites; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ tramite.numeroExpediente }}</td>
+          <td>{{ tramite.asunto }}</td>
+          <td>
+            <select [(ngModel)]="tramite.estado" (change)="cambiarEstado(tramite)">
+              <option value="EN PROCESO">EN PROCESO</option>
+              <option value="EN REVISIÓN">EN REVISIÓN</option>
+              <option value="FINALIZADO">FINALIZADO</option>
+              <option value="ARCHIVADO">ARCHIVADO</option>
+            </select>
+          </td>
+          <td>{{ tramite.personaId }}</td>
+          <td>{{ tramite.oficinaId }}</td>
+          <td>
+            <button class="btn-primary" (click)="verDetalle(tramite.id!)">Ver detalle</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section *ngIf="!loading && tramites.length === 0" class="no-data">
+    No hay trámites registrados.
+  </section>
+</div>
