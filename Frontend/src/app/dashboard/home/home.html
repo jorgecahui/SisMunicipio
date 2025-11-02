@@ -26,7 +26,14 @@
           <td>{{ i + 1 }}</td>
           <td>{{ tramite.numeroExpediente }}</td>
           <td>{{ tramite.asunto }}</td>
-          <td class="estado">{{ tramite.estado }}</td>
+          <td>
+            <select [(ngModel)]="tramite.estado" (change)="cambiarEstado(tramite)">
+              <option value="EN PROCESO">EN PROCESO</option>
+              <option value="EN REVISIÓN">EN REVISIÓN</option>
+              <option value="FINALIZADO">FINALIZADO</option>
+              <option value="ARCHIVADO">ARCHIVADO</option>
+            </select>
+          </td>
           <td>{{ tramite.personaId }}</td>
           <td>{{ tramite.oficinaId }}</td>
           <td>

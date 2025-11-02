@@ -11,4 +11,5 @@ public interface TramiteService {
     Tramite buscarPorId(Long id);
     void eliminar(Long id);
     TramiteCompletoDTO obtenerTramiteCompleto(Long id);
+    Tramite actualizarEstado(Long id, String nuevoEstado);
 }

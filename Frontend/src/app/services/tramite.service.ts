@@ -75,4 +75,8 @@ export class TramiteService {
   listarOficinas(): Observable<Oficina[]> {
     return this.http.get<Oficina[]>(this.oficinasUrl);
   }
+
+  actualizarEstado(id: number, estado: string): Observable<Tramite> {
+    return this.http.patch<Tramite>(`${this.tramiteUrl}/${id}/estado?estado=${estado}`, {});
+  }
 }

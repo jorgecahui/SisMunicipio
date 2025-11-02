@@ -155,5 +155,17 @@ public class TramiteServiceImpl implements TramiteService {
                 .oficina(oficinaModel)
                 .build();
     }
+    @Override
+    public Tramite actualizarEstado(Long id, String nuevoEstado) {
+        Tramite tramite = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Trámite no encontrado"));
+        tramite.setEstado(nuevoEstado);
+
+        if ("FINALIZADO".equalsIgnoreCase(nuevoEstado)) {
+            tramite.setFechaFin(LocalDateTime.now());
+        }
+
+        return repository.save(tramite);
+    }
 
 }

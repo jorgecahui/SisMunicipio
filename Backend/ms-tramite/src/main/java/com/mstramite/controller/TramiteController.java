@@ -52,4 +52,10 @@ public class TramiteController {
         model.addAttribute("tiposDocumento", tiposDocumento);
         return "formularioTramite";
     }
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Tramite> actualizarEstado(
+            @PathVariable Long id,
+            @RequestParam String estado) {
+        return ResponseEntity.ok(service.actualizarEstado(id, estado));
+    }
 }
