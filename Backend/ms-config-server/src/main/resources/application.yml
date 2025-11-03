@@ -9,7 +9,7 @@ spring:
         git:
           uri: https://github.com/jorgecahui/config-repo.git # ruta del repositorio git
           searchPaths: config-data
-          default-label: funcionalidad
+          default-label: xander
   security:
     user:
       name: root
