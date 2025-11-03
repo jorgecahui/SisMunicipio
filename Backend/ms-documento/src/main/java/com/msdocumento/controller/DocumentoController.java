@@ -1,11 +1,13 @@
 package com.msdocumento.controller;
 
 import com.msdocumento.entity.Documento;
+import com.msdocumento.entity.TipoDocumento;
 import com.msdocumento.service.DocumentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -35,5 +37,13 @@ public class DocumentoController {
     public ResponseEntity<Void> eliminar(@PathVariable String id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/tipos")
+    public ResponseEntity<List<String>> listarTiposDocumento() {
+        List<String> tipos = Arrays.stream(TipoDocumento.values())
+                .map(Enum::name)
+                .toList();
+        return ResponseEntity.ok(tipos);
     }
 }

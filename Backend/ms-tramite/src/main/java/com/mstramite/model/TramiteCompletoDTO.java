@@ -1,6 +1,5 @@
-package com.mstramite.entity;
+package com.mstramite.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,31 +7,19 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "tramites")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Tramite {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TramiteCompletoDTO {
     private Long id;
-
-    @Column(nullable = false)
     private String numeroExpediente;
-
-    @Column(nullable = false)
     private String asunto;
-
     private String estado;
-
     private LocalDateTime fechaInicio;
-
     private LocalDateTime fechaFin;
 
-    private Long personaId;
-    private String documentoId;
-    private Long oficinaId;
+    private PersonaDTO persona;
+    private DocumentoDTO documento;
+    private OficinaDTO oficina;
 }

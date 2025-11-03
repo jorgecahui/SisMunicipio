@@ -1,20 +1,15 @@
-package com.msdocumento.entity;
+package com.mstramite.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "documentos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Documento {
-
-    @Id
+public class DocumentoDTO {
     private String id;
     private TipoDocumento tipo;
     private String asunto;
