@@ -5,6 +5,7 @@ import org.example.mspdf.entity.DocumentoPDF;
 import org.example.mspdf.repository.DocumentoPDFRepository;
 import org.example.mspdf.service.OCRService;
 import org.example.mspdf.service.PDFService;
+import org.example.mspdf.service.TextoExtractorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.example.mspdf.service.DocsService;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/ocr")
@@ -31,7 +34,7 @@ public class OCRController {
     }
 
     @PostMapping("/convertir")
-    public ResponseEntity<String> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
         try {
             OCRService ocrService = new OCRService("D:/AMANECIDA/SisMunicipio-funcionalidad/SisMunicipio/Backend/ms-pdf/tessdata/tessdata1");
             String texto = ocrService.extractTextFromStream(file.getInputStream());
@@ -39,6 +42,10 @@ public class OCRController {
             if (texto == null || texto.isEmpty()) {
                 return ResponseEntity.badRequest().body("No se detectó texto en la imagen.");
             }
+
+            TextoExtractorService extractor = new TextoExtractorService();
+            Map<String, String> campos = extractor.extraerCampos(texto);
+
 
             PDFService pdfService = new PDFService();
             byte[] pdfBytes = pdfService.createPDFBytes(texto);
@@ -48,7 +55,11 @@ public class OCRController {
             doc.setContenido(pdfBytes);
             documentoPDFRepository.save(doc);
 
-            return ResponseEntity.ok("✅ PDF generado y guardado con ID: " + doc.getId());
+            return ResponseEntity.ok(Map.of(
+                    "mensaje", "✅ PDF generado y guardado con ID: " + doc.getId(),
+                    "texto_detectado", texto,
+                    "campos_extraidos", campos
+            ));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body("❌ Error al procesar la imagen: " + e.getMessage());
