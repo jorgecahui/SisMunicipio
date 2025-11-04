@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "ms-documento", url = "http://localhost:9090/api/documentos")
+@FeignClient(name = "ms-documento", path = "/api/documentos")
 public interface DocumentoClient {
 
     @GetMapping("/{id}")
