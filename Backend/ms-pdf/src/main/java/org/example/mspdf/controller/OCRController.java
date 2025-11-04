@@ -1,11 +1,10 @@
 package org.example.mspdf.controller;
 
 import lombok.Value;
+import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
 import org.example.mspdf.repository.DocumentoPDFRepository;
-import org.example.mspdf.service.OCRService;
-import org.example.mspdf.service.PDFService;
-import org.example.mspdf.service.TextoExtractorService;
+import org.example.mspdf.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.example.mspdf.service.DocsService;
+
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public class OCRController {
     @Autowired
     private DocumentoPDFRepository documentoPDFRepository;
-
+    @Autowired
+    private CamposExtraidosService camposExtraidosService;
     @Autowired
     private DocsService docsService ;
 
@@ -43,7 +43,7 @@ public class OCRController {
                 return ResponseEntity.badRequest().body("No se detectó texto en la imagen.");
             }
 
-            TextoExtractorService extractor = new TextoExtractorService();
+            TextoExtractorService extractor = new TextoExtractorService(camposExtraidosService);
             Map<String, String> campos = extractor.extraerCampos(texto);
 
 
@@ -54,6 +54,18 @@ public class OCRController {
             doc.setNombre(file.getOriginalFilename().replaceAll("\\..*$", ".pdf"));
             doc.setContenido(pdfBytes);
             documentoPDFRepository.save(doc);
+
+            CamposExtraidos camposGuardados = new CamposExtraidos();
+            camposGuardados.setNombre(campos.get("nombre"));
+            camposGuardados.setDni(campos.get("dni"));
+            camposGuardados.setCodigo(campos.get("codigo"));
+            camposGuardados.setAsunto(campos.get("asunto"));
+            camposGuardados.setIdentificador(campos.get("id"));
+            camposGuardados.setNombreDocumento(doc.getNombre());
+            camposGuardados.setDocumentoPDF(doc);
+
+            CamposExtraidos entidadGuardada = camposExtraidosService.guardarEntidad(camposGuardados);
+
 
             return ResponseEntity.ok(Map.of(
                     "mensaje", "✅ PDF generado y guardado con ID: " + doc.getId(),
