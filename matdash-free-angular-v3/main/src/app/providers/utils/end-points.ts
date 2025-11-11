@@ -1,4 +1,4 @@
 export const END_POINTS = {
-  category: 'categoria',
+  personas: '/personas',
   login: '/auth/login',
 };

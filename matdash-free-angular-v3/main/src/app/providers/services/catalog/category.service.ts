@@ -5,12 +5,9 @@ import {END_POINTS} from '../../utils/end-points';
 import {EntityDataService} from "../../utils/entity-data";
 
 
-@Injectable({providedIn: 'root'})
-export class CategoryService extends EntityDataService<any[]> {
-
+@Injectable({ providedIn: 'root' })
+export class PersonaService extends EntityDataService<any[]> {
   constructor(protected override httpClient: HttpClient) {
-    super(httpClient, END_POINTS.category);
+    super(httpClient, END_POINTS.personas);
   }
-
-
 }
