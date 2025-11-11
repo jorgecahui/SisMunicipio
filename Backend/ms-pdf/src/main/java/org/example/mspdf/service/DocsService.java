@@ -10,19 +10,14 @@ import java.util.Optional;
 public interface DocsService {
     DocumentoPDF guardarDocumento(MultipartFile archivoImagen);
 
-    // Obtener documento por ID
     Optional<DocumentoPDF> obtenerDocumentoPorId(Long id);
 
-    // Obtener todos los documentos
     List<DocumentoPDF> obtenerTodosLosDocumentos();
 
-    // Obtener contenido del PDF como byte[]
     byte[] obtenerContenidoPDF(Long id);
 
-    // Eliminar documento
     void eliminarDocumento(Long id);
 
-    // Convertir imagen a PDF
     DocumentoPDF convertirImagenAPDF(MultipartFile archivoImagen);
 
 }

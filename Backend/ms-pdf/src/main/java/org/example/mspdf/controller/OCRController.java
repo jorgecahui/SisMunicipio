@@ -68,13 +68,13 @@ public class OCRController {
 
 
             return ResponseEntity.ok(Map.of(
-                    "mensaje", "✅ PDF generado y guardado con ID: " + doc.getId(),
+                    "mensaje", "PDF generado y guardado con ID: " + doc.getId(),
                     "texto_detectado", texto,
                     "campos_extraidos", campos
             ));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("❌ Error al procesar la imagen: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al procesar la imagen: " + e.getMessage());
         }
     }
 }
