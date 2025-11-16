@@ -5,6 +5,7 @@ import {
   OnChanges,
   Output,
   EventEmitter,
+  CUSTOM_ELEMENTS_SCHEMA
 } from '@angular/core';
 import { NavItem } from './nav-item';
 import { Router } from '@angular/router';
@@ -20,6 +21,7 @@ import { CommonModule } from '@angular/common';
   imports: [TranslateModule, TablerIconsModule, MaterialModule, CommonModule],
   templateUrl: './nav-item.component.html',
   styleUrls: [],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppNavItemComponent implements OnChanges {
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();

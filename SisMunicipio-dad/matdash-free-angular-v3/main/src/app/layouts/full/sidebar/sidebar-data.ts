@@ -8,7 +8,7 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Dashboard',
-    iconName: 'solar:widget-add-line-duotone',
+    iconName: 'mdi:view-dashboard',
     route: '/dashboard',
   },
   {
@@ -17,27 +17,27 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Lists',
-    iconName: 'solar:bookmark-square-minimalistic-line-duotone',
+    iconName: 'mdi:format-list-bulleted',
     route: '/ui-components/lists',
   },
   {
     displayName: 'Menu',
-    iconName: 'solar:file-text-line-duotone',
+    iconName: 'mdi:menu',
     route: '/ui-components/menu',
   },
   {
     displayName: 'Forms',
-    iconName: 'solar:file-text-line-duotone',
+    iconName: 'mdi:form-select',
     route: '/ui-components/forms',
   },
   {
     displayName: 'Documentos',
-    iconName: 'solar:file-text-line-duotone',
+    iconName: 'mdi:file-document',
     route: '/ui-components/document',
   },
   {
     displayName: 'Tables',
-    iconName: 'solar:tablet-line-duotone',
+    iconName: 'mdi:table',
     route: '/ui-components/tables',
   },
   {
@@ -46,42 +46,32 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Login',
-    iconName: 'solar:lock-keyhole-minimalistic-line-duotone',
+    iconName: 'mdi:login',
     route: '/authentication',
     children: [
       {
         displayName: 'Login',
          subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
+        iconName: 'mdi:login',
         route: '/authentication/login',
-      },
-      {
-        displayName: 'Side Login',
-         subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
-        route: 'https://matdash-angular-main.netlify.app/authentication/boxed-login',
-        external: true,
-        chip: true,
-        chipClass: 'bg-light-secondary text-secondary',
-        chipContent: 'PRO',
       },
     ],
   },
   {
     displayName: 'Register',
-    iconName: 'solar:user-plus-rounded-line-duotone',
+    iconName: 'person_add',
     route: '/authentication',
     children: [
       {
         displayName: 'Register',
          subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
+        iconName: 'arrow_right',
         route: '/authentication/register',
       },
       {
         displayName: 'Side Register',
          subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
+        iconName: 'arrow_right',
         route: 'https://matdash-angular-main.netlify.app/authentication/boxed-register',
         external: true,
         chip: true,
@@ -92,14 +82,14 @@ export const navItems: NavItem[] = [
   },
   {
     displayName: 'Forgot Pwd',
-    iconName: 'solar:password-outline',
+    iconName: 'lock_reset',
     route: '/authentication',
     chip: true,
     children: [
       {
         displayName: 'Side Forgot Pwd',
          subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
+        iconName: 'arrow_right',
         route: 'https://matdash-angular-main.netlify.app/authentication/side-forgot-pwd',
         external: true,
         chip: true,
@@ -109,7 +99,7 @@ export const navItems: NavItem[] = [
       {
         displayName: 'Boxed Forgot Pwd',
          subItemIcon: true,
-        iconName: 'solar:round-alt-arrow-right-line-duotone',
+        iconName: 'arrow_right',
         route: 'https://matdash-angular-main.netlify.app/authentication/boxed-forgot-pwd',
         external: true,
         chip: true,

@@ -131,3 +131,51 @@
 .side-img {
   margin-right: -30px;
 }
+/* ========== ✅ AGREGAR ESTOS ESTILOS NUEVOS ========== */
+
+.sidebar-list.mdc-list {
+  .menu-list-item {
+    .mdc-list-item__start {
+      .mat-mdc-list-item-icon {
+        font-size: 20px !important;        /* ✅ TAMAÑO ICONOS PRINCIPALES */
+        width: 20px !important;
+        height: 20px !important;
+        margin-right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--mat-sys-on-background);
+      }
+    }
+
+    &.activeMenu {
+      .mdc-list-item__start {
+        .mat-mdc-list-item-icon {
+          color: $white !important;        /* ✅ COLOR ICONOS ACTIVOS */
+        }
+      }
+    }
+
+    &:hover {
+      .mdc-list-item__start {
+        .mat-mdc-list-item-icon {
+          transform: scale(1.1);           /* ✅ EFECTO HOVER */
+          transition: transform 0.2s ease-in-out;
+          color: var(--mat-sys-primary);
+        }
+      }
+    }
+  }
+
+  /* Para sub-items */
+  app-nav-item .menu-list-item {
+    .mdc-list-item__start {
+      .mat-mdc-list-item-icon {
+        font-size: 18px !important;        /* ✅ TAMAÑO ICONOS SUB-ITEMS */
+        width: 18px !important;
+        height: 18px !important;
+        margin-right: 10px;
+      }
+    }
+  }
+}
