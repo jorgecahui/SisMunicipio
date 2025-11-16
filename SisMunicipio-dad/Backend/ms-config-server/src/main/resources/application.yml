@@ -9,7 +9,7 @@ spring:
         git:
           uri: https://github.com/jorgecahui/SisMunicipio.git # ruta del repositorio git
           searchPaths: config-data
-          default-label: dad
+          default-label: lunes17
   security:
     user:
       name: root
