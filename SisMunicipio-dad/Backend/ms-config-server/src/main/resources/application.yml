@@ -7,7 +7,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/jorgecahui/SisMunicipio.git # ruta del repositorio git
+          uri: https://github.com/jorgecahui/SisMunicipio.git
           searchPaths: config-data
           default-label: lunes17
   security:
