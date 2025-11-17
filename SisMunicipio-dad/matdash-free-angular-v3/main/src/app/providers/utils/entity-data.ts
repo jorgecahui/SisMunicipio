@@ -13,7 +13,9 @@ export class EntityDataService<T> {
     protected listarByIdUrl?: string,
 
     // ENDPOINT opcional para eliminar (ej: /api/ocr/delete)
-    protected eliminarUrl?: string
+    protected eliminarUrl?: string,
+
+    protected editarUrl?:string,
   ) {}
 
   /** GET ALL */
@@ -38,7 +40,11 @@ export class EntityDataService<T> {
 
   /** PUT */
   public update$(id: string, entity: any): Observable<T> {
-    return this.httpClient.put<T>(`${this.baseUrl}/${id}`, entity);
+    const url = this.editarUrl
+      ? `${this.editarUrl}/${id}`
+      : `${this.baseUrl}/${id}`;
+
+    return this.httpClient.put<T>(url, entity);
   }
 
   /** DELETE */

@@ -61,6 +61,14 @@ public class OCRController {
 
         return resultado;
     }
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<CamposExtraidos> obtenerPorId(@PathVariable Long id) {
+        CamposExtraidos entidad = camposExtraidosService.findById(id).orElse(null);
+        if (entidad == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(entidad);
+    }
     @PostMapping("/convertir")
     public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
         try {

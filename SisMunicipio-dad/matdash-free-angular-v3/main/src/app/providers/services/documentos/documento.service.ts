@@ -21,7 +21,9 @@ export class DocumentoService extends EntityDataService<any> {
       `${environment.url}${END_POINTS.camposextraidos_listar}`,
 
       // DELETE
-      `${environment.url}${END_POINTS.camposextraidos_eliminar}`
+      `${environment.url}${END_POINTS.camposextraidos_eliminar}`,
+
+        `${environment.url}${END_POINTS.camposestraidos_editar}`,
     );
 
   }

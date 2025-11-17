@@ -57,26 +57,6 @@ export class CamposExtraidosComponent implements OnInit {
     });
   }
 
-  eliminar(id: number): void {
-
-    if (!confirm('¿Seguro que deseas eliminar este documento?')) {
-      this.router.navigate(['/ui-components/document']);
-      return;
-    }
-
-    this.camposService.delete$(id).subscribe({
-      next: () => {
-        alert('Documento eliminado correctamente.');
-        this.router.navigate(['/ui-components/document']);
-      },
-      error: (error) => {
-        console.error('Error eliminando documento:', error);
-        alert('No se pudo eliminar el documento.');
-        this.router.navigate(['/ui-components/document']);
-      }
-    });
-
-  }
 
   editar(item: CamposExtraidos) {
     this.router.navigate(['/ui-components/document/edit', item.id]);   // <<--- NAVEGACIÓN FINAL

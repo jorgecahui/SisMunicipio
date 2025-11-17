@@ -138,7 +138,6 @@ export class EditarDocumentoComponent implements OnInit {
         usuarioModificador: 'usuario_actual'
       };
 
-      // Simular guardado - reemplaza con tu servicio real
       this.documentoService.update$(String(this.documento.id), datosEditados).subscribe({
         next: () => {
           this.guardando = false;
@@ -150,11 +149,10 @@ export class EditarDocumentoComponent implements OnInit {
         }
       });
     } else {
-      this.marcarControlesComoSucios(); // 🔥 Ahora este método existe
+      this.marcarControlesComoSucios();
     }
   }
 
-  // 🔥 CORRECCIÓN: Definir el método que faltaba
   private marcarControlesComoSucios(): void {
     Object.keys(this.edicionForm.controls).forEach(key => {
       const control = this.edicionForm.get(key);
