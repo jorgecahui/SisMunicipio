@@ -1,0 +1,46 @@
+<div class="detalle-container">
+  <h2>Detalle del Trámite</h2>
+
+  <div *ngIf="loading" class="status-message">Cargando trámite...</div>
+  <div *ngIf="errorMessage" class="status-message error">{{ errorMessage }}</div>
+
+  <div *ngIf="tramite" class="detalle-card">
+
+    <div class="detalle-section">
+      <h3>Información General</h3>
+      <p><strong>Número Expediente:</strong> {{ tramite.numeroExpediente }}</p>
+      <p><strong>Asunto:</strong> {{ tramite.asunto }}</p>
+      <p><strong>Estado:</strong> <span class="estado">{{ tramite.estado }}</span></p>
+      <p><strong>Fecha Inicio:</strong> {{ tramite.fechaInicio | date:'short' }}</p>
+      <p><strong>Fecha Fin:</strong> {{ tramite.fechaFin ? (tramite.fechaFin | date:'short') : '-' }}</p>
+    </div>
+
+    <div class="detalle-section">
+      <h3>Persona</h3>
+      <p><strong>Nombre:</strong> {{ tramite.persona?.nombres }} {{ tramite.persona?.apellidos }}</p>
+      <p><strong>DNI:</strong> {{ tramite.persona?.dni }}</p>
+      <p><strong>Dirección:</strong> {{ tramite.persona?.direccion }}</p>
+      <p><strong>Teléfono:</strong> {{ tramite.persona?.telefono }}</p>
+    </div>
+
+    <div class="detalle-section">
+      <h3>Documento</h3>
+      <p><strong>Tipo:</strong> {{ tramite.documento?.tipo }}</p>
+      <p><strong>Asunto:</strong> {{ tramite.documento?.asunto }}</p>
+      <p><strong>Contenido:</strong> {{ tramite.documento?.contenido }}</p>
+      <p><strong>Remitente:</strong> {{ tramite.documento?.remitente }}</p>
+      <p><strong>Destinatario:</strong> {{ tramite.documento?.destinatario }}</p>
+    </div>
+
+    <div class="detalle-section">
+      <h3>Oficina</h3>
+      <p><strong>Código:</strong> {{ tramite.oficina?.codigo }}</p>
+      <p><strong>Nombre:</strong> {{ tramite.oficina?.nombre }}</p>
+      <p><strong>Ubicación:</strong> {{ tramite.oficina?.ubicacion }}</p>
+      <p><strong>Teléfono:</strong> {{ tramite.oficina?.telefono }}</p>
+      <p><strong>Responsable:</strong> {{ tramite.oficina?.responsable }}</p>
+    </div>
+
+    <button class="btn-primary" (click)="volver()">Volver</button>
+  </div>
+</div>
