@@ -30,7 +30,7 @@ public class TramiteController {
         return tramite != null ? ResponseEntity.ok(tramite) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @PostMapping("/creartra")
     public ResponseEntity<Tramite> crear(@RequestBody Tramite tramite) {
         return ResponseEntity.ok(service.guardar(tramite));
     }

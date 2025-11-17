@@ -1,0 +1,22 @@
+export const END_POINTS = {
+  personas: '/personas',
+  login: '/auth/login',
+  camposextraidos_listar: '/ocr/listar',
+  camposextraidos_eliminar: '/ocr/eliminar',
+  camposestraidos_editar: '/ocr/actualizar',
+  camposetraidos_crear: '/ocr/convertir',
+  persons_id: '/personas/id',
+  //persons_put: '/personas/id',
+  persons_post: '/personas/id',
+  persons_delet: '/personas/eliminar/id',
+
+  tramites_listar: '/api/tramites',
+  tramite_id: '/api/tramites',
+  tramite_crear: '/api/tramites/creartra',
+  tramite_eliminar: '/api/tramites',
+  tramite_completo: '/api/tramites/completo',
+  tramite_tipos_documento: '/api/tramites/crear',
+  tramite_actualizar_estado: '/api/tramites',
+  documento_listar: '/api/tramites',
+
+};

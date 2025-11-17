@@ -72,43 +72,55 @@ public class OCRController {
     @PostMapping("/convertir")
     public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
         try {
-            OCRService ocrService = new OCRService("D:/AMANECIDA/SisMunicipio-funcionalidad/SisMunicipio/Backend/ms-pdf/tessdata/tessdata1");
+            // OCR
+            OCRService ocrService = new OCRService(
+                    "D:/AMANECIDA/SisMunicipio-funcionalidad/SisMunicipio/Backend/ms-pdf/tessdata/tessdata1"
+            );
+
             String texto = ocrService.extractTextFromStream(file.getInputStream());
 
             if (texto == null || texto.isEmpty()) {
                 return ResponseEntity.badRequest().body("No se detectó texto en la imagen.");
             }
 
+            // Extraer campos desde texto
             TextoExtractorService extractor = new TextoExtractorService(camposExtraidosService);
             Map<String, String> campos = extractor.extraerCampos(texto);
 
-
+            // Crear PDF
             PDFService pdfService = new PDFService();
             byte[] pdfBytes = pdfService.createPDFBytes(texto);
 
-            DocumentoPDF doc = new DocumentoPDF();
-            doc.setNombre(file.getOriginalFilename().replaceAll("\\..*$", ".pdf"));
-            doc.setContenido(pdfBytes);
-            documentoPDFRepository.save(doc);
+            // Guardar el PDF UNA SOLA VEZ
+            DocumentoPDF documentoPDF = new DocumentoPDF();
+            documentoPDF.setNombre(file.getOriginalFilename().replaceAll("\\..*$", ".pdf"));
+            documentoPDF.setContenido(pdfBytes);
+            documentoPDF = documentoPDFRepository.save(documentoPDF);
 
-            CamposExtraidos camposGuardados = new CamposExtraidos();
-            camposGuardados.setNombre(campos.get("nombre"));
-            camposGuardados.setDni(campos.get("dni"));
-            camposGuardados.setCodigo(campos.get("codigo"));
-            camposGuardados.setAsunto(campos.get("asunto"));
-            camposGuardados.setIdentificador(campos.get("id"));
-            camposGuardados.setNombreDocumento(doc.getNombre());
-            camposGuardados.setDocumentoPDF(doc);
+            // Guardar los campos extraídos
+            CamposExtraidos camposEnt = new CamposExtraidos();
+            camposEnt.setNombre(campos.get("nombre"));
+            camposEnt.setDni(campos.get("dni"));
+            camposEnt.setCodigo(campos.get("codigo"));
+            camposEnt.setAsunto(campos.get("asunto"));
+            camposEnt.setIdentificador(campos.get("id"));
 
-            CamposExtraidos entidadGuardada = camposExtraidosService.guardarEntidad(camposGuardados);
+            camposEnt.setNombreDocumento(documentoPDF.getNombre());
+            camposEnt.setDocumentoPDF(documentoPDF);
+
+            CamposExtraidos entidadGuardada = camposExtraidosService.guardarEntidad(camposEnt);
+
             return ResponseEntity.ok(Map.of(
-                    "mensaje", "PDF generado y guardado con ID: " + doc.getId(),
-                    "texto_detectado", texto,
+                    "mensaje", "PDF generado y guardado",
+                    "id_documento", documentoPDF.getId(),
+                    "id_campos", entidadGuardada.getId(),
                     "campos_extraidos", campos
             ));
+
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error al procesar la imagen: " + e.getMessage());
+            return ResponseEntity.status(500)
+                    .body("Error al procesar la imagen: " + e.getMessage());
         }
     }
     // Actualizar

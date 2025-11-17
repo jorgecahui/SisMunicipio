@@ -31,9 +31,29 @@ public class PersonaController {
         return ResponseEntity.ok(service.guardar(persona));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
+
+        Persona existente = service.buscarPorId(id);
+
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Actualizar campos
+        existente.setNombres(persona.getNombres());
+        existente.setApellidos(persona.getApellidos());
+        existente.setDni(persona.getDni());
+        existente.setDireccion(persona.getDireccion());
+        existente.setTelefono(persona.getTelefono());
+
+        Persona actualizado = service.guardar(existente);
+
+        return ResponseEntity.ok(actualizado);
     }
 }

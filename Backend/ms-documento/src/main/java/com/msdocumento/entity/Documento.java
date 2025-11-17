@@ -1,17 +1,18 @@
 package com.msdocumento.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;         // <-- ESTA ES LA CORRECTA PARA JPA
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import lombok.*;
 
-@Document(collection = "documentos")
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Documento {
 
     @Id
