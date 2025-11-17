@@ -1,3 +1,5 @@
+import {DocumentoPDF} from "./documentopdf";
+
 export interface CamposExtraidos {
   id?: number;
   nombre?: string;

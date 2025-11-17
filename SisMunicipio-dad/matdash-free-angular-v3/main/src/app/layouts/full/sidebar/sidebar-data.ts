@@ -68,16 +68,6 @@ export const navItems: NavItem[] = [
         iconName: 'arrow_right',
         route: '/authentication/register',
       },
-      {
-        displayName: 'Side Register',
-         subItemIcon: true,
-        iconName: 'arrow_right',
-        route: 'https://matdash-angular-main.netlify.app/authentication/boxed-register',
-        external: true,
-        chip: true,
-        chipClass: 'bg-light-secondary text-secondary',
-        chipContent: 'PRO',
-      },
     ],
   },
   {

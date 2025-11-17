@@ -6,7 +6,7 @@ import { AppListsComponent } from './lists/lists.component';
 import { AppMenuComponent } from './menu/menu.component';
 import { AppFormsComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
-import {AppdocumentComponent} from "./document/document.component";
+import {CamposExtraidosComponent} from "./document/document.component";
 
 export const UiComponentsRoutes: Routes = [
   {
@@ -30,7 +30,7 @@ export const UiComponentsRoutes: Routes = [
       },
       {
         path: 'document',
-        component: AppdocumentComponent
+        component: CamposExtraidosComponent
       },
     ],
   },
