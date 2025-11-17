@@ -31,6 +31,7 @@ public class Tramite {
     private LocalDateTime fechaInicio;
 
     private LocalDateTime fechaFin;
+    
 
     private Long personaId;
     private String documentoId;
