@@ -6,9 +6,16 @@ spring:
   application:
     name: ms-documento
 
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/ms_documento
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ms_documento
+    username: postgres
+    password: 1234567
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 springdoc:
   api-docs:
@@ -21,7 +28,7 @@ eureka:
   client:
     serviceUrl:
       #defaultZone: http://localhost:8090/eureka
-      defaultZone: ${EUREKA_URI:http://localhost:8090/eureka}
+      defaultZone: ${EUREKA_URI:http://localhost:8095/eureka}
   instance:
     #hostname: localhost
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
