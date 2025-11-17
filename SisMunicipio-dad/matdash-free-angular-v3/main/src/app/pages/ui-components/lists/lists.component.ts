@@ -1,48 +1,43 @@
-import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import {MatIconModule} from '@angular/material/icon';
-import {DatePipe} from '@angular/common';
-import { MaterialModule } from 'src/app/material.module';
+import { Component, OnInit } from '@angular/core';
 
-
-export interface Section {
-  name: string;
-  updated: Date;
-}
+import {MatDivider, MatList, MatListItem} from "@angular/material/list";
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
+import {CommonModule, DatePipe} from "@angular/common";
+import {TramiteService} from "../../../providers/services/tramite/tramite.service";
 
 @Component({
-  selector: 'app-lists',
-  imports: [MatListModule, MatCardModule, DatePipe,MatIconModule, MaterialModule ],
+  selector: 'app-tramite-list',
+  standalone: true,
   templateUrl: './lists.component.html',
+  imports: [
+    CommonModule,
+    MatListItem,
+    MatCardContent,
+    MatList,
+    MatDivider,
+    MatCardTitle,
+    DatePipe,
+    MatCardHeader,
+    MatCard
+  ]
 })
-export class AppListsComponent {
-  constructor() {}
+export class TramiteListComponent implements OnInit {
+  tramites: any[] = [];
 
-  typesOfShoes: string[] = ['Loafers', 'Sneakers'];
+  constructor(private tramiteService: TramiteService, private datePipe: DatePipe) {}
 
-  folders: Section[] = [
-    {
-      name: 'Photos',
-      updated: new Date('1/1/25'),
-    },
-    {
-      name: 'Recipes',
-      updated: new Date('1/17/25'),
-    },
-    {
-      name: 'Work',
-      updated: new Date('1/28/25'),
-    },
-  ];
-  notes: Section[] = [
-    {
-      name: 'Vacation Itinerary',
-      updated: new Date('2/20/25'),
-    },
-    {
-      name: 'Kitchen Remodel',
-      updated: new Date('1/18/25'),
-    },
-  ];
+  ngOnInit(): void {
+    this.cargarTramites();
+  }
+
+  cargarTramites() {
+    this.tramiteService.getAll$().subscribe({
+      next: data => this.tramites = data,
+      error: err => console.error('Error al cargar trámites', err)
+    });
+  }
+
+  formatDate(fecha: string | undefined): string {
+    return fecha ? this.datePipe.transform(fecha, 'short') || '' : '';
+  }
 }

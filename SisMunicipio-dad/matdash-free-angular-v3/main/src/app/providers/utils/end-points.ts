@@ -16,6 +16,7 @@ export const END_POINTS = {
   tramite_eliminar: '/api/tramites',
   tramite_completo: '/api/tramites/completo',
   tramite_tipos_documento: '/api/tramites/crear',
-  tramite_actualizar_estado: '/api/tramites'
+  tramite_actualizar_estado: '/api/tramites',
+  documento_listar: '/api/tramites',
 
 };

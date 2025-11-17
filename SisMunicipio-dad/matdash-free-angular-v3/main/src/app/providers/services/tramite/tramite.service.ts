@@ -5,7 +5,7 @@ import {environment} from "../../../../environments/environment";
 import {END_POINTS} from "../../utils/end-points";
 
 @Injectable({ providedIn: 'root' })
-export class PersonaService extends EntityDataService<any> {
+export class TramiteService extends EntityDataService<any> {
   constructor(http: HttpClient) {
 
     super(
@@ -25,6 +25,10 @@ export class PersonaService extends EntityDataService<any> {
 
 
     );
+
+  }
+
+  listar() {
 
   }
 }

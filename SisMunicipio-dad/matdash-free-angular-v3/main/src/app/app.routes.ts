@@ -5,13 +5,14 @@ import { FullComponent } from './layouts/full/full.component';
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'authentication/login',
+    pathMatch: 'full',
+  },
+
+  {
+    path: '',
     component: FullComponent,
     children: [
-      {
-        path: '',
-        redirectTo: '/authentication/login',
-        pathMatch: 'full',
-      },
       {
         path: 'dashboard',
         loadChildren: () =>
@@ -26,6 +27,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '',
     component: BlankComponent,
@@ -39,6 +41,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '**',
     redirectTo: 'authentication/error',

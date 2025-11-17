@@ -10,11 +10,17 @@ import {MatOption, MatOptionModule} from '@angular/material/core';
 import {MatDatepickerInput, MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
+import {PersonaService} from "../../../providers/services/persona/persona.service";
+import {DocumentoService} from "../../../providers/services/documentos/documento.service";
+import {TramiteService} from "../../../providers/services/tramite/tramite.service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-tramite-form',
   templateUrl: './forms.component.html',
+  standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -29,15 +35,22 @@ import { MatButtonModule } from '@angular/material/button';
 export class TramiteFormComponent implements OnInit {
   tramiteForm!: FormGroup;
 
-  // Datos para selects
-  estados = ['Pendiente', 'En Proceso', 'Finalizado'];
-  personas = [{ id: 1, nombre: 'Juan Perez' }, { id: 2, nombre: 'Maria Lopez' }];
-  documentos = [{ id: 'doc1', titulo: 'Oficio 001' }, { id: 'doc2', titulo: 'Acta 002' }];
-  oficinas = [{ id: 1, nombre: 'Registro Civil' }, { id: 2, nombre: 'Tesorería' }];
+  personas: any[] = [];
+  documentos: any[] = [];
+  oficinas: any[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  estados = ['Pendiente', 'En Proceso', 'Finalizado'];
+
+  constructor(
+    private fb: FormBuilder,
+    private personaService: PersonaService,
+    private documentoService: DocumentoService,
+    //private oficinaService: OficinaService,
+    private tramiteService: TramiteService
+  ) {}
 
   ngOnInit(): void {
+    // Inicializa formulario
     this.tramiteForm = this.fb.group({
       numeroExpediente: ['', Validators.required],
       asunto: ['', Validators.required],
@@ -48,14 +61,20 @@ export class TramiteFormComponent implements OnInit {
       documentoId: ['', Validators.required],
       oficinaId: ['', Validators.required],
     });
+
+    // Cargar datos desde microservicios
+    this.personaService.getAll$().subscribe(data => this.personas = data);
+    this.documentoService.getAll$().subscribe(data => this.documentos = data);
+    //this.oficinaService.getAll$().subscribe(data => this.oficinas = data);
   }
 
   guardar() {
     if (this.tramiteForm.valid) {
-      console.log('Formulario válido', this.tramiteForm.value);
-      // Aquí llamas tu servicio para guardar en backend
+      this.tramiteService.add$(this.tramiteForm.value).subscribe({
+        next: res => alert('Trámite creado correctamente'),
+        error: err => console.error('Error al guardar trámite', err)
+      });
     } else {
-      console.log('Formulario inválido');
       this.tramiteForm.markAllAsTouched();
     }
   }
