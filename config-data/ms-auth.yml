@@ -8,9 +8,9 @@ spring:
     show-sql: true
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ms_auth2
+    url: jdbc:mysql://localhost:3306/ms_auth
     username: root
-    password: 1234567
+    password: 12345
 
 eureka:
   client:
