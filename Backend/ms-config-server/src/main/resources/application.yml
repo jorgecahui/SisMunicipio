@@ -8,8 +8,8 @@ spring:
       server:
         git:
           uri: https://github.com/jorgecahui/SisMunicipio.git
-          searchPaths: SisMunicipio-dad/config-data
-          default-label: lunes17
+          searchPaths: config-data
+          default-label: main
   security:
     user:
       name: root
