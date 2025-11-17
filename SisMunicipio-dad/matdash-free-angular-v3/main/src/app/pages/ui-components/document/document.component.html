@@ -62,12 +62,18 @@
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let item">
         <button mat-icon-button color="primary" [routerLink]="['/ui-components/document/edit', item.id]">
-          <mat-icon>edit</mat-icon>
+          <iconify-icon icon="solar:pen-bold"></iconify-icon>
         </button>
 
         <button mat-icon-button color="warn" [routerLink]="['/ui-components/document/delete', item.id]">
-          <mat-icon>eliminar</mat-icon>
+          <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
         </button>
+
+        <button mat-icon-button color="primary" routerLink="/ui-components/document/crear">
+          <iconify-icon icon="mdi:plus"></iconify-icon>
+        </button>
+
+
       </td>
     </ng-container>
 

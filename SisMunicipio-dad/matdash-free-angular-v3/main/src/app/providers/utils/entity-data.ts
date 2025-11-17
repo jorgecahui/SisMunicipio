@@ -15,6 +15,8 @@ export class EntityDataService<T> {
     // ENDPOINT opcional para eliminar (ej: /api/ocr/delete)
     protected eliminarUrl?: string,
 
+    protected crearUrl?: any,
+
     protected editarUrl?:string,
   ) {}
 
@@ -35,7 +37,10 @@ export class EntityDataService<T> {
 
   /** POST */
   public add$(entity: any): Observable<T> {
-    return this.httpClient.post<T>(`${this.baseUrl}`, entity);
+    // Usa siempre el endpoint DE CREACIÓN si existe
+    const url = this.crearUrl ? this.crearUrl : this.baseUrl;
+
+    return this.httpClient.post<T>(url, entity);
   }
 
   /** PUT */

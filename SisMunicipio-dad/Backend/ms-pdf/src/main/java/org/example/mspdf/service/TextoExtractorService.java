@@ -26,7 +26,7 @@ public class TextoExtractorService {
         datos.put("codigo", buscarCampo(texto, "(?i)código[:\\s]+([A-Za-z0-9-]+)"));
         datos.put("asunto", buscarCampo(texto, "(?i)asunto[:\\s]+(.+?)(?=\\s+[A-ZÁÉÍÓÚ]|$)"));
 
-        camposExtraidosService.guardarCampos(datos);
+        
 
         return datos;
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +14,7 @@ import { DocumentoService } from '../../../providers/services/documentos/documen
 @Component({
   selector: 'app-campos-extraidos',
   templateUrl: './document.component.html',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   standalone: true,
   imports: [
     CommonModule,

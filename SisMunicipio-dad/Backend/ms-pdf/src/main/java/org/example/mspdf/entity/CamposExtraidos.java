@@ -13,6 +13,7 @@ public class CamposExtraidos {
     private Long id;
 
     private String nombre;
+    private String tipoDocumento;
     @Lob
     @Basic(fetch = FetchType.LAZY) // recomendable para no cargar siempre el BLOB
     private byte[] contenido;
@@ -20,6 +21,10 @@ public class CamposExtraidos {
     private String codigo;
     private String asunto;
     private String identificador;
+    private String tipoSolicitud;   // SOLO si es una solicitud (opcional)
+    private String detalle;
+    private String fecha;
+
 
     @OneToOne
     @JoinColumn(name = "documento_id")

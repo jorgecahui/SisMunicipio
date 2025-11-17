@@ -4,4 +4,5 @@ export const END_POINTS = {
   camposextraidos_listar: '/ocr/listar',
   camposextraidos_eliminar: '/ocr/eliminar',
   camposestraidos_editar: '/ocr/actualizar',
+  camposetraidos_crear: '/ocr/convertir'
 };
