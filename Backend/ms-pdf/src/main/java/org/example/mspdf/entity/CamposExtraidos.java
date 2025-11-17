@@ -13,6 +13,9 @@ public class CamposExtraidos {
     private Long id;
 
     private String nombre;
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // recomendable para no cargar siempre el BLOB
+    private byte[] contenido;
     private String dni;
     private String codigo;
     private String asunto;
