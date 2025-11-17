@@ -1,58 +1,66 @@
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatRadioModule } from '@angular/material/radio';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 
-interface Food {
-  value: string;
-  viewValue: string;
-}
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import {MatOption, MatOptionModule} from '@angular/material/core';
+import {MatDatepickerInput, MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-forms',
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatRadioModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatCheckboxModule,
-  ],
+  selector: 'app-tramite-form',
   templateUrl: './forms.component.html',
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule
+  ]
 })
-export class AppFormsComponent {
-  country: Food[] = [
-    { value: 'steak-0', viewValue: 'USA' },
-    { value: 'pizza-1', viewValue: 'India' },
-    { value: 'tacos-2', viewValue: 'France' },
-    { value: 'tacos-3', viewValue: 'UK' },
-  ];
+export class TramiteFormComponent implements OnInit {
+  tramiteForm!: FormGroup;
 
-  selectedCountry = this.country[2].value;
+  // Datos para selects
+  estados = ['Pendiente', 'En Proceso', 'Finalizado'];
+  personas = [{ id: 1, nombre: 'Juan Perez' }, { id: 2, nombre: 'Maria Lopez' }];
+  documentos = [{ id: 'doc1', titulo: 'Oficio 001' }, { id: 'doc2', titulo: 'Acta 002' }];
+  oficinas = [{ id: 1, nombre: 'Registro Civil' }, { id: 2, nombre: 'Tesorería' }];
 
-  city: Food[] = [
-    { value: 'steak-0', viewValue: 'Mexico' },
-    { value: 'pizza-1', viewValue: 'Mumbai' },
-    { value: 'tacos-2', viewValue: 'Tokyo' },
-    { value: 'tacos-3', viewValue: 'New York' },
-  ];
+  constructor(private fb: FormBuilder) {}
 
-  selectedCity = this.city[1].value;
+  ngOnInit(): void {
+    this.tramiteForm = this.fb.group({
+      numeroExpediente: ['', Validators.required],
+      asunto: ['', Validators.required],
+      estado: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
+      fechaFin: [''],
+      personaId: ['', Validators.required],
+      documentoId: ['', Validators.required],
+      oficinaId: ['', Validators.required],
+    });
+  }
 
-  state: Food[] = [
-    { value: 'steak-0', viewValue: 'Cuba' },
-    { value: 'pizza-1', viewValue: 'Djibouti' },
-    { value: 'tacos-2', viewValue: 'Bulgaria' },
-    { value: 'tacos-3', viewValue: 'Cabo Verde' },
-  ];
+  guardar() {
+    if (this.tramiteForm.valid) {
+      console.log('Formulario válido', this.tramiteForm.value);
+      // Aquí llamas tu servicio para guardar en backend
+    } else {
+      console.log('Formulario inválido');
+      this.tramiteForm.markAllAsTouched();
+    }
+  }
 
-  selectedState = this.state[3].value;
+  cancelar() {
+    this.tramiteForm.reset();
+  }
 }

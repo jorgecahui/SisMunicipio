@@ -4,7 +4,7 @@ import { Routes } from '@angular/router';
 
 import { AppListsComponent } from './lists/lists.component';
 import { AppMenuComponent } from './menu/menu.component';
-import { AppFormsComponent } from './forms/forms.component';
+import { TramiteFormComponent} from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
 import { CamposExtraidosComponent } from "./document/document.component";
 import { EditarDocumentoComponent } from "./document/form/formdocument.component";
@@ -16,7 +16,7 @@ export const UiComponentsRoutes: Routes = [
     children: [
       { path: 'lists', component: AppListsComponent },
       { path: 'menu', component: AppMenuComponent },
-      { path: 'forms', component: AppFormsComponent },
+      { path: 'tramite', component: TramiteFormComponent },
       { path: 'tables', component: AppTablesComponent },
       { path: 'document', component: CamposExtraidosComponent },
       { path: 'document/edit/:id', component: EditarDocumentoComponent },

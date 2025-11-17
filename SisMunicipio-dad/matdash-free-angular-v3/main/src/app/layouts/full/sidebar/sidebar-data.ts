@@ -26,9 +26,9 @@ export const navItems: NavItem[] = [
     route: '/ui-components/menu',
   },
   {
-    displayName: 'Forms',
+    displayName: 'Tramite',
     iconName: 'mdi:form-select',
-    route: '/ui-components/forms',
+    route: '/ui-components/tramite',
   },
   {
     displayName: 'Documentos',

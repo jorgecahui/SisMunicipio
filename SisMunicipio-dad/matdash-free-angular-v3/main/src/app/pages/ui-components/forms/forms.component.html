@@ -1,72 +1,82 @@
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header>
-    <mat-card-title class="m-b-0">Form</mat-card-title>
+    <mat-card-title class="m-b-0">Trámite</mat-card-title>
   </mat-card-header>
   <mat-card-content class="b-t-1">
-    <form>
+    <form [formGroup]="tramiteForm">
       <div class="row">
         <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Your Name</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput placeholder="your name " />
+          <mat-label class="f-w-600 m-b-8 d-block">Número de expediente</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Número de expediente" formControlName="numeroExpediente" />
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Country</mat-label>
+          <mat-label class="f-w-600 m-b-8 d-block">Asunto</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedCountry">
-              @for(option of country; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-                }}</mat-option>
-              }
+            <input matInput placeholder="Asunto" formControlName="asunto" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Estado</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="estado">
+              <mat-option *ngFor="let option of estados" [value]="option">{{ option }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput type="email" placeholder="your email" />
+          <mat-label class="f-w-600 m-b-8 d-block">Fecha inicio</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" placeholder="Seleccionar fecha" />
+            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+            <mat-datepicker #pickerInicio></mat-datepicker>
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">State</mat-label>
+          <mat-label class="f-w-600 m-b-8 d-block">Fecha fin</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedState">
-              @for(option of state; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-                }}</mat-option>
-              }
+            <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin" placeholder="Seleccionar fecha" />
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Persona</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="personaId">
+              <mat-option *ngFor="let persona of personas" [value]="persona.id">{{ persona.nombre }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          <!-- input -->
-          <mat-label class="f-w-600 m-b-8 d-block">Password</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput type="password" placeholder="your password" />
+          <mat-label class="f-w-600 m-b-8 d-block">Documento</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="documentoId">
+              <mat-option *ngFor="let doc of documentos" [value]="doc.id">{{ doc.titulo }}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">City</mat-label>
+          <mat-label class="f-w-600 m-b-8 d-block">Oficina</mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select [(value)]="selectedCity">
-              @for(option of city; track option.value) {
-              <mat-option [value]="option.value">{{
-                option.viewValue
-                }}</mat-option>
-              }
+            <mat-select formControlName="oficinaId">
+              <mat-option *ngFor="let oficina of oficinas" [value]="oficina.id">{{ oficina.nombre }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
 
       <div class="m-t-12">
-        <button mat-flat-button color="primary" class="m-r-8">Submit</button>
-        <button mat-stroked-button color="warn">Cancel</button>
+        <button mat-flat-button color="primary" (click)="guardar()">Guardar</button>
+        <button mat-stroked-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
       </div>
     </form>
   </mat-card-content>
