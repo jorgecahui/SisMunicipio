@@ -1,35 +1,53 @@
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 export class EntityDataService<T> {
+
   constructor(
     protected httpClient: HttpClient,
-    protected endPoint: string,
+
+    // ENDPOINT principal (ej: /api/ocr)
+    protected baseUrl: string,
+
+    // ENDPOINT opcional para listar por ID (ej: /api/ocr/listar)
+    protected listarByIdUrl?: string,
+
+    // ENDPOINT opcional para eliminar (ej: /api/ocr/delete)
+    protected eliminarUrl?: string
   ) {}
 
-  // GET ALL - Obtener todos los registros
+  /** GET ALL */
   public getAll$(): Observable<T> {
-    return this.httpClient.get<T>(`${this.endPoint}`);
+    return this.httpClient.get<T>(`${this.baseUrl}`);
   }
 
-  // GET BY ID - Obtener un registro por ID
+  /** GET BY ID */
   public getById$(id: string): Observable<T> {
-    return this.httpClient.get<T>(`${this.endPoint}/${id}`);
+
+    const url = this.listarByIdUrl
+      ? `${this.listarByIdUrl}/${id}`
+      : `${this.baseUrl}/${id}`;
+
+    return this.httpClient.get<T>(url);
   }
 
-  // POST - Crear un nuevo registro
+  /** POST */
   public add$(entity: any): Observable<T> {
-    return this.httpClient.post<T>(`${this.endPoint}`, entity);
+    return this.httpClient.post<T>(`${this.baseUrl}`, entity);
   }
 
-  // PUT - Actualizar un registro existente
+  /** PUT */
   public update$(id: string, entity: any): Observable<T> {
-    return this.httpClient.put<T>(`${this.endPoint}/${id}`, entity);
+    return this.httpClient.put<T>(`${this.baseUrl}/${id}`, entity);
   }
 
-  // DELETE - Eliminar un registro
-  public delete$(id: string): Observable<any> {
-    return this.httpClient.delete<any>(`${this.endPoint}/${id}`);
+  /** DELETE */
+  public delete$(id: number | string): Observable<any> {
+
+    const url = this.eliminarUrl
+      ? `${this.eliminarUrl}/${id}`
+      : `${this.baseUrl}/${id}`;
+
+    return this.httpClient.delete(url, { responseType: 'text' });
   }
 }

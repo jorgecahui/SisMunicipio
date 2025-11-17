@@ -8,6 +8,6 @@ import {EntityDataService} from "../../utils/entity-data";
 @Injectable({ providedIn: 'root' })
 export class PersonaService extends EntityDataService<any[]> {
   constructor(protected override httpClient: HttpClient) {
-    super(httpClient, END_POINTS.personas);
+    super(httpClient, END_POINTS.personas, END_POINTS.personas);
   }
 }

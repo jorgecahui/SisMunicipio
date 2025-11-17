@@ -47,6 +47,20 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
     }
 
     @Override
+    public Optional<CamposExtraidos> findById(Long id) {
+        return camposExtraidosRepository.findById(id);
+    }
+
+    @Override
+    public CamposExtraidos actualizarEntidad(Long id, CamposExtraidos entidad) {
+        return camposExtraidosRepository.save(entidad);
+    }
+
+    @Override
+    public void eliminarPorId(Long id) {
+        camposExtraidosRepository.deleteById(id);
+    }
+    @Override
     public CamposExtraidos guardarEntidad(CamposExtraidos entidad) {
         return camposExtraidosRepository.save(entidad);
     }

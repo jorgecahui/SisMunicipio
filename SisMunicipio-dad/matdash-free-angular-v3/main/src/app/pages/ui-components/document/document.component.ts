@@ -6,10 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
 
 import { CamposExtraidos } from '../../../models/campos.extraidos';
 import { DocumentoService } from '../../../providers/services/documentos/documento.service';
-//import { CamposExtraidosFormComponent } from '../forms/campos-extraidos-form.component';
 
 @Component({
   selector: 'app-campos-extraidos',
@@ -20,7 +20,8 @@ import { DocumentoService } from '../../../providers/services/documentos/documen
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    RouterLink
   ],
 })
 export class CamposExtraidosComponent implements OnInit {
@@ -41,7 +42,8 @@ export class CamposExtraidosComponent implements OnInit {
 
   constructor(
     private camposService: DocumentoService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router           // <<--- AÑADIDO
   ) {}
 
   ngOnInit(): void {
@@ -55,13 +57,28 @@ export class CamposExtraidosComponent implements OnInit {
     });
   }
 
-  //
+  eliminar(id: number): void {
 
-  eliminar(campo: CamposExtraidos) {
-    if (confirm(`¿Desea eliminar el registro con identificador: ${campo.identificador}?`)) {
-      this.camposService.delete$(String(campo.id)).subscribe(() => {
-        this.cargarCampos();
-      });
+    if (!confirm('¿Seguro que deseas eliminar este documento?')) {
+      this.router.navigate(['/ui-components/document']);
+      return;
     }
+
+    this.camposService.delete$(id).subscribe({
+      next: () => {
+        alert('Documento eliminado correctamente.');
+        this.router.navigate(['/ui-components/document']);
+      },
+      error: (error) => {
+        console.error('Error eliminando documento:', error);
+        alert('No se pudo eliminar el documento.');
+        this.router.navigate(['/ui-components/document']);
+      }
+    });
+
+  }
+
+  editar(item: CamposExtraidos) {
+    this.router.navigate(['/ui-components/document/edit', item.id]);   // <<--- NAVEGACIÓN FINAL
   }
 }

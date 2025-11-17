@@ -7,6 +7,6 @@ import { Persona } from '../../../models/persona.model';
 @Injectable({ providedIn: 'root' })
 export class PersonaService extends EntityDataService<Persona[]> {
   constructor(protected override httpClient: HttpClient) {
-    super(httpClient, END_POINTS.personas);
+    super(httpClient, END_POINTS.personas, END_POINTS.personas);
   }
 }

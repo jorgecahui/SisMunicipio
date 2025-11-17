@@ -28,6 +28,7 @@ public class OCRController {
     @Autowired
     private CamposExtraidosService camposExtraidosService;
 
+
     @GetMapping("/listar")
     public List<Map<String, Object>> obtenerTodosLosDocumentos() {
 
@@ -36,7 +37,7 @@ public class OCRController {
 
         for (CamposExtraidos c : lista) {
             Map<String, Object> item = new HashMap<>();
-
+            item.put("id", c.getId());
             DocumentoPDF doc = c.getDocumentoPDF();
 
             // NO devolver contenido del PDF, solo ID + nombre
@@ -101,5 +102,17 @@ public class OCRController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error al procesar la imagen: " + e.getMessage());
         }
+    }
+    // Actualizar
+    @PutMapping("/actualizar/{id}")
+    public CamposExtraidos actualizar(@PathVariable Long id, @RequestBody CamposExtraidos entidad) {
+        return camposExtraidosService.actualizarEntidad(id, entidad);
+    }
+
+    // Eliminar
+    @DeleteMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        camposExtraidosService.eliminarPorId(id);
+        return "Entidad con id " + id + " eliminada";
     }
 }

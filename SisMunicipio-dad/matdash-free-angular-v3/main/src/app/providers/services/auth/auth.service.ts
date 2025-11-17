@@ -12,7 +12,7 @@ export class AuthService extends EntityDataService<TokenModels> {
   private readonly TOKEN_KEY = 'auth_token';
 
   constructor(protected override httpClient: HttpClient) {
-    super(httpClient, END_POINTS.login);
+    super(httpClient, END_POINTS.login, END_POINTS.login);
   }
 
   public getToken(): string | null {
