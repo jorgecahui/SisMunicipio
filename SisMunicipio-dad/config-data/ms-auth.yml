@@ -21,3 +21,13 @@ eureka:
 
 jwt:
   secret: mySuperSecretKeyForJwtGeneration_2025_ChangeThisNow!
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      personaService:
+        register-health-indicator: true
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
