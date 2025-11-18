@@ -19,5 +19,5 @@ export const END_POINTS = {
   tramite_actualizar_estado: '/api/tramites',
   documento_listar: '/api/tramites',
   oficina_listar: '/oficinas',
-
+  login_cretae: '/auth/create'
 };

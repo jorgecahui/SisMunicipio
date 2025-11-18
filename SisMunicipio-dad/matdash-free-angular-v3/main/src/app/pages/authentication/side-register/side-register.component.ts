@@ -1,33 +1,69 @@
-import { Component } from '@angular/core';
-import { CoreService } from 'src/app/services/core.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { MaterialModule } from 'src/app/material.module';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatCard, MatCardModule} from "@angular/material/card";
+import {MatButton, MatButtonModule} from "@angular/material/button";
+import {MatInput, MatInputModule} from "@angular/material/input";
+import {Router} from "@angular/router";
+import {PersonaService} from "../../../providers/services/persona/persona.service";
+
+interface Usuario {
+  nombres: string;
+  apellidos: string;
+  dni: string;
+  direccion?: string;
+  telefono?: string;
+  username: string;
+  password: string;
+}
 
 @Component({
-  selector: 'app-side-register',
-  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  selector: 'app-registro',
+  standalone: true,
   templateUrl: './side-register.component.html',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
+  ]
 })
-export class AppSideRegisterComponent {
-  options = this.settings.getOptions();
+export class RegistroComponent implements OnInit {
+  usuarioForm!: FormGroup;
+  usuarios: Usuario[] = []; // Guardamos los usuarios registrados
 
-  constructor(private settings: CoreService, private router: Router) {}
+  constructor(private router: Router, private fb: FormBuilder, private personaService: PersonaService) {}
 
-  form = new FormGroup({
-    uname: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    email: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-  });
-
-  get f() {
-    return this.form.controls;
+  ngOnInit() {
+    this.usuarioForm = this.fb.group({
+      nombres: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      dni: ['', Validators.required],
+      direccion: [''],
+      telefono: [''],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
   }
 
-  submit() {
-    // console.log(this.form.value);
-    this.router.navigate(['/']);
+  registrarUsuario() {
+    if (this.usuarioForm.invalid) return;
+
+    const nuevoUsuario = this.usuarioForm.value;
+
+    // Validar que no exista DNI o Username
+    const existe = this.usuarios.some(
+      u => u.dni === nuevoUsuario.dni || u.username === nuevoUsuario.username
+    );
+
+    if (existe) {
+      alert('El DNI o el Username ya están registrados.');
+      return;
+    }
+
+    this.usuarios.push(nuevoUsuario);
+    alert('Usuario registrado correctamente.');
+    this.usuarioForm.reset();
   }
 }
