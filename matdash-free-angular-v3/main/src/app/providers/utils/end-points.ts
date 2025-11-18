@@ -12,11 +12,12 @@ export const END_POINTS = {
 
   tramites_listar: '/api/tramites',
   tramite_id: '/api/tramites',
-  tramite_crear: '/api/tramites/creartra',
+  tramite_crear: '/tramites/creartra',
   tramite_eliminar: '/api/tramites',
   tramite_completo: '/api/tramites/completo',
-  tramite_tipos_documento: '/api/tramites/crear',
+  tramite_tipos_documento: '//tramites/crear',
   tramite_actualizar_estado: '/api/tramites',
   documento_listar: '/api/tramites',
+  oficina_listar: '/oficinas',
 
 };

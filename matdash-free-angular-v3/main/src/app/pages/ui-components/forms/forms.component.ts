@@ -14,6 +14,7 @@ import {PersonaService} from "../../../providers/services/persona/persona.servic
 import {DocumentoService} from "../../../providers/services/documentos/documento.service";
 import {TramiteService} from "../../../providers/services/tramite/tramite.service";
 import {CommonModule} from "@angular/common";
+import {OficinaService} from "../../../providers/services/oficina/oficina.service";
 
 @Component({
   selector: 'app-tramite-form',
@@ -45,7 +46,7 @@ export class TramiteFormComponent implements OnInit {
     private fb: FormBuilder,
     private personaService: PersonaService,
     private documentoService: DocumentoService,
-    //private oficinaService: OficinaService,
+    private oficinaService: OficinaService,
     private tramiteService: TramiteService
   ) {}
 
@@ -65,7 +66,7 @@ export class TramiteFormComponent implements OnInit {
     // Cargar datos desde microservicios
     this.personaService.getAll$().subscribe(data => this.personas = data);
     this.documentoService.getAll$().subscribe(data => this.documentos = data);
-    //this.oficinaService.getAll$().subscribe(data => this.oficinas = data);
+    this.oficinaService.getAll$().subscribe(data => this.oficinas = data);
   }
 
   guardar() {
