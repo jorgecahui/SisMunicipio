@@ -9,24 +9,13 @@ import {environment} from "../../../../environments/environment";
 export class DocumentoService extends EntityDataService<any> {
 
   constructor(http: HttpClient) {
-
     super(
       http,
-
-      // GET ALL (listado general)
-      `${environment.url}${END_POINTS.camposextraidos_listar}`,
-
-      // GET BY ID (usa el mismo endpoint)
-      `${environment.url}${END_POINTS.camposextraidos_listar}`,
-
-      // DELETE
-      `${environment.url}${END_POINTS.camposextraidos_eliminar}`,
-
-        `${environment.url}${END_POINTS.camposetraidos_crear}`,
-      `${environment.url}${END_POINTS.camposestraidos_editar}`,
-
-
+      `${environment.url}${END_POINTS.ocr_listar}`,        
+      `${environment.url}${END_POINTS.ocr_listar}`,         
+      `${environment.url}${END_POINTS.ocr_eliminar}`,      
+      `${environment.url}${END_POINTS.ocr_convertir}`,     
+      `${environment.url}${END_POINTS.ocr_actualizar}`     
     );
-
   }
 }

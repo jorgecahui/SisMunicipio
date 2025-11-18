@@ -1,84 +1,60 @@
-<mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-    <mat-card-title class="m-b-0">Trámite</mat-card-title>
+<mat-card class="p-4">
+  <mat-card-header class="text-center mb-4">
+    <mat-card-title class="w-100">Nuevo Trámite</mat-card-title>
+    <mat-card-subtitle class="w-100">Ingrese su DNI y suba el documento</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content class="b-t-1">
-    <form [formGroup]="tramiteForm">
-      <div class="row">
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Número de expediente</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Número de expediente" formControlName="numeroExpediente" />
-          </mat-form-field>
-        </div>
 
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Asunto</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Asunto" formControlName="asunto" />
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Estado</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="estado">
-              <mat-option *ngFor="let option of estados" [value]="option">{{ option }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Fecha inicio</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio" placeholder="Seleccionar fecha" />
-            <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
-            <mat-datepicker #pickerInicio></mat-datepicker>
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Fecha fin</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput [matDatepicker]="pickerFin" formControlName="fechaFin" placeholder="Seleccionar fecha" />
-            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
-            <mat-datepicker #pickerFin></mat-datepicker>
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Persona</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="personaId">
-              <mat-option *ngFor="let persona of personas" [value]="persona.id">{{ persona.nombres }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Documento</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="documentoId">
-              <mat-option *ngFor="let doc of documentos" [value]="doc.id">{{ doc.id }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Oficina</mat-label>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-select formControlName="oficinaId">
-              <mat-option *ngFor="let oficina of oficinas" [value]="oficina.id">{{ oficina.id }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        </div>
-
-
-      <div class="m-t-12">
-        <button mat-flat-button color="primary" (click)="guardar()">Guardar</button>
-        <button mat-stroked-button color="warn" type="button" (click)="cancelar()">Cancelar</button>
+  <mat-card-content>
+    <form [formGroup]="tramiteForm" (ngSubmit)="guardar()" class="row g-3">
+      
+      <!-- Campo DNI -->
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>DNI</mat-label>
+          <input matInput formControlName="dni" placeholder="Ingrese su DNI (8 dígitos)" maxlength="8">
+          <mat-hint *ngIf="buscandoPersona" class="text-primary">Buscando persona...</mat-hint>
+          <mat-hint *ngIf="personaEncontrada && !buscandoPersona" class="text-success">
+            ✅ Persona encontrada: {{personaEncontrada.nombres}} {{personaEncontrada.apellidos}}
+          </mat-hint>
+          <mat-hint *ngIf="!personaEncontrada && dni?.valid && !buscandoPersona" class="text-warning">
+            ℹ️ Persona no encontrada con este DNI
+          </mat-hint>
+          <mat-error *ngIf="dniInvalido">
+            <span *ngIf="dni?.errors?.['required']">DNI es requerido</span>
+            <span *ngIf="dni?.errors?.['pattern']">DNI debe tener 8 dígitos</span>
+          </mat-error>
+        </mat-form-field>
       </div>
+
+      <!-- Subida de archivo -->
+      <div class="col-12">
+        <div class="border rounded p-3 bg-light">
+          <label class="form-label fw-bold mb-3">Documento PDF</label>
+          <input type="file" accept=".pdf" (change)="onFileSelected($event)" class="form-control mb-2">
+          <div class="text-muted">
+            <small *ngIf="nombreArchivo" class="d-block">
+              Archivo seleccionado: {{ nombreArchivo }}
+            </small>
+            <small class="d-block">
+              Solo se permiten archivos PDF
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="col-12 mt-4">
+        <div class="d-flex gap-2 justify-content-end border-top pt-3">
+          <button mat-stroked-button type="button" (click)="cancelar()" [disabled]="guardando">
+            Cancelar
+          </button>
+          <button mat-flat-button color="primary" type="submit" 
+                  [disabled]="guardando || !personaEncontrada">
+            {{ guardando ? 'Guardando...' : 'Iniciar Trámite' }}
+          </button>
+        </div>
+      </div>
+
     </form>
   </mat-card-content>
 </mat-card>

@@ -1,60 +1,120 @@
-<mat-card class="cardWithShadow theme-card">
+<mat-card class="p-4">
   <mat-card-header>
-    <mat-card-title class="m-b-0">Trámites</mat-card-title>
+    <mat-card-title>
+      <mat-icon class="me-2" color="primary">track_changes</mat-icon>
+      Seguimiento de Trámites
+    </mat-card-title>
+    <mat-card-subtitle>Ingrese su DNI para consultar el estado de sus trámites</mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content class="b-t-1">
-    <mat-list *ngFor="let tramite of tramites">
+  <mat-card-content>
+    <!-- Formulario de búsqueda -->
+    <form [formGroup]="searchForm" (ngSubmit)="buscarTramites()" class="mb-4">
+      <div class="row align-items-end">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>DNI</mat-label>
+            <input matInput formControlName="dni" placeholder="Ingrese su DNI (8 dígitos)" maxlength="8">
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="dniInvalido">
+              <span *ngIf="dni?.errors?.['required']">DNI es requerido</span>
+              <span *ngIf="dni?.errors?.['pattern']">DNI debe tener 8 dígitos</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex gap-2">
+            <button mat-flat-button color="primary" type="submit" [disabled]="buscando" class="d-flex align-items-center">
+              <mat-icon class="me-1" style="font-size: 18px;">search</mat-icon>
+              {{ buscando ? 'Buscando...' : 'Buscar Trámites' }}
+            </button>
+            <button mat-stroked-button type="button" (click)="limpiarBusqueda()" [disabled]="buscando">
+              <mat-icon class="me-1" style="font-size: 18px;">clear</mat-icon>
+              Limpiar
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
 
-      <!-- Datos generales -->
-      <div mat-subheader class="f-w-600 m-b-8">Datos del Trámite</div>
-      <mat-list-item>
-        <strong>Número de expediente:</strong> {{ tramite.numeroExpediente }}
-      </mat-list-item>
-      <mat-list-item>
-        <strong>Asunto:</strong> {{ tramite.asunto }}
-      </mat-list-item>
-      <mat-list-item>
-        <strong>Estado:</strong> {{ tramite.estado }}
-      </mat-list-item>
+    <!-- Resultados de búsqueda -->
+    <div *ngIf="dniBuscado">
+      <div class="d-flex align-items-center mb-3">
+        <h4 class="mb-0 me-2">
+          <mat-icon class="me-1" color="primary">assignment</mat-icon>
+          Trámites para DNI: {{ dniBuscado }}
+        </h4>
+        <span class="badge bg-primary rounded-pill">{{ tramites.length }} encontrados</span>
+      </div>
 
-      <!-- Fechas -->
-      <div mat-subheader class="f-w-600 m-b-8">Fechas</div>
-      <mat-list-item>
-        <strong>Fecha inicio:</strong> {{ tramite.fechaInicio | date:'short' }}
-      </mat-list-item>
-      <mat-list-item>
-        <strong>Fecha fin:</strong> {{ tramite.fechaFin | date:'short' }}
-      </mat-list-item>
+      <div *ngIf="tramites.length === 0 && !buscando" class="text-center p-4">
+        <mat-icon class="display-4 text-muted mb-3">inbox</mat-icon>
+        <h5 class="text-muted">No se encontraron trámites</h5>
+        <p class="text-muted">No hay trámites registrados para este DNI</p>
+      </div>
 
-      <!-- Relaciones -->
-      <div mat-subheader class="f-w-600 m-b-8">Relacionados</div>
-      <mat-list-item>
-        <strong>Persona:</strong>
-        <span *ngIf="tramite.persona; else cargandoPersona">
-    {{ tramite.persona.nombre }}
-  </span>
-        <ng-template #cargandoPersona>…cargando</ng-template>
-      </mat-list-item>
+      <div *ngIf="tramites.length > 0" class="row g-3">
+        <div *ngFor="let tramite of tramites" class="col-12">
+          <mat-card class="tramite-card" [class]="getEstadoCardClass(tramite.estado)">
+            <mat-card-content class="p-3">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="d-flex align-items-center mb-2">
+                    <mat-icon class="me-2" [color]="getEstadoColor(tramite.estado)">description</mat-icon>
+                    <h5 class="mb-0">Trámite #{{ tramite.id || tramite.numeroExpediente }}</h5>
+                  </div>
+                  
+                  <p class="mb-2 text-muted" *ngIf="tramite.asunto">
+                    <strong>Asunto:</strong> {{ tramite.asunto }}
+                  </p>
+                  
+                  <div class="d-flex align-items-center gap-3 mb-2">
+                    <span class="d-flex align-items-center">
+                      <mat-icon class="me-1" style="font-size: 16px;">schedule</mat-icon>
+                      <small class="text-muted">
+                        <strong>Inicio:</strong> {{ formatDate(tramite.fechaInicio) }}
+                      </small>
+                    </span>
+                    <span class="d-flex align-items-center" *ngIf="tramite.fechaFin">
+                      <mat-icon class="me-1" style="font-size: 16px;">event_available</mat-icon>
+                      <small class="text-muted">
+                        <strong>Fin:</strong> {{ formatDate(tramite.fechaFin) }}
+                      </small>
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="col-md-4 text-end">
+                  <div class="mb-2">
+                    <mat-chip [color]="getEstadoColor(tramite.estado)" selected class="fw-bold">
+                      <mat-icon class="me-1" style="font-size: 16px;">
+                        {{ getEstadoIcon(tramite.estado) }}
+                      </mat-icon>
+                      {{ (tramite.estado || 'Pendiente') | uppercase }}
+                    </mat-chip>
+                  </div>
+                  
+                  <div class="d-flex flex-column gap-1">
+                    <small class="text-muted" *ngIf="tramite.numeroExpediente">
+                      <strong>Expediente:</strong> {{ tramite.numeroExpediente }}
+                    </small>
+                    <small class="text-muted">
+                      <strong>ID:</strong> {{ tramite.id }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
 
-      <mat-list-item>
-        <strong>Documento:</strong>
-        <span *ngIf="tramite.documento; else cargandoDocumento">
-    {{ tramite.documento.titulo }}
-  </span>
-        <ng-template #cargandoDocumento>…cargando</ng-template>
-      </mat-list-item>
-
-      <mat-list-item>
-        <strong>Oficina:</strong>
-        <span *ngIf="tramite.oficina; else cargandoOficina">
-    {{ tramite.oficina.nombre }}
-  </span>
-        <ng-template #cargandoOficina>…cargando</ng-template>
-      </mat-list-item>
-
-
-      <mat-divider class="m-y-16"></mat-divider>
-    </mat-list>
+    <!-- Mensaje inicial -->
+    <div *ngIf="!dniBuscado" class="text-center p-4">
+      <mat-icon class="display-1 text-muted mb-3">search</mat-icon>
+      <h4 class="text-muted">Consulta de Trámites</h4>
+      <p class="text-muted">Ingrese su DNI para consultar el estado de sus trámites</p>
+    </div>
   </mat-card-content>
 </mat-card>

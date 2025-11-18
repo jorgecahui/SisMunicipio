@@ -6,9 +6,7 @@ import {  TramiteListComponent } from './lists/lists.component';
 import { AppMenuComponent } from './menu/menu.component';
 import { TramiteFormComponent} from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
-import { CamposExtraidosComponent } from "./document/document.component";
-import { EditarDocumentoComponent } from "./document/form/formdocument.component";
-import {CrearDocumentoComponent} from "./document/typedocs/typedocs.component";
+import { MisTramitesComponent } from "./document/document.component";
 
 export const UiComponentsRoutes: Routes = [
   {
@@ -18,10 +16,7 @@ export const UiComponentsRoutes: Routes = [
       { path: 'menu', component: AppMenuComponent },
       { path: 'tramite', component: TramiteFormComponent },
       { path: 'tables', component: AppTablesComponent },
-      { path: 'document', component: CamposExtraidosComponent },
-      { path: 'document/edit/:id', component: EditarDocumentoComponent },
-      { path: 'document/delete/:id', component: EditarDocumentoComponent },
-      { path: 'document/crear', component: CrearDocumentoComponent },
+      { path: 'document', component: MisTramitesComponent },
     ],
   },
 ];

@@ -9,6 +9,7 @@ import {TokenModels} from "../../../models/token-models";
   selector: 'app-side-login',
   imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
   templateUrl: './side-login.component.html',
+  styleUrls: ['./side-login.component.scss']
 })
 export class AppSideLoginComponent {
   constructor(private router: Router, private authService: AuthService) {
