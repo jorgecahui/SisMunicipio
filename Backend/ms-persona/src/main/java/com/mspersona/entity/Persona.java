@@ -30,4 +30,7 @@ public class Persona {
     private String direccion;
 
     private String telefono;
+
+    @Lob
+    private byte[] documento;
 }
