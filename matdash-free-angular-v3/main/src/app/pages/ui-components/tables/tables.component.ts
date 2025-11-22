@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';  // Necesario para usar formularios reactivos
+import { MatFormFieldModule } from '@angular/material/form-field'; // Importa solo MatFormFieldModule
 
 @Component({
   selector: 'app-tables',
@@ -21,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';  // Necesario para usar fo
     MatIconModule,
     MatCardModule,
     ReactiveFormsModule,  // Asegúrate de importar ReactiveFormsModule aquí
+    MatFormFieldModule,   // Solo importa MatFormFieldModule aquí
   ],
 })
 export class AppTablesComponent implements OnInit {

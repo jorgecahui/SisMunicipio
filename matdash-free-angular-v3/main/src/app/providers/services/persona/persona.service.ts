@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class PersonaService extends EntityDataService<any> {
 
-  constructor(private http: HttpClient) { // Asegúrate de que 'http' esté correctamente inyectado
+  constructor(private http: HttpClient) {
+    // Asegúrate de que 'http' esté correctamente inyectado
     super(
       http,
       `${environment.url}${END_POINTS.personas}`,
@@ -23,3 +24,4 @@ export class PersonaService extends EntityDataService<any> {
     return this.http.post<any>(`${environment.url}${END_POINTS.persons_post}`, formData);
   }
 }
+
