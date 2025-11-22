@@ -1,95 +1,87 @@
 <mat-card class="p-4">
+
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Mis Trámites</h2>
-    <button mat-flat-button color="primary" routerLink="/ui-components/tramite">
-      <mat-icon>add</mat-icon>
-      Nuevo Trámite
-    </button>
+    <h2>Documentos Extraídos</h2>
+    <button mat-flat-button color="primary" >Agregar Registro</button>
   </div>
 
-  <!-- Estado de carga -->
-  <div *ngIf="cargando" class="text-center p-4">
-    <p>Cargando trámites...</p>
-  </div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
 
-  <!-- Tabla de trámites -->
-  <div *ngIf="!cargando">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+    <!-- ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let item">{{ item.id }}</td>
+    </ng-container>
 
-      <!-- Número de Expediente -->
-      <ng-container matColumnDef="numeroExpediente">
-        <th mat-header-cell *matHeaderCellDef>Expediente</th>
-        <td mat-cell *matCellDef="let item">{{ item.numeroExpediente || 'N/A' }}</td>
-      </ng-container>
+    <!-- Nombre -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let item">{{ item.nombre }}</td>
+    </ng-container>
 
-      <!-- Nombres -->
-      <ng-container matColumnDef="nombres">
-        <th mat-header-cell *matHeaderCellDef>Nombres</th>
-        <td mat-cell *matCellDef="let item">{{ item.nombres || 'Cargando...' }}</td>
-      </ng-container>
+    <!-- DNI -->
+    <ng-container matColumnDef="dni">
+      <th mat-header-cell *matHeaderCellDef>DNI</th>
+      <td mat-cell *matCellDef="let item">{{ item.dni }}</td>
+    </ng-container>
 
-      <!-- Apellidos -->
-      <ng-container matColumnDef="apellidos">
-        <th mat-header-cell *matHeaderCellDef>Apellidos</th>
-        <td mat-cell *matCellDef="let item">{{ item.apellidos || 'Cargando...' }}</td>
-      </ng-container>
+    <!-- Código -->
+    <ng-container matColumnDef="codigo">
+      <th mat-header-cell *matHeaderCellDef>Código</th>
+      <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
+    </ng-container>
 
-      <!-- DNI -->
-      <ng-container matColumnDef="dni">
-        <th mat-header-cell *matHeaderCellDef>DNI</th>
-        <td mat-cell *matCellDef="let item">{{ item.dni || 'Cargando...' }}</td>
-      </ng-container>
+    <!-- Asunto -->
+    <ng-container matColumnDef="asunto">
+      <th mat-header-cell *matHeaderCellDef>Asunto</th>
+      <td mat-cell *matCellDef="let item">{{ item.asunto }}</td>
+    </ng-container>
 
-      <!-- Asunto -->
-      <ng-container matColumnDef="asunto">
-        <th mat-header-cell *matHeaderCellDef>Asunto</th>
-        <td mat-cell *matCellDef="let item">{{ item.asunto || 'N/A' }}</td>
-      </ng-container>
+    <!-- Identificador -->
+    <ng-container matColumnDef="identificador">
+      <th mat-header-cell *matHeaderCellDef>Identificador</th>
+      <td mat-cell *matCellDef="let item">{{ item.identificador }}</td>
+    </ng-container>
 
-      <!-- Estado -->
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let item">
-          <mat-chip [color]="getEstadoColor(item.estado)" selected>
-            {{ getEstadoTexto(item.estado) }}
-          </mat-chip>
-        </td>
-      </ng-container>
+    <!-- Nombre Documento -->
+    <ng-container matColumnDef="nombreDocumento">
+      <th mat-header-cell *matHeaderCellDef>Nombre Documento</th>
+      <td mat-cell *matCellDef="let item">{{ item.nombreDocumento }}</td>
+    </ng-container>
 
-      <!-- Fecha Inicio -->
-      <ng-container matColumnDef="fechaInicio">
-        <th mat-header-cell *matHeaderCellDef>Fecha Inicio</th>
-        <td mat-cell *matCellDef="let item">
-          {{ formatearFecha(item.fechaInicio) }}
-        </td>
-      </ng-container>
+    <!-- Documento PDF -->
+    <ng-container matColumnDef="documentoPDF">
+      <th mat-header-cell *matHeaderCellDef>PDF</th>
+      <td mat-cell *matCellDef="let item">
 
-      <!-- Acciones - SOLO PDF -->
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Documento</th>
-        <td mat-cell *matCellDef="let item">
-          <button mat-icon-button color="primary" 
-                  (click)="descargarDocumento(item)"
-                  matTooltip="Descargar PDF">
-            <mat-icon>picture_as_pdf</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+      </td>
+    </ng-container>
 
-      <!-- FILAS -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <!-- Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let item">
+        <button mat-icon-button color="primary" [routerLink]="['/ui-components/document/edit', item.id]">
+          <iconify-icon icon="solar:pen-bold"></iconify-icon>
+        </button>
 
-    </table>
+        <button mat-icon-button color="warn" [routerLink]="['/ui-components/document/delete', item.id]">
+          <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
+        </button>
 
-    <!-- Mensaje cuando no hay trámites -->
-    <div *ngIf="tramitesCompletos.length === 0" class="text-center p-4">
-      <mat-icon class="display-4 text-muted mb-3">folder_open</mat-icon>
-      <h4 class="text-muted">No hay trámites registrados</h4>
-      <p class="text-muted">Comience creando un nuevo trámite</p>
-      <button mat-flat-button color="primary" routerLink="/ui-components/tramite">
-        Crear Primer Trámite
-      </button>
-    </div>
-  </div>
+        <button mat-icon-button color="primary" routerLink="/ui-components/document/crear">
+          <iconify-icon icon="mdi:plus"></iconify-icon>
+        </button>
+
+
+      </td>
+    </ng-container>
+
+
+    <!-- FILAS -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
 </mat-card>

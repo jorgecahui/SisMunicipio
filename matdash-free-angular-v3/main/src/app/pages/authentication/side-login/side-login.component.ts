@@ -7,9 +7,9 @@ import {TokenModels} from "../../../models/token-models";
 
 @Component({
   selector: 'app-side-login',
+  standalone: true,
   imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule],
   templateUrl: './side-login.component.html',
-  styleUrls: ['./side-login.component.scss']
 })
 export class AppSideLoginComponent {
   constructor(private router: Router, private authService: AuthService) {
@@ -35,7 +35,7 @@ export class AppSideLoginComponent {
       data => {
         this.tokenModels = data;
         this.setToken(this.tokenModels.token);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/ui-components/tables']);
         console.log(this.tokenModels.token);
       }
     )

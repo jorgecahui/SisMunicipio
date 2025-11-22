@@ -8,9 +8,9 @@ spring:
     show-sql: true
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ms_auth
+    url: jdbc:mysql://localhost:3306/ms_auth2
     username: root
-    password: 12345
+    password: 1234567
 
 eureka:
   client:
@@ -21,3 +21,13 @@ eureka:
 
 jwt:
   secret: mySuperSecretKeyForJwtGeneration_2025_ChangeThisNow!
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      personaService:
+        register-health-indicator: true
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
