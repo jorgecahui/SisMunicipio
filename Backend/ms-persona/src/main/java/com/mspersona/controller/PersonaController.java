@@ -45,7 +45,6 @@ public class PersonaController {
             return ResponseEntity.notFound().build();
         }
 
-        // Actualizar campos
         existente.setNombres(persona.getNombres());
         existente.setApellidos(persona.getApellidos());
         existente.setDni(persona.getDni());

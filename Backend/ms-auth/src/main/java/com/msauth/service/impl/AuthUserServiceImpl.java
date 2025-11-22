@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import java.util.Optional;
 
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
@@ -21,47 +21,39 @@ public class AuthUserServiceImpl implements AuthUserService {
     @Autowired
     JwtProvider jwtProvider;
 
+
     @Override
-    public AuthUser save(AuthUserDto dto) {
-        if (authUserRepository.findByUserName(dto.getUserName()).isPresent()) {
-            throw new RuntimeException("El nombre de usuario ya está registrado.");
-        }
-        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
-            throw new RuntimeException("La contraseña no puede estar vacía.");
-        }
-        AuthUser newUser = AuthUser.builder()
-                .userName(dto.getUserName())         // el usuario lo elige
-                .password(passwordEncoder.encode(dto.getPassword()))
+    public AuthUser save(AuthUserDto authUserDto) {
+        Optional<AuthUser> user = authUserRepository.findByUserName(authUserDto.getUserName());
+        if (user.isPresent())
+            return null;
+        String password = passwordEncoder.encode(authUserDto.getPassword());
+        AuthUser authUser = AuthUser.builder()
+                .userName(authUserDto.getUserName())
+                .password(password)
                 .build();
-
-        return authUserRepository.save(newUser);
+        return authUserRepository.save(authUser);
     }
+
 
     @Override
-    public TokenDto login(AuthUserDto dto) {
-
-        AuthUser user = authUserRepository.findByUserName(dto.getUserName())
-                .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos."));
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Usuario o contraseña incorrectos.");
-        }
-        String token = jwtProvider.createToken(user);
-
-        return new TokenDto(token);
+    public TokenDto login(AuthUserDto authUserDto) {
+        Optional<AuthUser> user = authUserRepository.findByUserName(authUserDto.getUserName());
+        if (!user.isPresent())
+            return null;
+        if (passwordEncoder.matches(authUserDto.getPassword(), user.get().getPassword()))
+            return new TokenDto(jwtProvider.createToken(user.get()));
+        return null;
     }
+
+
     @Override
     public TokenDto validate(String token) {
-
-        if (!jwtProvider.validate(token)) {
-            throw new RuntimeException("Token inválido.");
-        }
-
+        if (!jwtProvider.validate(token))
+            return null;
         String username = jwtProvider.getUserNameFromToken(token);
-
-        // Validar que el usuario exista en BD
-        authUserRepository.findByUserName(username)
-                .orElseThrow(() -> new RuntimeException("Token inválido: usuario no encontrado."));
-
+        if (!authUserRepository.findByUserName(username).isPresent())
+            return null;
         return new TokenDto(token);
     }
 }
