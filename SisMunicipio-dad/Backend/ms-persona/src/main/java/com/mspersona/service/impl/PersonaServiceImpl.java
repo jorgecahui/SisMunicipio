@@ -28,7 +28,7 @@ public class PersonaServiceImpl implements PersonaService {
             Persona p = existente.get();
             p.setNombres(persona.getNombres());
             p.setApellidos(persona.getApellidos());
-            p.setDireccion(persona.getDireccion());
+            p.setCorreo(persona.getCorreo());
             p.setTelefono(persona.getTelefono());
             return repository.save(p);
         } else {

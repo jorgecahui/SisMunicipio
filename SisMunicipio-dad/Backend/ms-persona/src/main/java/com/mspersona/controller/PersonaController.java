@@ -66,7 +66,7 @@ public class PersonaController {
         existente.setNombres(persona.getNombres());
         existente.setApellidos(persona.getApellidos());
         existente.setDni(persona.getDni());
-        existente.setDireccion(persona.getDireccion());
+        existente.setCorreo(persona.getCorreo());
         existente.setTelefono(persona.getTelefono());
 
         Persona actualizado = service.guardar(existente);
