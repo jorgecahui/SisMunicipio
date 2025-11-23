@@ -9,4 +9,5 @@ public interface PersonaService {
     Persona guardar(Persona persona);
     Persona buscarPorId(Long id);
     void eliminar(Long id);
+    Persona guardarConDocumento(Persona persona, byte[] documento);
 }

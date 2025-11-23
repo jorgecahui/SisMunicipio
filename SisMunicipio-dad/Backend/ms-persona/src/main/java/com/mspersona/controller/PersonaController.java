@@ -1,11 +1,15 @@
 package com.mspersona.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mspersona.entity.Persona;
 import com.mspersona.service.PersonaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,6 +30,19 @@ public class PersonaController {
         return persona != null ? ResponseEntity.ok(persona) : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/crear-con-documento")
+    public ResponseEntity<Persona> crearConDocumento(@RequestParam("persona") String personaJson,
+                                                     @RequestParam("documento") MultipartFile documento) throws IOException {
+
+        Persona persona = new ObjectMapper().readValue(personaJson, Persona.class);
+
+        byte[] documentoBytes = documento.getBytes();
+
+        Persona personaGuardada = service.guardarConDocumento(persona, documentoBytes);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(personaGuardada);
+    }
+
     @PostMapping
     public ResponseEntity<Persona> crear(@RequestBody Persona persona) {
         return ResponseEntity.ok(service.guardar(persona));
@@ -36,16 +53,25 @@ public class PersonaController {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+<<<<<<< HEAD:SisMunicipio-dad/Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
     @PutMapping("/{id}")
     public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
 
+=======
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
+>>>>>>> origin/main:Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
         Persona existente = service.buscarPorId(id);
 
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
 
+<<<<<<< HEAD:SisMunicipio-dad/Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
         // Actualizar campos
+=======
+>>>>>>> origin/main:Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
         existente.setNombres(persona.getNombres());
         existente.setApellidos(persona.getApellidos());
         existente.setDni(persona.getDni());

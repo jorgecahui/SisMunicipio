@@ -45,4 +45,10 @@ public class PersonaServiceImpl implements PersonaService {
     public void eliminar(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Persona guardarConDocumento(Persona persona, byte[] documento) {
+        persona.setDocumento(documento);
+        return repository.save(persona);
+    }
 }

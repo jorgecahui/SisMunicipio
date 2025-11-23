@@ -1,0 +1,143 @@
+<div class="container mt-4" *ngIf="!modoEliminar">
+  <div class="alert alert-danger">
+    Eliminando documento...
+  </div>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Editar Documento - Validación Municipal</h3>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="edicionForm" (ngSubmit)="guardarCambios()">
+
+        <div class="form-group mb-3">
+          <label for="nombre" class="form-label">Nombre Completo *</label>
+          <input
+            type="text"
+            id="nombre"
+            formControlName="nombre"
+            class="form-control"
+            [class.is-invalid]="nombreInvalido"
+            placeholder="Ingrese el nombre completo">
+
+          <div class="invalid-feedback" *ngIf="nombreInvalido && nombre?.errors?.['required']">
+            El nombre es requerido
+          </div>
+          <div class="invalid-feedback" *ngIf="nombreInvalido && nombre?.errors?.['soloCorreccionOrtografica']">
+            Solo se permiten correcciones ortográficas del nombre original
+          </div>
+          <small class="form-text text-muted">
+            Solo correcciones ortográficas permitidas
+          </small>
+        </div>
+
+        <!-- Campo: DNI -->
+        <div class="form-group mb-3">
+          <label for="dni" class="form-label">DNI *</label>
+          <input
+            type="text"
+            id="dni"
+            formControlName="dni"
+            class="form-control"
+            [class.is-invalid]="dniInvalido"
+            placeholder="Ingrese el DNI"
+            maxlength="8">
+
+          <div class="invalid-feedback" *ngIf="dniInvalido && dni?.errors?.['required']">
+            El DNI es requerido
+          </div>
+          <div class="invalid-feedback" *ngIf="dniInvalido && dni?.errors?.['pattern']">
+            El DNI debe contener solo números (8 dígitos)
+          </div>
+
+          <!-- Justificación para modificación de DNI -->
+          <div class="justificacion-group mt-2" *ngIf="dniModificado">
+            <label for="justificacionDni" class="form-label">Justificación de Cambio de DNI *</label>
+            <textarea
+              id="justificacionDni"
+              formControlName="justificacionDni"
+              class="form-control"
+              rows="3"
+              placeholder="Justifique por qué necesita modificar el DNI..."></textarea>
+            <div class="invalid-feedback" *ngIf="justificacionDni?.invalid && justificacionDni?.touched">
+              La justificación es obligatoria para modificar el DNI
+            </div>
+          </div>
+        </div>
+
+        <!-- Campo: ASUNTO -->
+        <div class="form-group mb-3">
+          <label for="asunto" class="form-label">Asunto *</label>
+          <select
+            id="asunto"
+            formControlName="asunto"
+            class="form-control"
+            [class.is-invalid]="asuntoInvalido">
+            <option value="">Seleccione un asunto</option>
+            <option value="Solicitud">Solicitud</option>
+            <option value="Aprobación">Aprobación</option>
+            <option value="Reclamo">Reclamo</option>
+            <option value="Consulta">Consulta</option>
+            <option value="Denuncia">Denuncia</option>
+            <option value="Trámite">Trámite</option>
+            <option value="Certificación">Certificación</option>
+            <option value="Otros">Otros</option>
+          </select>
+
+          <div class="invalid-feedback" *ngIf="asuntoInvalido && asunto?.errors?.['required']">
+            El asunto es requerido
+          </div>
+          <small class="form-text text-muted">
+            Reclasificación documental municipal
+          </small>
+        </div>
+
+        <!-- Campo: CÓDIGO -->
+        <div class="form-group mb-3">
+          <label for="codigo" class="form-label">Código del Documento</label>
+          <input
+            type="text"
+            id="codigo"
+            formControlName="codigo"
+            class="form-control"
+            readonly
+            style="background-color: #f8f9fa;">
+          <small class="form-text text-muted">
+            Código único - No editable
+          </small>
+        </div>
+
+        <!-- Justificación General -->
+        <div class="form-group mb-4">
+          <label for="justificacionGeneral" class="form-label">Justificación de los Cambios *</label>
+          <textarea
+            id="justificacionGeneral"
+            formControlName="justificacionGeneral"
+            class="form-control"
+            rows="3"
+            placeholder="Describa los motivos de las modificaciones realizadas..."></textarea>
+          <div class="invalid-feedback" *ngIf="justificacionGeneral?.invalid && justificacionGeneral?.touched">
+            La justificación general es obligatoria
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelarEdicion()">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="edicionForm.invalid || guardando">
+            <span *ngIf="guardando" class="spinner-border spinner-border-sm me-2"></span>
+            {{ guardando ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
