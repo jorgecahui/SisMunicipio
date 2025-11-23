@@ -53,25 +53,16 @@ public class PersonaController {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }
-<<<<<<< HEAD:SisMunicipio-dad/Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
-    @PutMapping("/{id}")
-    public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
 
-=======
 
     @PutMapping("/{id}")
     public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
->>>>>>> origin/main:Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
         Persona existente = service.buscarPorId(id);
 
         if (existente == null) {
             return ResponseEntity.notFound().build();
         }
 
-<<<<<<< HEAD:SisMunicipio-dad/Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
-        // Actualizar campos
-=======
->>>>>>> origin/main:Backend/ms-persona/src/main/java/com/mspersona/controller/PersonaController.java
         existente.setNombres(persona.getNombres());
         existente.setApellidos(persona.getApellidos());
         existente.setDni(persona.getDni());
