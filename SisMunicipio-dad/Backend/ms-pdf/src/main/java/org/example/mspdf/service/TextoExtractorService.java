@@ -26,7 +26,11 @@ public class TextoExtractorService {
     // 🔹 MAPA DE REGEX POR CAMPO (con sinónimos)
     // ============================================================
     private static final Map<String, String> REGEX_CAMPOS = Map.ofEntries(
-            Map.entry("nombre", "(?i)yo[,\\s]+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚñÑ\\s]+?),\\s+identificada?\\s+con\\s+dni"),
+            Map.entry(
+                    "nombre",
+                    "(?i)yo[,\\s]+([A-ZÁÉÍÓÚÑ\\s]{5,80}?),\\s+identificad[ao]a?\\s+con\\s+dni"
+            ),
+
             Map.entry("dni", "(?i)dni\\s*(n°|nº|n\\*|num\\.|numero|n)?\\s*[:\\-]?\\s*(\\d{8})"),
             Map.entry("codigo", "(?i)(código|codigo|cod\\.)[:\\s]+([A-Za-z0-9-]+)"),
             Map.entry("asunto", "(?i)(solicito|asunto|tema)[:\\s]+(.+?)(?=\\.|$)"),
