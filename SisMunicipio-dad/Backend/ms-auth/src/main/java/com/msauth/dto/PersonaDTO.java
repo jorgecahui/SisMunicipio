@@ -1,8 +1,17 @@
 package com.msauth.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PersonaDTO {
     private Long id;
-
-    public PersonaDTO(Long id, String desconocido, String sinDatos, String number, String s, String s1) {
-    }
+    private String nombres;
+    private String apellidos;
+    private String dni;
+    private String correo;
+    private String telefono;
 }

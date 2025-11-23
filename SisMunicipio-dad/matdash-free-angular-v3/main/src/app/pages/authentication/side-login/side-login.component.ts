@@ -35,7 +35,7 @@ export class AppSideLoginComponent {
       data => {
         this.tokenModels = data;
         this.setToken(this.tokenModels.token);
-        this.router.navigate(['/ui-components/tables']);
+        this.router.navigate(['/ui-components/document']);
         console.log(this.tokenModels.token);
       }
     )

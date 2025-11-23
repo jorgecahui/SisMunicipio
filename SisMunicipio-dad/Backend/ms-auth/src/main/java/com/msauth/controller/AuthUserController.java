@@ -1,6 +1,7 @@
 package com.msauth.controller;
 
 import com.msauth.dto.AuthUserDto;
+import com.msauth.dto.AuthUserRegisterDto;
 import com.msauth.entity.AuthUser;
 import com.msauth.entity.TokenDto;
 import com.msauth.service.AuthUserService;
@@ -31,10 +32,7 @@ public class AuthUserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AuthUser> create(@RequestBody AuthUserDto authUserDto) {
-        AuthUser authUser = authUserService.save(authUserDto);
-        if (authUser == null)
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(authUser);
+    public ResponseEntity<AuthUser> save(@RequestBody AuthUserRegisterDto authUserRegisterDto) {;
+        return ResponseEntity.ok(authUserService.save(authUserRegisterDto));
     }
 }
