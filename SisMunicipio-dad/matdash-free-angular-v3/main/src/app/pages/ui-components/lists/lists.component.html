@@ -9,7 +9,7 @@
       <!-- Datos generales -->
       <div mat-subheader class="f-w-600 m-b-8">Datos del Trámite</div>
       <mat-list-item>
-        <strong>Número de expediente:</strong> {{ tramite.numeroExpediente }}
+        <strong>Número de expediente:</strong> {{ tramite.codigo }}
       </mat-list-item>
       <mat-list-item>
         <strong>Asunto:</strong> {{ tramite.asunto }}
@@ -31,16 +31,16 @@
       <div mat-subheader class="f-w-600 m-b-8">Relacionados</div>
       <mat-list-item>
         <strong>Persona:</strong>
-        <span *ngIf="tramite.persona; else cargandoPersona">
-    {{ tramite.persona.nombre }}
+        <span *ngIf="tramite.nombre; else cargandoPersona">
+    {{ tramite.nombre }}
   </span>
-        <ng-template #cargandoPersona>…cargando</ng-template>
+        <ng-template #cargandoPersona>…</ng-template>
       </mat-list-item>
 
       <mat-list-item>
         <strong>Documento:</strong>
-        <span *ngIf="tramite.documento; else cargandoDocumento">
-    {{ tramite.documento.titulo }}
+        <span *ngIf="tramite.documentoId; else cargandoDocumento">
+    {{ tramite.documentoId }}
   </span>
         <ng-template #cargandoDocumento>…cargando</ng-template>
       </mat-list-item>

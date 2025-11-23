@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
-import {MatDivider, MatList, MatListItem} from "@angular/material/list";
+import {MatDivider, MatList, MatListItem, MatListSubheaderCssMatStyler} from "@angular/material/list";
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from "@angular/material/card";
 import {CommonModule, DatePipe} from "@angular/common";
 import {TramiteService} from "../../../providers/services/tramite/tramite.service";
+
 
 @Component({
   selector: 'app-tramite-list',
@@ -18,7 +19,11 @@ import {TramiteService} from "../../../providers/services/tramite/tramite.servic
     MatCardTitle,
     DatePipe,
     MatCardHeader,
-    MatCard
+    MatCard,
+    MatListSubheaderCssMatStyler
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class TramiteListComponent implements OnInit {
