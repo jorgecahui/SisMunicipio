@@ -14,7 +14,7 @@ public class CamposExtraidos {
 
     private String nombre;
     private String tipoDocumento;
-    private String dni;
+    private String DNI;
     private String codigo;
     private String asunto;
     private String identificador;

@@ -13,8 +13,8 @@ public class TextoExtractorService {
 
     private final CamposExtraidosService camposExtraidosService;
 
-    public TextoExtractorService(CamposExtraidosService campoExtraidoService) {
-        this.camposExtraidosService = campoExtraidoService;
+    public TextoExtractorService(CamposExtraidosService camposExtraidoService) {
+        this.camposExtraidosService = camposExtraidoService;
     }
     private static final Map<String, List<String>> CAMPOS_POR_TIPO = Map.of(
             "CARTA", List.of("nombre", "dni", "asunto", "remitente", "destinatario", "codigo"),
@@ -26,17 +26,17 @@ public class TextoExtractorService {
     // 🔹 MAPA DE REGEX POR CAMPO (con sinónimos)
     // ============================================================
     private static final Map<String, String> REGEX_CAMPOS = Map.ofEntries(
-            Map.entry("nombre", "(?i)(nombre|remitente|señor|sr\\.)[:\\s]+([A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+)"),
-            Map.entry("dni", "(?i)(dni|documento|doc\\.?|identidad)[:\\s]+(\\d{8})"),
+            Map.entry("nombre", "(?i)yo[,\\s]+([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚñÑ\\s]+?),\\s+identificada?\\s+con\\s+dni"),
+            Map.entry("dni", "(?i)dni\\s*(n°|nº|n\\*|num\\.|numero|n)?\\s*[:\\-]?\\s*(\\d{8})"),
             Map.entry("codigo", "(?i)(código|codigo|cod\\.)[:\\s]+([A-Za-z0-9-]+)"),
-            Map.entry("asunto", "(?i)(asunto|tema|motivo)[:\\s]+(.+?)(?=\\s+[A-ZÁÉÍÓÚ]|$)"),
+            Map.entry("asunto", "(?i)(solicito|asunto|tema)[:\\s]+(.+?)(?=\\.|$)"),
             Map.entry("id", "(?i)(id|identificador|registro)[:\\s]+(\\w+)"),
             Map.entry("destinatario", "(?i)(dirigido a|destinatario|para)[:\\s]+([A-Za-zÁÉÍÓÚñÑ\\s]+)"),
             Map.entry("remitente", "(?i)(remitente|quien suscribe|solicitante)[:\\s]+([A-Za-zÁÉÍÓÚñÑ\\s]+)"),
             Map.entry("referencia", "(?i)(referencia|ref\\.)[:\\s]+(.+?)(?=\\s+[A-ZÁÉÍÓÚ]|$)"),
             Map.entry("tipo_solicitud", "(?i)(tipo de solicitud|solicito|solicita)[:\\s]+(.+?)(?=\\s+[A-ZÁÉÍÓÚ]|$)"),
             Map.entry("detalle", "(?i)(detalle|contenido|descripción)[:\\s]+(.+?)(?=\\s+[A-ZÁÉÍÓÚ]|$)"),
-            Map.entry("fecha", "(?i)(fecha|emitido el)[:\\s]+([0-9/\\-]+)")
+            Map.entry("fecha", "(?i)(fecha|emitido el|trujillo)[,\\s:]+([0-9]{1,2}[\\-/][0-9]{1,2}[\\-/][0-9]{4}|[0-9]{1,2}\\s+de\\s+[A-Za-zÁÉÍÓÚñÑ]+\\s+del\\s+[0-9]{4})")
     );
 
     public Map<String, String> extraerCampos(String textoOCR) {

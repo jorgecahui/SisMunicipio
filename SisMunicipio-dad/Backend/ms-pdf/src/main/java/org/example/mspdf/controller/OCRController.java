@@ -49,7 +49,7 @@ public class OCRController {
 
             item.put("codigo", c.getCodigo());
             item.put("nombre", c.getNombre());
-            item.put("dni", c.getDni());
+            item.put("dni", c.getDNI());
             item.put("asunto", c.getAsunto());
             item.put("identificador", c.getIdentificador());
 
@@ -82,7 +82,7 @@ public class OCRController {
                     "D:/AMANECIDA/SisMunicipio-funcionalidad/SisMunicipio/Backend/ms-pdf/tessdata/tessdata1"
             );
 
-            String texto = ocrService.extractTextFromStream(file.getInputStream());
+            String texto = ocrService.extractTextFromPDF(file.getInputStream());
 
             if (texto == null || texto.isEmpty()) {
                 return ResponseEntity.badRequest().body("No se detectó texto en la imagen.");
@@ -105,7 +105,7 @@ public class OCRController {
             // Guardar entidad principal
             CamposExtraidos camposEnt = new CamposExtraidos();
             camposEnt.setNombre(campos.get("nombre"));
-            camposEnt.setDni(campos.get("dni"));
+            camposEnt.setDNI(campos.get("dni"));
             camposEnt.setCodigo(campos.get("codigo"));
             camposEnt.setAsunto(campos.get("asunto"));
             camposEnt.setIdentificador(campos.get("id"));
