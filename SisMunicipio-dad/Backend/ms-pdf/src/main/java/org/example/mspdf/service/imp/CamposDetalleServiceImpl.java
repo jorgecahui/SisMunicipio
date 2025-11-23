@@ -4,10 +4,11 @@ import org.example.mspdf.entity.CamposDetalle;
 import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.repository.CamposDetalleRepository;
 import org.example.mspdf.service.CamposDetalleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
+@Service
 public class CamposDetalleServiceImpl implements CamposDetalleService {
 
     private final CamposDetalleRepository repository;
