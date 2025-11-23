@@ -18,6 +18,8 @@ public class OCRController {
 
     @Autowired
     private DocumentoPDFRepository documentoPDFRepository;
+    @Autowired
+    private PdfExportService pdfExportService;
 
     @Autowired
     private CamposExtraidosService camposExtraidosService;
@@ -156,5 +158,15 @@ public class OCRController {
     @GetMapping("/detalles/{id}")
     public List<CamposDetalle> listarDetalles(@PathVariable Long id) {
         return camposDetalleService.obtenerDetallesPorDocumento(id);
+    }
+
+    @GetMapping("/export/{id}")
+    public ResponseEntity<String> exportar(@PathVariable Long id) {
+        try {
+            String nombreArchivo = pdfExportService.exportarPDF(id);
+            return ResponseEntity.ok("PDF exportado: " + nombreArchivo);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+        }
     }
 }
