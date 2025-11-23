@@ -1,0 +1,60 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Trámites</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="b-t-1">
+    <mat-list *ngFor="let tramite of tramites">
+
+      <!-- Datos generales -->
+      <div mat-subheader class="f-w-600 m-b-8">Datos del Trámite</div>
+      <mat-list-item>
+        <strong>Número de expediente:</strong> {{ tramite.numeroExpediente }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Asunto:</strong> {{ tramite.asunto }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Estado:</strong> {{ tramite.estado }}
+      </mat-list-item>
+
+      <!-- Fechas -->
+      <div mat-subheader class="f-w-600 m-b-8">Fechas</div>
+      <mat-list-item>
+        <strong>Fecha inicio:</strong> {{ tramite.fechaInicio | date:'short' }}
+      </mat-list-item>
+      <mat-list-item>
+        <strong>Fecha fin:</strong> {{ tramite.fechaFin | date:'short' }}
+      </mat-list-item>
+
+      <!-- Relaciones -->
+      <div mat-subheader class="f-w-600 m-b-8">Relacionados</div>
+      <mat-list-item>
+        <strong>Persona:</strong>
+        <span *ngIf="tramite.persona; else cargandoPersona">
+    {{ tramite.persona.nombre }}
+  </span>
+        <ng-template #cargandoPersona>…cargando</ng-template>
+      </mat-list-item>
+
+      <mat-list-item>
+        <strong>Documento:</strong>
+        <span *ngIf="tramite.documento; else cargandoDocumento">
+    {{ tramite.documento.titulo }}
+  </span>
+        <ng-template #cargandoDocumento>…cargando</ng-template>
+      </mat-list-item>
+
+      <mat-list-item>
+        <strong>Oficina:</strong>
+        <span *ngIf="tramite.oficina; else cargandoOficina">
+    {{ tramite.oficina.nombre }}
+  </span>
+        <ng-template #cargandoOficina>…cargando</ng-template>
+      </mat-list-item>
+
+
+      <mat-divider class="m-y-16"></mat-divider>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

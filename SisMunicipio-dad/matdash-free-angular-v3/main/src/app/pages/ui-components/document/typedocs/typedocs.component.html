@@ -1,0 +1,59 @@
+<div class="container" style="max-width: 550px; margin: 20px auto;">
+  <h2>Crear nuevo documento</h2>
+
+  <form [formGroup]="form" (ngSubmit)="crear()">
+
+    <!-- Tipo de documento -->
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Tipo de documento</mat-label>
+      <mat-select formControlName="tipo">
+        <mat-option value="solicitud">Solicitud</mat-option>
+        <mat-option value="acta">Acta</mat-option>
+        <mat-option value="oficio">Oficio</mat-option>
+        <mat-option value="informe">Informe</mat-option>
+        <mat-option value="otros">Otros</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('tipo')?.invalid">
+        Selecciona un tipo de documento
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Seleccionar archivo -->
+    <div style="margin-top: 20px;">
+      <label class="label-file">
+        <iconify-icon icon="solar:upload-minimalistic-bold" style="font-size: 26px;"></iconify-icon>
+        <span>Seleccionar archivo PDF</span>
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event)">
+      </label>
+
+      <p *ngIf="nombreArchivo" style="margin-top: 10px;">
+        Archivo seleccionado: <strong>{{ nombreArchivo }}</strong>
+      </p>
+    </div>
+
+    <!-- Botón Guardar -->
+    <button mat-raised-button color="primary" class="full" type="submit" [disabled]="form.invalid || !archivo">
+      Crear documento
+    </button>
+  </form>
+</div>
+
+<style>
+  .full {
+    width: 100%;
+  }
+
+  .label-file {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #eee;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .label-file input {
+    display: none;
+  }
+</style>
