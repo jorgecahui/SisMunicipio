@@ -60,7 +60,7 @@ spring:
           '[/**]':
             allowedOrigins:
               - "http://localhost:4200"
-              - "http://localhost:56108"
+              - "http://localhost:56018"
             allowedMethods:
               - GET
               - POST
