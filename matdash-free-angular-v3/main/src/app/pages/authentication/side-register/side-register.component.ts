@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
-import {MatCard, MatCardModule} from "@angular/material/card";
+import { MatFormFieldModule} from "@angular/material/form-field";
+import { MatCardModule} from "@angular/material/card";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {Router} from "@angular/router";
 import {PersonaService} from "../../../providers/services/persona/persona.service";
+import {RegistrarService} from "../../../providers/services/registrar/registrar.service";
 
 interface Usuario {
   nombres: string;
@@ -31,18 +32,17 @@ interface Usuario {
 })
 export class RegistroComponent implements OnInit {
   usuarioForm!: FormGroup;
-  usuarios: Usuario[] = []; // Guardamos los usuarios registrados
 
-  constructor(private router: Router, private fb: FormBuilder, private personaService: PersonaService) {}
+  constructor(private router: Router, private fb: FormBuilder, private registerService: RegistrarService) {}
 
   ngOnInit() {
     this.usuarioForm = this.fb.group({
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
       dni: ['', Validators.required],
-      direccion: [''],
+      correo: [''],
       telefono: [''],
-      username: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required],
     });
   }
@@ -50,20 +50,34 @@ export class RegistroComponent implements OnInit {
   registrarUsuario() {
     if (this.usuarioForm.invalid) return;
 
-    const nuevoUsuario = this.usuarioForm.value;
+    const form = this.usuarioForm.value;
 
-    // Validar que no exista DNI o Username
-    const existe = this.usuarios.some(
-      u => u.dni === nuevoUsuario.dni || u.username === nuevoUsuario.username
-    );
+    // 👇 Aquí armamos el DTO EXACTO que tu backend necesita
+    const payload = {
+      userName: form.userName,
+      password: form.password,
+      persona: {
+        nombres: form.nombres,
+        apellidos: form.apellidos,
+        dni: form.dni,
+        direccion: form.direccion,
+        telefono: form.telefono,
+        correo: form.correo
+      }
+    };
 
-    if (existe) {
-      alert('El DNI o el Username ya están registrados.');
-      return;
-    }
+    console.log("Payload enviado:", payload);
 
-    this.usuarios.push(nuevoUsuario);
-    alert('Usuario registrado correctamente.');
-    this.usuarioForm.reset();
+    this.registerService.add$(payload).subscribe({
+      next: () => {
+        alert('Usuario registrado correctamente');
+        this.usuarioForm.reset();
+        this.router.navigate(['authentication/login']);
+      },
+      error: (err) => {
+        console.error("Error registro:", err);
+        alert('Error al registrar el usuario');
+      }
+    });
   }
 }

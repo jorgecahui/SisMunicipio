@@ -54,6 +54,7 @@ public class PersonaController {
         return ResponseEntity.noContent().build();
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<Persona> actualizar(@PathVariable Long id, @RequestBody Persona persona) {
         Persona existente = service.buscarPorId(id);
@@ -65,7 +66,7 @@ public class PersonaController {
         existente.setNombres(persona.getNombres());
         existente.setApellidos(persona.getApellidos());
         existente.setDni(persona.getDni());
-        existente.setDireccion(persona.getDireccion());
+        existente.setCorreo(persona.getCorreo());
         existente.setTelefono(persona.getTelefono());
 
         Persona actualizado = service.guardar(existente);

@@ -80,11 +80,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+<<<<<<< HEAD:SisMunicipio-dad/Backend/ms-documento/pom.xml
+=======
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.5.1</version>
         </dependency>
         <dependency>
+>>>>>>> origin/main:Backend/ms-documento/pom.xml
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>

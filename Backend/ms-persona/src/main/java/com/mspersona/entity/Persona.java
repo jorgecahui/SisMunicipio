@@ -27,7 +27,7 @@ public class Persona {
     @Column(unique = true, nullable = false)
     private String dni;
 
-    private String direccion;
+    private String correo;
 
     private String telefono;
 

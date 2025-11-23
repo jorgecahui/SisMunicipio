@@ -14,15 +14,10 @@ public class CamposExtraidos {
 
     private String nombre;
     private String tipoDocumento;
-    @Lob
-    @Basic(fetch = FetchType.LAZY) // recomendable para no cargar siempre el BLOB
-    private byte[] contenido;
-    private String dni;
+    private String DNI;
     private String codigo;
     private String asunto;
     private String identificador;
-    private String tipoSolicitud;   // SOLO si es una solicitud (opcional)
-    private String detalle;
     private String fecha;
 
 
@@ -31,4 +26,8 @@ public class CamposExtraidos {
     private DocumentoPDF documentoPDF;
 
     private String nombreDocumento;
+
+    @OneToMany(mappedBy = "camposExtraidos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<CamposDetalle> detalles = new java.util.ArrayList<>();
+
 }

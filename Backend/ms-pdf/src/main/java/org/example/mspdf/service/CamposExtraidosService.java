@@ -3,6 +3,7 @@ package org.example.mspdf.service;
 import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,4 +20,7 @@ public interface CamposExtraidosService {
     CamposExtraidos actualizarEntidad(Long id, CamposExtraidos entidad);
 
     void eliminarPorId(Long id);
+    Map<String, String> extraerCampos(InputStream imagenStream);
+
+    String detectarTipo(Map<String, String> campos);
 }

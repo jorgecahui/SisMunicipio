@@ -5,16 +5,18 @@ import org.example.mspdf.entity.DocumentoPDF;
 import org.example.mspdf.repository.CamposExtraidosRepository;
 import org.example.mspdf.service.CamposExtraidosService;
 import org.example.mspdf.service.DocsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.util.*;
 
 @Service
 public class CamposExtraidosServiceImpl implements CamposExtraidosService {
 
     private final CamposExtraidosRepository camposExtraidosRepository;
-    private DocsService docsService;
+
 
     public CamposExtraidosServiceImpl(CamposExtraidosRepository camposExtraidosRepository) {
         this.camposExtraidosRepository = camposExtraidosRepository;
@@ -24,7 +26,7 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
     public CamposExtraidos guardarCampos(Map<String, String> datos) {
         CamposExtraidos campo = new CamposExtraidos();
         campo.setNombre(datos.getOrDefault("nombre", ""));
-        campo.setDni(datos.getOrDefault("dni", ""));
+        campo.setDNI(datos.getOrDefault("DNI", ""));
         campo.setCodigo(datos.getOrDefault("codigo", ""));
         campo.setAsunto(datos.getOrDefault("asunto", ""));
         campo.setIdentificador(datos.getOrDefault("id", ""));
@@ -33,8 +35,9 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
 
     @Override
     public List<DocumentoPDF> obtenerTodosLosDocumentos() {
-        return docsService.obtenerTodosLosDocumentos();
+        return List.of();
     }
+
 
     @Override
     public CamposExtraidos findByDocumentoPDF(DocumentoPDF documento) {
@@ -60,6 +63,17 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
     public void eliminarPorId(Long id) {
         camposExtraidosRepository.deleteById(id);
     }
+
+    @Override
+    public Map<String, String> extraerCampos(InputStream imagenStream) {
+        return Map.of();
+    }
+
+    @Override
+    public String detectarTipo(Map<String, String> campos) {
+        return "";
+    }
+
     @Override
     public CamposExtraidos guardarEntidad(CamposExtraidos entidad) {
         return camposExtraidosRepository.save(entidad);
