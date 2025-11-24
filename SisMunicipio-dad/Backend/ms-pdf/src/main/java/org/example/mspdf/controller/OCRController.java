@@ -1,5 +1,6 @@
 package org.example.mspdf.controller;
 
+import org.example.mspdf.service.imp.CamposExtraidosServiceImpl;
 import org.springframework.core.io.Resource; // ✅ Correcto
 import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
@@ -35,16 +36,43 @@ public class OCRController {
     private CamposDetalleService camposDetalleService; // ← NUEVO
 
     @GetMapping("/listar")
-    public List<Map<String, Object>> obtenerTodosLosDocumentos(@RequestHeader("X-User-Id") Long personaId) {
+    public ResponseEntity<?> obtenerTodosLosDocumentos(@RequestHeader("X-User-Id") Long personaId) {
 
-        List<CamposExtraidos> lista = camposExtraidosService.obtenerDocumentosPorUsuario(personaId);
+        System.out.println("🔍 ===== INICIO ENDPOINT /listar =====");
+        System.out.println("👤 PersonaId recibido: " + personaId);
+
+        // Verificar si el usuario existe
+        if (personaId == null) {
+            System.out.println("❌ PersonaId es NULL");
+            return ResponseEntity.badRequest().body("PersonaId es requerido");
+        }
+
+        // Determinar si es admin
+        boolean esAdmin = determinarSiEsAdmin(personaId);
+        System.out.println("🎭 Es admin: " + esAdmin);
+
+        // Obtener documentos según rol
+        CamposExtraidosServiceImpl serviceImpl = (CamposExtraidosServiceImpl) camposExtraidosService;
+        List<CamposExtraidos> lista = serviceImpl.obtenerDocumentosSegunRol(personaId, esAdmin);
+
+        System.out.println("📄 Total documentos en BD: " + lista.size());
+
+        // Debug: mostrar cada documento
+        for (int i = 0; i < lista.size(); i++) {
+            CamposExtraidos doc = lista.get(i);
+            System.out.println("📋 Documento " + i + ": " +
+                    "ID=" + doc.getId() + ", " +
+                    "Nombre=" + doc.getNombre() + ", " +
+                    "PersonaId=" + doc.getPersonaId());
+        }
+
+        // Construir respuesta
         List<Map<String, Object>> resultado = new ArrayList<>();
-
         for (CamposExtraidos c : lista) {
             Map<String, Object> item = new HashMap<>();
             item.put("id", c.getId());
-            DocumentoPDF doc = c.getDocumentoPDF();
 
+            DocumentoPDF doc = c.getDocumentoPDF();
             if (doc != null) {
                 item.put("documentoId", doc.getId());
                 item.put("nombreDocumento", doc.getNombre());
@@ -59,11 +87,23 @@ public class OCRController {
             item.put("asunto", c.getAsunto());
             item.put("identificador", c.getIdentificador());
             item.put("personaId", c.getPersonaId());
+            item.put("esAdmin", esAdmin);
 
             resultado.add(item);
         }
 
-        return resultado;
+        System.out.println("✅ ===== FIN ENDPOINT /listar - Documentos enviados: " + resultado.size() + " =====");
+        return ResponseEntity.ok(resultado);
+    }
+
+    private boolean determinarSiEsAdmin(Long personaId) {
+        System.out.println("🔎 Verificando si es admin para personaId: " + personaId);
+
+        // Lógica temporal - ajusta según tu BD
+        boolean esAdmin = personaId != null && (personaId == 1 || personaId == 9 || personaId == 13);
+        System.out.println("🎭 Resultado verificación admin: " + esAdmin);
+
+        return esAdmin;
     }
 
     @GetMapping("/listar/{id}")
@@ -179,7 +219,5 @@ public class OCRController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(resource);
     }
-
-
 
 }

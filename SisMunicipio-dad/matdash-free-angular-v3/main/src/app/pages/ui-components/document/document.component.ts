@@ -29,25 +29,19 @@ import {AuthService} from "../../../providers/services/auth/auth.service";
 })
 export class CamposExtraidosComponent implements OnInit {
 
-  campos: CamposExtraidos[] = [];
-  dataSource = new MatTableDataSource<CamposExtraidos>(this.campos);
+  campos: any[] = [];
+  dataSource = new MatTableDataSource<any>(this.campos);
 
   displayedColumns: string[] = [
-    'id',
-    'nombre',
-    'dni',
-    'asunto',
-    'identificador',
-    'nombreDocumento',
-    'acciones'
+    'id', 'nombre', 'dni', 'asunto', 'identificador', 'nombreDocumento', 'acciones'
   ];
 
   constructor(
     private camposService: DocumentoService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private router: Router ,
-    private exportarservice: RegistrarService          // <<--- AÑADIDO
+    private router: Router,
+    private exportarservice: RegistrarService
   ) {}
 
   ngOnInit(): void {
@@ -62,15 +56,30 @@ export class CamposExtraidosComponent implements OnInit {
 
   cargarCampos() {
     console.log('🔄 Cargando documentos...');
+    console.log('🔍 Service:', this.camposService);
 
     this.camposService.getAll$().subscribe({
-      next: (data: CamposExtraidos[]) => {
-        console.log('✅ Documentos cargados:', data);
-        this.campos = data;
-        this.dataSource.data = this.campos;
+      next: (data: any) => {
+        console.log('✅ Respuesta del servidor:', data);
+
+        // Asegúrate de que data sea un array
+        if (Array.isArray(data)) {
+          this.campos = data;
+          this.dataSource.data = this.campos;
+          console.log('📊 Documentos cargados:', this.campos.length);
+        } else {
+          console.warn('⚠️ La respuesta no es un array:', data);
+          this.campos = [];
+          this.dataSource.data = [];
+        }
       },
       error: (error) => {
         console.error('❌ Error cargando documentos:', error);
+        console.error('🔧 Detalles:', {
+          status: error.status,
+          message: error.message,
+          url: error.url
+        });
       }
     });
   }
