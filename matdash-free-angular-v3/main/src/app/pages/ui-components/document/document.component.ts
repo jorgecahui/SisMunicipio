@@ -10,6 +10,8 @@ import {Router, RouterLink} from '@angular/router';
 
 import { CamposExtraidos } from '../../../models/campos.extraidos';
 import { DocumentoService } from '../../../providers/services/documentos/documento.service';
+import {RegistrarService} from "../../../providers/services/registrar/registrar.service";
+import {AuthService} from "../../../providers/services/auth/auth.service";
 
 @Component({
   selector: 'app-campos-extraidos',
@@ -27,39 +29,90 @@ import { DocumentoService } from '../../../providers/services/documentos/documen
 })
 export class CamposExtraidosComponent implements OnInit {
 
-  campos: CamposExtraidos[] = [];
-  dataSource = new MatTableDataSource<CamposExtraidos>(this.campos);
-
+  campos: any[] = [];
+  dataSource = new MatTableDataSource<any>(this.campos);
+  isUserRole: boolean = false;
   displayedColumns: string[] = [
-    'id',
-    'nombre',
-    'dni',
-    'codigo',
-    'asunto',
-    'identificador',
-    'nombreDocumento',
-    'acciones'
+    'id', 'nombre', 'dni', 'asunto', 'identificador', 'nombreDocumento', 'acciones'
   ];
 
   constructor(
     private camposService: DocumentoService,
+    private authService: AuthService,
     private dialog: MatDialog,
-    private router: Router           // <<--- AÑADIDO
+    private router: Router,
+    private exportarservice: RegistrarService
   ) {}
 
   ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    console.log('📋 Usuario en document.component:', user);
+    console.log('🔑 PersonaId para X-User-Id:', user?.personaId);
+    console.log('🎭 Roles:', user?.roles);
+    console.log('🔐 Token presente:', !!this.authService.getToken());
+
     this.cargarCampos();
   }
 
   cargarCampos() {
-    this.camposService.getAll$().subscribe((data: CamposExtraidos[]) => {
-      this.campos = data;
-      this.dataSource.data = this.campos;
+    console.log('🔄 Cargando documentos...');
+    console.log('🔍 Service:', this.camposService);
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('❌ No hay token disponible');
+      return;
+    }
+
+    console.log('🔐 Token:', token);
+    console.log('👤 Usuario:', this.authService.getCurrentUser());
+    this.camposService.getAll$().subscribe({
+      next: (data: any) => {
+        console.log('✅ Respuesta del servidor:', data);
+
+        // Asegúrate de que data sea un array
+        if (Array.isArray(data)) {
+          this.campos = data;
+          this.dataSource.data = this.campos;
+          console.log('📊 Documentos cargados:', this.campos.length);
+        } else {
+          console.warn('⚠️ La respuesta no es un array:', data);
+          this.campos = [];
+          this.dataSource.data = [];
+        }
+      },
+      error: (error) => {
+        console.error('❌ Error cargando documentos:', error);
+        console.error('🔧 Detalles:', {
+          status: error.status,
+          message: error.message,
+          url: error.url
+        });
+      }
     });
   }
 
+  verPDF(id: number) {
+    const url = `http://localhost:9090/api/ocr/exportdb/${id}`;
+    window.open(url, '_blank');
+  }
+
+  abrirVisor(filename: string) {
+    this.router.navigate(['/ui-components/visor', filename]);
+  }
 
   editar(item: CamposExtraidos) {
     this.router.navigate(['/ui-components/document/edit', item.id]);   // <<--- NAVEGACIÓN FINAL
+  }
+  agregarNuevo() {
+    if (!this.isUserRole) {
+      this.router.navigate(['/ui-components/document/new']);
+    }
+  }
+
+  eliminar(item: CamposExtraidos) {
+    if (!this.isUserRole) {
+      // Aquí va tu lógica para eliminar
+      console.log('Eliminar item:', item);
+    }
   }
 }

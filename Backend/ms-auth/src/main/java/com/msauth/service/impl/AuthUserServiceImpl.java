@@ -1,9 +1,11 @@
 package com.msauth.service.impl;
 
+import com.msauth.dto.AuthResponse;
 import com.msauth.dto.AuthUserDto;
 import com.msauth.dto.AuthUserRegisterDto;
 import com.msauth.dto.PersonaDTO;
 import com.msauth.entity.AuthUser;
+import com.msauth.entity.Role;
 import com.msauth.entity.TokenDto;
 import com.msauth.fegin.PersonaClient;
 import com.msauth.repository.AuthUserRepository;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -57,7 +60,8 @@ public class AuthUserServiceImpl implements AuthUserService {
         AuthUser newUser = AuthUser.builder()
                 .userName(dto.getUserName())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .personaId(personaResponse.getId())  // FK hacia persona creada
+                .personaId(personaResponse.getId())
+                .roles(List.of(Role.ROLE_USER))   // FK hacia persona creada
                 .build();
 
         // 6. Guardar usuario final
@@ -91,5 +95,22 @@ public class AuthUserServiceImpl implements AuthUserService {
                 .orElseThrow(() -> new RuntimeException("Token inválido: usuario no encontrado."));
 
         return new TokenDto(token);
+    }
+    public AuthResponse loginWithUserInfo(AuthUserDto dto) {
+        AuthUser user = authUserRepository.findByUserName(dto.getUserName())
+                .orElseThrow(() -> new RuntimeException("Usuario o contraseña incorrectos."));
+
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Usuario o contraseña incorrectos.");
+        }
+
+        String token = jwtProvider.createToken(user);
+
+        return AuthResponse.builder()
+                .token(token)
+                .userName(user.getUserName())
+                .personaId(user.getPersonaId())
+                .roles(user.getRoles())
+                .build();
     }
 }

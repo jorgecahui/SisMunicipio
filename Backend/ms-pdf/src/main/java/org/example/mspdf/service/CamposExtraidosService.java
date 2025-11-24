@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface CamposExtraidosService {
     CamposExtraidos guardarEntidad(CamposExtraidos entidad);
     CamposExtraidos guardarCampos(Map<String, String> datos);
+
     List<DocumentoPDF> obtenerTodosLosDocumentos();
     CamposExtraidos findByDocumentoPDF(DocumentoPDF documento);
     List<CamposExtraidos> obtenerTodosLosDocumentosConCampos();
@@ -23,4 +24,5 @@ public interface CamposExtraidosService {
     Map<String, String> extraerCampos(InputStream imagenStream);
 
     String detectarTipo(Map<String, String> campos);
+    List<CamposExtraidos> obtenerDocumentosPorUsuario(Long personaId);
 }

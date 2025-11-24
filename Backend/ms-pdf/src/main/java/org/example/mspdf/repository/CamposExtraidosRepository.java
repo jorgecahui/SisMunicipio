@@ -12,5 +12,6 @@ public interface CamposExtraidosRepository extends JpaRepository <CamposExtraido
     Optional<CamposExtraidos> findByDocumentoPDF(DocumentoPDF documentoPDF);
     @Query("SELECT c FROM CamposExtraidos c")
     List<CamposExtraidos> findAllWithDocumento();
+    List<CamposExtraidos> findByPersonaId(Long personaId);
 
 }

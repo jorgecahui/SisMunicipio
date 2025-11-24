@@ -9,6 +9,7 @@ import { AppTablesComponent } from './tables/tables.component';
 import { CamposExtraidosComponent } from "./document/document.component";
 import { EditarDocumentoComponent } from "./document/form/formdocument.component";
 import {CrearDocumentoComponent} from "./document/typedocs/typedocs.component";
+import {VisorComponent} from "./document/visor/visor.component";
 
 export const UiComponentsRoutes: Routes = [
   {
@@ -18,6 +19,7 @@ export const UiComponentsRoutes: Routes = [
       { path: 'menu', component: AppMenuComponent },
       { path: 'tramite', component: TramiteFormComponent },
       { path: 'tables', component: AppTablesComponent },
+      { path: 'visor/:filename', component: VisorComponent},
       { path: 'document', component: CamposExtraidosComponent },
       { path: 'document/edit/:id', component: EditarDocumentoComponent },
       { path: 'document/delete/:id', component: EditarDocumentoComponent },

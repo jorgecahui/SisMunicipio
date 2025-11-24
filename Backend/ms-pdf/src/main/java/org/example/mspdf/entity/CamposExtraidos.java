@@ -21,7 +21,7 @@ public class CamposExtraidos {
     private String fecha;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "documento_id")
     private DocumentoPDF documentoPDF;
 
@@ -29,5 +29,15 @@ public class CamposExtraidos {
 
     @OneToMany(mappedBy = "camposExtraidos", cascade = CascadeType.ALL, orphanRemoval = true)
     private java.util.List<CamposDetalle> detalles = new java.util.ArrayList<>();
+    @Column(name = "usuario_id")
+    private Long personaId;
 
+    // ... getters y setters
+    public Long getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(Long personaId) {
+        this.personaId = personaId;
+    }
 }

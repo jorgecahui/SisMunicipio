@@ -2,10 +2,9 @@ package org.example.mspdf.service.imp;
 
 import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
+import org.example.mspdf.fegin.PersonaClient;
 import org.example.mspdf.repository.CamposExtraidosRepository;
 import org.example.mspdf.service.CamposExtraidosService;
-import org.example.mspdf.service.DocsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +12,49 @@ import java.io.InputStream;
 import java.util.*;
 
 @Service
+@Transactional
 public class CamposExtraidosServiceImpl implements CamposExtraidosService {
 
     private final CamposExtraidosRepository camposExtraidosRepository;
+    private final PersonaClient personaClient;
 
-
-    public CamposExtraidosServiceImpl(CamposExtraidosRepository camposExtraidosRepository) {
+    public CamposExtraidosServiceImpl(CamposExtraidosRepository camposExtraidosRepository, PersonaClient personaClient) {
         this.camposExtraidosRepository = camposExtraidosRepository;
+        this.personaClient = personaClient;
     }
 
+    @Override
+    public List<DocumentoPDF> obtenerTodosLosDocumentos() {
+        return List.of(); // o tu implementación actual
+    }
+
+    public List<CamposExtraidos> obtenerTodosLosCamposExtraidos() {
+        System.out.println("   📂 Ejecutando findAll() en repository");
+        List<CamposExtraidos> result = camposExtraidosRepository.findAll();
+        System.out.println("   📊 Resultado findAll(): " + result.size() + " documentos");
+        return result;
+    }
+
+    // ✅ MÉTODO para obtener documentos según rol
+    public List<CamposExtraidos> obtenerDocumentosSegunRol(Long personaId, boolean esAdmin) {
+        System.out.println("🔧 Service: obtenerDocumentosSegunRol");
+        System.out.println("   👤 PersonaId: " + personaId);
+        System.out.println("   🎭 Es admin: " + esAdmin);
+
+        if (esAdmin) {
+            System.out.println("   📂 Obteniendo TODOS los documentos (admin)");
+            List<CamposExtraidos> todos = obtenerTodosLosCamposExtraidos();
+            System.out.println("   📊 Total documentos encontrados: " + todos.size());
+            return todos;
+        } else {
+            System.out.println("   📂 Obteniendo documentos del usuario: " + personaId);
+            List<CamposExtraidos> usuario = obtenerDocumentosPorUsuario(personaId);
+            System.out.println("   📊 Documentos del usuario: " + usuario.size());
+            return usuario;
+        }
+    }
+
+    // ... el resto de tus métodos existentes se mantienen igual
     @Override
     public CamposExtraidos guardarCampos(Map<String, String> datos) {
         CamposExtraidos campo = new CamposExtraidos();
@@ -32,12 +65,6 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
         campo.setIdentificador(datos.getOrDefault("id", ""));
         return camposExtraidosRepository.save(campo);
     }
-
-    @Override
-    public List<DocumentoPDF> obtenerTodosLosDocumentos() {
-        return List.of();
-    }
-
 
     @Override
     public CamposExtraidos findByDocumentoPDF(DocumentoPDF documento) {
@@ -75,7 +102,16 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
     }
 
     @Override
+    public List<CamposExtraidos> obtenerDocumentosPorUsuario(Long personaId) {
+        System.out.println("   📂 Ejecutando findByPersonaId(" + personaId + ")");
+        List<CamposExtraidos> result = camposExtraidosRepository.findByPersonaId(personaId);
+        System.out.println("   📊 Resultado findByPersonaId: " + result.size() + " documentos");
+        return result;
+    }
+
+    @Override
     public CamposExtraidos guardarEntidad(CamposExtraidos entidad) {
         return camposExtraidosRepository.save(entidad);
     }
 }
+

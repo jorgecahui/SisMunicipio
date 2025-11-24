@@ -1,10 +1,12 @@
 package com.msauth.controller;
 
+import com.msauth.dto.AuthResponse;
 import com.msauth.dto.AuthUserDto;
 import com.msauth.dto.AuthUserRegisterDto;
 import com.msauth.entity.AuthUser;
 import com.msauth.entity.TokenDto;
 import com.msauth.service.AuthUserService;
+import com.msauth.service.impl.AuthUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,13 @@ public class AuthUserController {
     AuthUserService authUserService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody AuthUserDto authUserDto) {
-        TokenDto tokenDto = authUserService.login(authUserDto);
-        if (tokenDto == null)
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthUserDto authUserDto) {
+        try {
+            AuthResponse response = ((AuthUserServiceImpl) authUserService).loginWithUserInfo(authUserDto);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(tokenDto);
+        }
     }
 
     @PostMapping("/validate")

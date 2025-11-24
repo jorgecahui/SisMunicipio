@@ -1,0 +1,12 @@
+<div class="container">
+  <iframe
+    *ngIf="pdfUrl"
+    [src]="pdfUrl | safe"
+    class="pdf-viewer"
+    style="border: none;">
+  </iframe>
+
+  <div *ngIf="!pdfUrl" class="loading">
+    Cargando PDF...
+  </div>
+</div>

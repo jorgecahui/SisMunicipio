@@ -1,6 +1,8 @@
 package com.msauth.security;
 
 import com.msauth.entity.AuthUser;
+import com.msauth.entity.Role;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,10 +10,8 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtProvider    {
@@ -26,6 +26,11 @@ public class JwtProvider    {
         Map<String, Object> claims = new HashMap<>();
         claims = Jwts.claims().setSubject(authUser.getUserName());
         claims.put("id", authUser.getId());
+        claims.put("personaId", authUser.getPersonaId());
+        claims.put("roles", authUser.getRoles().stream()
+                .map(Role::name)
+                .collect(Collectors.toList()));
+
         Date now = new Date();
         Date exp = new Date(now.getTime() + 1800000);
         return Jwts.builder()
@@ -51,6 +56,33 @@ public class JwtProvider    {
             return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
         }catch (Exception e) {
             return "bad token";
+        }
+    }
+    public List<String> getRolesFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            @SuppressWarnings("unchecked")
+            List<String> roles = (List<String>) claims.get("roles");
+            return roles != null ? roles : new ArrayList<>();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    // ↓↓↓ NUEVO MÉTODO - Extraer personaId del token ↓↓↓
+    public Long getPersonaIdFromToken(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(token)
+                    .getBody();
+            return claims.get("personaId", Long.class);
+        } catch (Exception e) {
+            return null;
         }
     }
 }

@@ -1,8 +1,14 @@
 <mat-card class="p-4">
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Documentos Extraídos</h2>
-    <button mat-flat-button color="primary" >Agregar Registro</button>
+    <h2>Solicitudes</h2>
+    <button
+      *ngIf="!isUserRole"
+      mat-flat-button
+      color="primary"
+      routerLink="/ui-components/document/crear">
+      Agregar Registro
+    </button>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
@@ -23,12 +29,6 @@
     <ng-container matColumnDef="dni">
       <th mat-header-cell *matHeaderCellDef>DNI</th>
       <td mat-cell *matCellDef="let item">{{ item.dni }}</td>
-    </ng-container>
-
-    <!-- Código -->
-    <ng-container matColumnDef="codigo">
-      <th mat-header-cell *matHeaderCellDef>Código</th>
-      <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
     </ng-container>
 
     <!-- Asunto -->
@@ -69,14 +69,17 @@
           <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
         </button>
 
-        <button mat-icon-button color="primary" routerLink="/ui-components/document/crear">
-          <iconify-icon icon="mdi:plus"></iconify-icon>
+        <button mat-icon-button color="accent" (click)="verPDF(item.documentoId)">
+          <iconify-icon icon="mdi:file-pdf-box"></iconify-icon>
         </button>
 
+        <button mat-icon-button color="accent" (click)="abrirVisor(item.nombreDocumento)">
+          <iconify-icon icon="ant-design:read-outlined"></iconify-icon>
+        </button>
 
+        <!-- Eliminé el botón de agregar que estaba duplicado aquí -->
       </td>
     </ng-container>
-
 
     <!-- FILAS -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
