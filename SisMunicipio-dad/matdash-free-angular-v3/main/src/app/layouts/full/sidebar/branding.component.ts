@@ -8,14 +8,12 @@ import { RouterModule } from '@angular/router';
   template: `
     <a [routerLink]="['/']">
       <img
-        src="./assets/images/logos/logo.svg"
-        class="align-middle m-2"
-        alt="logo"
+        src="./assets/images/logos/logo_su.png"
       />
     </a>
   `,
 })
 export class BrandingComponent {
   options = this.settings.getOptions();
-  constructor(private settings: CoreService) {} 
+  constructor(private settings: CoreService) {}
 }

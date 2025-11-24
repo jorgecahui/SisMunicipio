@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { StarterComponent } from './starter/starter.component';
-
+import {CamposExtraidosComponent} from "./ui-components/document/document.component";
 export const PagesRoutes: Routes = [
   {
     path: '',
-    component: StarterComponent,
+    component: CamposExtraidosComponent,
     data: {
       title: 'Starter',
       urls: [
