@@ -51,49 +51,39 @@ public class OCRController {
         boolean esAdmin = determinarSiEsAdmin(personaId);
         System.out.println("🎭 Es admin: " + esAdmin);
 
-        // Obtener documentos según rol
-        CamposExtraidosServiceImpl serviceImpl = (CamposExtraidosServiceImpl) camposExtraidosService;
-        List<CamposExtraidos> lista = serviceImpl.obtenerDocumentosSegunRol(personaId, esAdmin);
+        try {
+            // Obtener documentos según rol
+            CamposExtraidosServiceImpl serviceImpl = (CamposExtraidosServiceImpl) camposExtraidosService;
+            List<CamposExtraidos> lista = serviceImpl.obtenerDocumentosSegunRol(personaId, esAdmin);
 
-        System.out.println("📄 Total documentos en BD: " + lista.size());
+            System.out.println("📄 Total documentos en BD: " + lista.size());
 
-        // Debug: mostrar cada documento
-        for (int i = 0; i < lista.size(); i++) {
-            CamposExtraidos doc = lista.get(i);
-            System.out.println("📋 Documento " + i + ": " +
-                    "ID=" + doc.getId() + ", " +
-                    "Nombre=" + doc.getNombre() + ", " +
-                    "PersonaId=" + doc.getPersonaId());
-        }
+            // Construir respuesta - EVITA acceder a documentoPDF directamente
+            List<Map<String, Object>> resultado = new ArrayList<>();
+            for (CamposExtraidos c : lista) {
+                Map<String, Object> item = new HashMap<>();
+                item.put("id", c.getId());
+                item.put("documentoId", c.getDocumentoPDF() != null ? c.getDocumentoPDF().getId() : null);
+                item.put("nombreDocumento", c.getNombreDocumento()); // ← USA ESTE CAMPO
 
-        // Construir respuesta
-        List<Map<String, Object>> resultado = new ArrayList<>();
-        for (CamposExtraidos c : lista) {
-            Map<String, Object> item = new HashMap<>();
-            item.put("id", c.getId());
+                item.put("codigo", c.getCodigo());
+                item.put("nombre", c.getNombre());
+                item.put("dni", c.getDNI());
+                item.put("asunto", c.getAsunto());
+                item.put("identificador", c.getIdentificador());
+                item.put("personaId", c.getPersonaId());
+                item.put("esAdmin", esAdmin);
 
-            DocumentoPDF doc = c.getDocumentoPDF();
-            if (doc != null) {
-                item.put("documentoId", doc.getId());
-                item.put("nombreDocumento", doc.getNombre());
-            } else {
-                item.put("documentoId", null);
-                item.put("nombreDocumento", null);
+                resultado.add(item);
             }
 
-            item.put("codigo", c.getCodigo());
-            item.put("nombre", c.getNombre());
-            item.put("dni", c.getDNI());
-            item.put("asunto", c.getAsunto());
-            item.put("identificador", c.getIdentificador());
-            item.put("personaId", c.getPersonaId());
-            item.put("esAdmin", esAdmin);
-
-            resultado.add(item);
+            System.out.println("✅ ===== FIN ENDPOINT /listar - Documentos enviados: " + resultado.size() + " =====");
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            System.out.println("❌ Error en endpoint /listar: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error interno del servidor: " + e.getMessage());
         }
-
-        System.out.println("✅ ===== FIN ENDPOINT /listar - Documentos enviados: " + resultado.size() + " =====");
-        return ResponseEntity.ok(resultado);
     }
 
     private boolean determinarSiEsAdmin(Long personaId) {

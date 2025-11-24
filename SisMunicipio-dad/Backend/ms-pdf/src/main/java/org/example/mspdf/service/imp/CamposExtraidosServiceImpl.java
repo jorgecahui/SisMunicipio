@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.*;
 
 @Service
+@Transactional
 public class CamposExtraidosServiceImpl implements CamposExtraidosService {
 
     private final CamposExtraidosRepository camposExtraidosRepository;
@@ -22,13 +23,11 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
         this.personaClient = personaClient;
     }
 
-    // ✅ MÉTODO EXISTENTE de la interfaz - DEJA ASÍ
     @Override
     public List<DocumentoPDF> obtenerTodosLosDocumentos() {
         return List.of(); // o tu implementación actual
     }
 
-    // ✅ CORREGIDO: Cambiar nombre del método
     public List<CamposExtraidos> obtenerTodosLosCamposExtraidos() {
         System.out.println("   📂 Ejecutando findAll() en repository");
         List<CamposExtraidos> result = camposExtraidosRepository.findAll();

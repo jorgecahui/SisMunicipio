@@ -2,7 +2,13 @@
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Solicitudes</h2>
-    <button mat-flat-button color="primary" >Agregar Registro</button>
+    <button
+      *ngIf="!isUserRole"
+      mat-flat-button
+      color="primary"
+      routerLink="/ui-components/document/crear">
+      Agregar Registro
+    </button>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
@@ -71,16 +77,9 @@
           <iconify-icon icon="ant-design:read-outlined"></iconify-icon>
         </button>
 
-
-
-        <button mat-icon-button color="primary" routerLink="/ui-components/document/crear">
-          <iconify-icon icon="mdi:plus"></iconify-icon>
-        </button>
-
-
+        <!-- Eliminé el botón de agregar que estaba duplicado aquí -->
       </td>
     </ng-container>
-
 
     <!-- FILAS -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

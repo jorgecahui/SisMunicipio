@@ -21,7 +21,7 @@ public class CamposExtraidos {
     private String fecha;
 
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "documento_id")
     private DocumentoPDF documentoPDF;
 

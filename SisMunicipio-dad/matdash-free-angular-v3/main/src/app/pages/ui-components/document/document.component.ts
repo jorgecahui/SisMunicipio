@@ -31,7 +31,7 @@ export class CamposExtraidosComponent implements OnInit {
 
   campos: any[] = [];
   dataSource = new MatTableDataSource<any>(this.campos);
-
+  isUserRole: boolean = false;
   displayedColumns: string[] = [
     'id', 'nombre', 'dni', 'asunto', 'identificador', 'nombreDocumento', 'acciones'
   ];
@@ -57,7 +57,14 @@ export class CamposExtraidosComponent implements OnInit {
   cargarCampos() {
     console.log('🔄 Cargando documentos...');
     console.log('🔍 Service:', this.camposService);
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('❌ No hay token disponible');
+      return;
+    }
 
+    console.log('🔐 Token:', token);
+    console.log('👤 Usuario:', this.authService.getCurrentUser());
     this.camposService.getAll$().subscribe({
       next: (data: any) => {
         console.log('✅ Respuesta del servidor:', data);
@@ -95,5 +102,17 @@ export class CamposExtraidosComponent implements OnInit {
 
   editar(item: CamposExtraidos) {
     this.router.navigate(['/ui-components/document/edit', item.id]);   // <<--- NAVEGACIÓN FINAL
+  }
+  agregarNuevo() {
+    if (!this.isUserRole) {
+      this.router.navigate(['/ui-components/document/new']);
+    }
+  }
+
+  eliminar(item: CamposExtraidos) {
+    if (!this.isUserRole) {
+      // Aquí va tu lógica para eliminar
+      console.log('Eliminar item:', item);
+    }
   }
 }
