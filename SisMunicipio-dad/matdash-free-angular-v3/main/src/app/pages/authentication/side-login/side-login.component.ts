@@ -12,14 +12,18 @@ import {TokenModels} from "../../../models/token-models";
   templateUrl: './side-login.component.html',
 })
 export class AppSideLoginComponent {
-  constructor(private router: Router, private authService: AuthService) {
-  }
-
-  private tokenModels = new TokenModels();
   form = new FormGroup({
     userName: new FormControl('', [Validators.required, Validators.minLength(6)]),
     password: new FormControl('', [Validators.required]),
   });
+
+  loading = false;
+  error = '';
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   get f() {
     return this.form.controls;
@@ -30,18 +34,35 @@ export class AppSideLoginComponent {
   }
 
   protected login() {
-    console.log(this.form.value);
-    this.authService.add$(this.form.value).subscribe(
-      data => {
-        this.tokenModels = data;
-        this.setToken(this.tokenModels.token);
+    if (this.form.invalid) {
+      console.log('Formulario inválido');
+      return;
+    }
+
+    this.loading = true;
+    this.error = '';
+
+    console.log('Datos de login:', this.form.value);
+
+    // ↓↓↓ CAMBIO IMPORTANTE: Usar login() en lugar de add$() ↓↓↓
+    this.authService.login(this.form.value).subscribe({
+      next: (response) => {
+        console.log('✅ Login exitoso:', response);
+        console.log('🔑 Token:', response.token);
+        console.log('👤 PersonaId:', response.personaId);
+        console.log('🎭 Roles:', response.roles);
+
+        // Navegar después del login exitoso
         this.router.navigate(['/ui-components/document']);
-        console.log(this.tokenModels.token);
+      },
+      error: (error) => {
+        console.error('❌ Error en login:', error);
+        this.error = 'Error en el login. Verifica tus credenciales.';
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       }
-    )
-  }
-  private setToken(token: string | undefined):void {
-    console.log("====================; ",token);
-    this.authService.setToken(token);
+    });
   }
 }

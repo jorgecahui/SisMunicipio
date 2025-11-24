@@ -35,9 +35,9 @@ public class OCRController {
     private CamposDetalleService camposDetalleService; // ← NUEVO
 
     @GetMapping("/listar")
-    public List<Map<String, Object>> obtenerTodosLosDocumentos() {
+    public List<Map<String, Object>> obtenerTodosLosDocumentos(@RequestHeader("X-User-Id") Long personaId) {
 
-        List<CamposExtraidos> lista = camposExtraidosService.obtenerTodosLosDocumentosConCampos();
+        List<CamposExtraidos> lista = camposExtraidosService.obtenerDocumentosPorUsuario(personaId);
         List<Map<String, Object>> resultado = new ArrayList<>();
 
         for (CamposExtraidos c : lista) {
@@ -58,6 +58,7 @@ public class OCRController {
             item.put("dni", c.getDNI());
             item.put("asunto", c.getAsunto());
             item.put("identificador", c.getIdentificador());
+            item.put("personaId", c.getPersonaId());
 
             resultado.add(item);
         }
@@ -75,7 +76,7 @@ public class OCRController {
     }
 
     @PostMapping("/convertir")
-    public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file, @RequestHeader("X-User-Id") Long personaId) {
         try {
             // OCR
             OCRService ocrService = new OCRService(
@@ -111,6 +112,7 @@ public class OCRController {
             camposEnt.setIdentificador(campos.get("id"));
             camposEnt.setNombreDocumento(documentoPDF.getNombre());
             camposEnt.setDocumentoPDF(documentoPDF);
+            camposEnt.setPersonaId(personaId);
 
             CamposExtraidos entidadGuardada = camposExtraidosService.guardarEntidad(camposEnt);
 

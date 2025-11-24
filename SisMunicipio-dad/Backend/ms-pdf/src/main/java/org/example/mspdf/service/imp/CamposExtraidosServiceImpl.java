@@ -4,8 +4,6 @@ import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
 import org.example.mspdf.repository.CamposExtraidosRepository;
 import org.example.mspdf.service.CamposExtraidosService;
-import org.example.mspdf.service.DocsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,6 +70,11 @@ public class CamposExtraidosServiceImpl implements CamposExtraidosService {
     @Override
     public String detectarTipo(Map<String, String> campos) {
         return "";
+    }
+
+    @Override
+    public List<CamposExtraidos> obtenerDocumentosPorUsuario(Long personaId) {
+        return camposExtraidosRepository.findByPersonaId(personaId);
     }
 
     @Override

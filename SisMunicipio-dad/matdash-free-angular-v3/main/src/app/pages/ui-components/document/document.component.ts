@@ -11,6 +11,7 @@ import {Router, RouterLink} from '@angular/router';
 import { CamposExtraidos } from '../../../models/campos.extraidos';
 import { DocumentoService } from '../../../providers/services/documentos/documento.service';
 import {RegistrarService} from "../../../providers/services/registrar/registrar.service";
+import {AuthService} from "../../../providers/services/auth/auth.service";
 
 @Component({
   selector: 'app-campos-extraidos',
@@ -43,18 +44,34 @@ export class CamposExtraidosComponent implements OnInit {
 
   constructor(
     private camposService: DocumentoService,
+    private authService: AuthService,
     private dialog: MatDialog,
-    private router: Router , private exportarservice: RegistrarService          // <<--- AÑADIDO
+    private router: Router ,
+    private exportarservice: RegistrarService          // <<--- AÑADIDO
   ) {}
 
   ngOnInit(): void {
+    const user = this.authService.getCurrentUser();
+    console.log('📋 Usuario en document.component:', user);
+    console.log('🔑 PersonaId para X-User-Id:', user?.personaId);
+    console.log('🎭 Roles:', user?.roles);
+    console.log('🔐 Token presente:', !!this.authService.getToken());
+
     this.cargarCampos();
   }
 
   cargarCampos() {
-    this.camposService.getAll$().subscribe((data: CamposExtraidos[]) => {
-      this.campos = data;
-      this.dataSource.data = this.campos;
+    console.log('🔄 Cargando documentos...');
+
+    this.camposService.getAll$().subscribe({
+      next: (data: CamposExtraidos[]) => {
+        console.log('✅ Documentos cargados:', data);
+        this.campos = data;
+        this.dataSource.data = this.campos;
+      },
+      error: (error) => {
+        console.error('❌ Error cargando documentos:', error);
+      }
     });
   }
 
