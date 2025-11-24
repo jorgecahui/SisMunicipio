@@ -10,6 +10,7 @@ import {Router, RouterLink} from '@angular/router';
 
 import { CamposExtraidos } from '../../../models/campos.extraidos';
 import { DocumentoService } from '../../../providers/services/documentos/documento.service';
+import {RegistrarService} from "../../../providers/services/registrar/registrar.service";
 
 @Component({
   selector: 'app-campos-extraidos',
@@ -34,7 +35,6 @@ export class CamposExtraidosComponent implements OnInit {
     'id',
     'nombre',
     'dni',
-    'codigo',
     'asunto',
     'identificador',
     'nombreDocumento',
@@ -44,7 +44,7 @@ export class CamposExtraidosComponent implements OnInit {
   constructor(
     private camposService: DocumentoService,
     private dialog: MatDialog,
-    private router: Router           // <<--- AÑADIDO
+    private router: Router , private exportarservice: RegistrarService          // <<--- AÑADIDO
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +57,17 @@ export class CamposExtraidosComponent implements OnInit {
       this.dataSource.data = this.campos;
     });
   }
+
+  verPDF(id: number) {
+    const url = `http://localhost:9090/api/ocr/exportdb/${id}`;
+    window.open(url, '_blank');
+  }
+
+  abrirVisor(id: number) {
+    this.router.navigate(['/ui-components/visor', id]);
+  }
+
+
 
 
   editar(item: CamposExtraidos) {

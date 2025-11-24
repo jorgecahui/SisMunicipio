@@ -31,6 +31,11 @@ export const navItems: NavItem[] = [
     route: '/ui-components/tramite',
   },
   {
+    displayName: 'visor',
+    iconName: 'mdi:form-select',
+    route: '/ui-components/visor',
+  },
+  {
     displayName: 'Documentos',
     iconName: 'mdi:file-document',
     route: '/ui-components/document',

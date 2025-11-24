@@ -6,6 +6,7 @@ export const END_POINTS = {
   camposextraidos_eliminar: '/ocr/eliminar',
   camposestraidos_editar: '/ocr/actualizar',
   camposetraidos_crear: '/ocr/convertir',
+  camposexportar: '/ocr/exportdb/id',
   persons_id: '/personas/id',
   //persons_put: '/personas/id',
   persons_post: '/personas/id',

@@ -25,12 +25,6 @@
       <td mat-cell *matCellDef="let item">{{ item.dni }}</td>
     </ng-container>
 
-    <!-- Código -->
-    <ng-container matColumnDef="codigo">
-      <th mat-header-cell *matHeaderCellDef>PDF</th>
-      <td mat-cell *matCellDef="let item">{{ item.codigo }}</td>
-    </ng-container>
-
     <!-- Asunto -->
     <ng-container matColumnDef="asunto">
       <th mat-header-cell *matHeaderCellDef>Asunto</th>
@@ -68,6 +62,16 @@
         <button mat-icon-button color="warn" [routerLink]="['/ui-components/document/delete', item.id]">
           <iconify-icon icon="solar:trash-bin-trash-bold"></iconify-icon>
         </button>
+
+        <button mat-icon-button color="accent" (click)="verPDF(item.documentoId)">
+          <iconify-icon icon="mdi:file-pdf-box"></iconify-icon>
+        </button>
+
+        <button mat-icon-button color="accent" (click)="abrirVisor(item.documentoId)">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+
+
 
         <button mat-icon-button color="primary" routerLink="/ui-components/document/crear">
           <iconify-icon icon="mdi:plus"></iconify-icon>

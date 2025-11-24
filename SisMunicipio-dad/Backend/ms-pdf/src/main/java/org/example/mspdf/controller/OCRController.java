@@ -1,15 +1,22 @@
 package org.example.mspdf.controller;
 
+import org.springframework.core.io.Resource; // ✅ Correcto
 import org.example.mspdf.entity.CamposExtraidos;
 import org.example.mspdf.entity.DocumentoPDF;
 import org.example.mspdf.entity.CamposDetalle;
 import org.example.mspdf.repository.DocumentoPDFRepository;
 import org.example.mspdf.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -27,9 +34,6 @@ public class OCRController {
     @Autowired
     private CamposDetalleService camposDetalleService; // ← NUEVO
 
-    // ================================
-    // LISTAR TODOS
-    // ================================
     @GetMapping("/listar")
     public List<Map<String, Object>> obtenerTodosLosDocumentos() {
 
@@ -61,9 +65,6 @@ public class OCRController {
         return resultado;
     }
 
-    // ================================
-    // OBTENER POR ID
-    // ================================
     @GetMapping("/listar/{id}")
     public ResponseEntity<CamposExtraidos> obtenerPorId(@PathVariable Long id) {
         CamposExtraidos entidad = camposExtraidosService.findById(id).orElse(null);
@@ -73,9 +74,6 @@ public class OCRController {
         return ResponseEntity.ok(entidad);
     }
 
-    // ================================
-    // SUBIR IMAGEN → OCR → PDF → GUARDAR
-    // ================================
     @PostMapping("/convertir")
     public ResponseEntity<?> convertirImagenAPDF(@RequestParam("file") MultipartFile file) {
         try {
@@ -116,9 +114,6 @@ public class OCRController {
 
             CamposExtraidos entidadGuardada = camposExtraidosService.guardarEntidad(camposEnt);
 
-            // ================================
-            // 🔥 GUARDAR DETALLES DINÁMICOS
-            // ================================
             camposDetalleService.guardarDetalles(campos, entidadGuardada);
 
             return ResponseEntity.ok(Map.of(
@@ -135,32 +130,24 @@ public class OCRController {
         }
     }
 
-    // ================================
-    // ACTUALIZAR
-    // ================================
     @PutMapping("/actualizar/{id}")
     public CamposExtraidos actualizar(@PathVariable Long id, @RequestBody CamposExtraidos entidad) {
         return camposExtraidosService.actualizarEntidad(id, entidad);
     }
 
-    // ================================
-    // ELIMINAR
-    // ================================
     @DeleteMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
         camposExtraidosService.eliminarPorId(id);
         return "Entidad con id " + id + " eliminada";
     }
 
-    // ================================
-    // 🔍 NUEVO: OBTENER DETALLES DINÁMICOS DE UN DOCUMENTO
-    // ================================
     @GetMapping("/detalles/{id}")
     public List<CamposDetalle> listarDetalles(@PathVariable Long id) {
         return camposDetalleService.obtenerDetallesPorDocumento(id);
     }
 
-    @GetMapping("/export/{id}")
+
+    @GetMapping("/exportdb/{id:\\d+}") // Solo números → exportar(Long id)
     public ResponseEntity<String> exportar(@PathVariable Long id) {
         try {
             String nombreArchivo = pdfExportService.exportarPDF(id);
@@ -169,4 +156,28 @@ public class OCRController {
             return ResponseEntity.status(500).body("Error: " + e.getMessage());
         }
     }
+
+    @GetMapping("/exportpdf/{filename:[a-zA-Z0-9._\\-]+}") // Solo texto → getPdf(String filename)
+    public ResponseEntity<Resource> getPdf(@PathVariable String filename) throws IOException {
+        if (filename == null || filename.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        filename = filename.replaceAll("[^a-zA-Z0-9._-]", "_");
+
+        Path pdfPath = Paths.get("src/main/resources/pdfs").resolve(filename).normalize();
+
+        if (!Files.exists(pdfPath)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Resource resource = new UrlResource(pdfPath.toUri());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+    }
+
+
+
 }
