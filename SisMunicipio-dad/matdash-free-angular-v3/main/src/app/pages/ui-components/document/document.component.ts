@@ -63,12 +63,9 @@ export class CamposExtraidosComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  abrirVisor(id: number) {
-    this.router.navigate(['/ui-components/visor', id]);
+  abrirVisor(filename: string) {
+    this.router.navigate(['/ui-components/visor', filename]);
   }
-
-
-
 
   editar(item: CamposExtraidos) {
     this.router.navigate(['/ui-components/document/edit', item.id]);   // <<--- NAVEGACIÓN FINAL

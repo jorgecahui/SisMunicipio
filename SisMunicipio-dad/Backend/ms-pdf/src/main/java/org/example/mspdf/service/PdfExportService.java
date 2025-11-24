@@ -18,7 +18,10 @@ public class PdfExportService {
 
     public String exportarPDF(Long idDocumento) throws Exception {
 
-        String sql = "SELECT contenido FROM documentopdf WHERE id = ?";
+        String sql = "SELECT d.contenido, c.nombre_documento " +
+                "FROM documentopdf d " +
+                "JOIN campos_extraidos c ON d.id = c.documento_id " +
+                "WHERE d.id = ?";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -33,6 +36,8 @@ public class PdfExportService {
 
             // === 1. Obtener el OID del campo contenido ===
             long oid = rs.getLong("contenido");
+            // === 1.5 Obtener el nombre original del documento ===
+            String nombreOriginal = rs.getString("nombre_documento");
 
             // === 2. Obtener API de Large Objects ===
             org.postgresql.PGConnection pgConn = conn.unwrap(org.postgresql.PGConnection.class);
@@ -49,7 +54,12 @@ public class PdfExportService {
             if (!carpeta.exists()) carpeta.mkdirs();
 
             // === 5. Crear nombre del archivo ===
-            String nombreArchivo = "documento_" + idDocumento + ".pdf";
+            String nombreArchivo;
+            if (nombreOriginal != null && !nombreOriginal.trim().isEmpty()) {
+                nombreArchivo = nombreOriginal;
+            } else {
+                nombreArchivo = "documento_" + idDocumento + ".pdf";
+            }
             File archivo = new File(carpeta, nombreArchivo);
 
             // === 6. Guardar el PDF en disco ===

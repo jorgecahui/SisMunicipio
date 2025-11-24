@@ -19,7 +19,7 @@ export const UiComponentsRoutes: Routes = [
       { path: 'menu', component: AppMenuComponent },
       { path: 'tramite', component: TramiteFormComponent },
       { path: 'tables', component: AppTablesComponent },
-      { path: 'visor/:documentoId', component: VisorComponent},
+      { path: 'visor/:filename', component: VisorComponent},
       { path: 'document', component: CamposExtraidosComponent },
       { path: 'document/edit/:id', component: EditarDocumentoComponent },
       { path: 'document/delete/:id', component: EditarDocumentoComponent },

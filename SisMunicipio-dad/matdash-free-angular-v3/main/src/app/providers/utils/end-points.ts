@@ -7,6 +7,7 @@ export const END_POINTS = {
   camposestraidos_editar: '/ocr/actualizar',
   camposetraidos_crear: '/ocr/convertir',
   camposexportar: '/ocr/exportdb/id',
+  viewpdf: '/ocr/viewpdf/filename',
   persons_id: '/personas/id',
   //persons_put: '/personas/id',
   persons_post: '/personas/id',

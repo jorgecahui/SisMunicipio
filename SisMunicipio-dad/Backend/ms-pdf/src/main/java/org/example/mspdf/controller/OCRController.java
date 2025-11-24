@@ -157,7 +157,7 @@ public class OCRController {
         }
     }
 
-    @GetMapping("/exportpdf/{filename:[a-zA-Z0-9._\\-]+}") // Solo texto → getPdf(String filename)
+    @GetMapping("/viewpdf/{filename:[a-zA-Z0-9._\\-]+}") // Solo texto → getPdf(String filename)
     public ResponseEntity<Resource> getPdf(@PathVariable String filename) throws IOException {
         if (filename == null || filename.isBlank()) {
             return ResponseEntity.badRequest().build();

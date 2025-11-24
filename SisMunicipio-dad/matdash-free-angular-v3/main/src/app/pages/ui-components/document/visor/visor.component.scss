@@ -1,7 +1,31 @@
 .container {
   width: 100%;
-  height: 90vh;
+  height: 100vh; /* ← Ocupa toda la pantalla */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5; /* ← Fondo gris claro */
 }
-pdf-viewer {
-  height: 100%;
+
+.pdf-viewer {
+  width: 95%;    /* ← Ancho del 95% del contenedor */
+  height: 95vh;  /* ← Alto del 95% de la pantalla */
+  max-width: 1200px; /* ← Ancho máximo */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* ← Sombra suave */
+  border-radius: 8px; /* ← Esquinas redondeadas */
+}
+
+.loading {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+}
+
+/* ← OPCIONAL: Para pantallas pequeñas (responsive) */
+@media (max-width: 768px) {
+  .pdf-viewer {
+    width: 100%;
+    height: 100vh;
+    max-width: none;
+  }
 }

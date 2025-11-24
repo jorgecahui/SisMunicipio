@@ -1,10 +1,12 @@
-<ngx-extended-pdf-viewer
-  *ngIf="pdfUrl"
-  [src]="pdfUrl"
-  height="90vh"
-  [showSidebarButton]="true"
-  [showFindButton]="true"
-  [showDownloadButton]="true"
-  [showPrintButton]="true"
->
-</ngx-extended-pdf-viewer>
+<div class="container">
+  <iframe
+    *ngIf="pdfUrl"
+    [src]="pdfUrl | safe"
+    class="pdf-viewer"
+    style="border: none;">
+  </iframe>
+
+  <div *ngIf="!pdfUrl" class="loading">
+    Cargando PDF...
+  </div>
+</div>

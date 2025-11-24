@@ -1,20 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import { OnDestroy, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {PdfViewerModule} from "ng2-pdf-viewer";
+import { pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
 import {NgxExtendedPdfViewerModule} from "ngx-extended-pdf-viewer";
 import {CommonModule} from "@angular/common";
+import { SafePipe } from './safe.pipe';
 
 @Component({
   selector: 'app-visor',
   standalone: true,
-  imports: [NgxExtendedPdfViewerModule, CommonModule],
+  imports: [ CommonModule, SafePipe],
   templateUrl: './visor.component.html',
   styleUrl: './visor.component.scss'
 })
-export class VisorComponent implements OnInit {
+export class VisorComponent implements OnInit, OnDestroy {
 
-  pdfUrl: string | undefined;
+  pdfUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -22,9 +24,12 @@ export class VisorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
-
-    const url = `http://localhost:9090/api/ocr/exportdb/${id}`;
+    const filename = this.route.snapshot.params['filename'];
+    if (!filename) {
+      console.error("❌ No se recibió filename");
+      return;
+    }
+    const url = `http://localhost:9090/api/ocr/viewpdf/${filename}`;
 
     // 🔥 CORRECTO: descargar PDF como blob
     this.http.get(url, { responseType: 'blob' }).subscribe(blob => {
@@ -33,5 +38,10 @@ export class VisorComponent implements OnInit {
       this.pdfUrl = URL.createObjectURL(blob);
 
     });
+  }
+  ngOnDestroy(): void {
+    if (this.pdfUrl) {
+      URL.revokeObjectURL(this.pdfUrl);
+    }
   }
 }
